@@ -84,6 +84,13 @@ DATABASES = {
     }
 }
 
+#DataFlair
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'llcttt@gmail.com'
+EMAIL_HOST_PASSWORD = 'Lct960718?'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -132,3 +139,9 @@ LOGIN_URL='login'
 STATIC_URL='/static/'
 STATCFILES_DIRS=[BASE_DIR/"staitic"]
 AUTH_USER_MODEL='account.User'
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'llcttt@gmail.com'
+EMAIL_HOST_PASSWORD = 'Lct960718?'

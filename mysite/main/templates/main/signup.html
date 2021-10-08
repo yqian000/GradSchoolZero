@@ -8,6 +8,9 @@
     {% csrf_token %}
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">Join Today</legend>
+      {% if msg %}
+      {{ msg }}
+      {% endif %}
       {{form|crispy}}
     </fieldset>
     <div class="form-group">

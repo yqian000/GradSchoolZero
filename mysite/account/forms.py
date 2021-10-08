@@ -1,21 +1,20 @@
 from django import forms
+from django.contrib.auth import models
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import fields
 from django.forms.fields import EmailField
 from .models import User
-class LoginForm(forms.Form):
-    username=EmailField(
-        widget=forms.EmailInput(
-            attrs={
-                'unique':True,
-                "class":"form-control",
-                'required':True
-            }
-        )
-    )
-   
+from django.core.exceptions import ValidationError
+
+        
+
 class signupForm(UserCreationForm):
-    LastName=forms.CharField(
+    def validate_mail(value):
+        if "cuny.edu" in value.lower():
+            return value.lower()
+        else:
+            raise ValidationError("This field accepts mail id of CUNY only")
+    last_name=forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class":"form-control",
@@ -23,7 +22,7 @@ class signupForm(UserCreationForm):
             }
         )
     )
-    FirstName=forms.CharField(
+    first_name=forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class":"form-control",
@@ -47,20 +46,34 @@ class signupForm(UserCreationForm):
             }
         )
     )
-    Email=forms.CharField(
+    email=forms.CharField(
         widget=forms.TextInput(
             attrs={
               
                 "class":"form-control",
                 'required':True
             }
-        )
+        ),validators =[validate_mail]
     )
     class Meta:
         model=User
-        fields=['FirstName','LastName','Email','password1','password2','is_admin','is_instructor','is_student']
+        fields=['first_name','last_name','email','password1','password2','is_instructor','is_student']
 
-
-
-
-    
+class loginForm(forms.Form):
+    username=forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class":"form-control",
+                'required':True
+            }
+        )
+    )
+    password=forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class":"form-control",
+                'required':True
+            }
+        )
+    )
+            
