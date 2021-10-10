@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
 from .forms import signupForm,ResetpasswordForm
-from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import User
@@ -25,7 +24,8 @@ def signup(request):
             send_mail(subject,message,email_from,recipent_list)
             return  redirect("login")
         else:
-            msg="Email address exists already or Non-CUNY email entered, try again please!"
+            context={'form':form}
+            return render(request,"main/resetpassword.html",context)
             
     form=signupForm()
     context={'form':form,"msg":msg}
@@ -48,7 +48,8 @@ def resetpassword(request):
             send_mail(subject,message,email_from,recipent_list)
             return  redirect("login")
         else:
-            msg="something is wrong try it one more time"
+            context={'form':form}
+            return render(request,"main/resetpassword.html",context)
             
     form=ResetpasswordForm()
     context={'form':form,"msg":msg}
