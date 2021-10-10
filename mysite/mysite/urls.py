@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('main.urls')),
     path('signup/', AcView.signup, name='signup'),
     path('login/',auth_views.LoginView.as_view(template_name="main/login.html"),name='login'),
+    path('reset/', AcView.resetpassword, name='reset'),
 ]

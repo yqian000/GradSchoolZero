@@ -7,13 +7,12 @@ from .models import User
 from django.core.exceptions import ValidationError
 
         
-
-class signupForm(UserCreationForm):
-    def validate_mail(value):
+def validate_mail(value):
         if "cuny.edu" in value.lower():
             return value.lower()
         else:
             raise ValidationError("This field accepts mail id of CUNY only")
+class signupForm(UserCreationForm):
     last_name=forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -77,3 +76,33 @@ class loginForm(forms.Form):
         )
     )
             
+class ResetpasswordForm(UserCreationForm):
+    email=forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+              
+                "class":"form-control",
+                'required':True
+            }
+        ),validators =[validate_mail]
+    )
+    password1=forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class":"form-control",
+                'required':True
+            }
+        )
+    )
+    password2=forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class":"form-control",
+                'required':True
+            }
+        )
+    )
+    class Meta:
+        model=User
+        fields=['email','password1','password2']
+    

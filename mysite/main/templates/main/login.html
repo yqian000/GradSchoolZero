@@ -3,6 +3,9 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+
+
+  <div class="row justify-content-center">
   <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
@@ -10,15 +13,22 @@
       {{form|crispy}}
     </fieldset>
     <div class="form-group">
-      <button href="" class="btn btn-outline-info" type="submit">
+      <button href="" class="btn btn-outline-info" class="row justify-content-center" type="submit">
         Sign In
       </button>
     </div>
   </form>
-  
+</div>
+</div>
   <div class="border-top pt-3">
     <small class="text-muted">Need an Account?
       <a class="ml-2" href="{% url 'signup' %}">Create an Account</a>
     </small>
+    <br> 
+    <small class="text-muted">Lost your passwords?
+      <a class="ml-2" href="{% url 'reset' %}">Reset passwords</a>
+    </small>
   </div>
+
+ 
 {% endblock %}
