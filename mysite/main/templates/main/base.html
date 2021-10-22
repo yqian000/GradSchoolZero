@@ -51,6 +51,15 @@
       float: right;
     }
 
+    .sidenav {
+      height: 100%;
+      width: 220px;
+      position: fixed;
+      z-index: 1;
+      overflow-x: hidden;
+      padding-left: 10px;
+    }
+
     @media screen and (max-width: 500px) {
       .header a {
         float: none;
@@ -80,10 +89,21 @@
     </div>
     <img class="sticky-sm-top" src="{% static 'images/cunylogo.png' %}" alt="Notes image">
 
+    <div id="sidenav", name="sidenav", class="sidenav">
+      {% block sidenav %}
+      {% endblock %}
+    </div>
+
     <div id="content", name="content", style="padding-left:20px">
       {% block content %}
       {% endblock %}
     </div>
+
+    <div id="usercontent", name="usercontent", style="padding-left:220px">
+      {% block usercontent %}
+      {% endblock %}
+    </div>
+    
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
