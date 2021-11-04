@@ -1,17 +1,8 @@
-<<<<<<< Updated upstream
-from django.shortcuts import render
-from .forms import RateClassForm, FileComplaintForm
-=======
-
 from django.shortcuts import render,redirect
 from .forms import *
 from django.core.mail import send_mail
 from django.conf import settings
 
-from django.shortcuts import render
-from .forms import RateClassForm, FileComplaintForm
-
->>>>>>> Stashed changes
 # Create your views here.
 
 def studentView(request):
@@ -36,9 +27,6 @@ def fileComplaint(request):
 	else:
 		form = FileComplaintForm()
 	return render(request, "student/fileComplaint.html", {"form":form})
-<<<<<<< Updated upstream
-=======
-
 
 
 def Application(request):
@@ -49,9 +37,8 @@ def Application(request):
 		application.save()
 		return redirect("home")
 	else:
-			form=applicationForm()
+		form=ApplicationForm()
 
 	context={'form':form}
 	return render(request,'main/admission.html',context)
 	
->>>>>>> Stashed changes

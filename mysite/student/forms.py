@@ -1,4 +1,5 @@
 from django import forms
+from .models import Application
 
 
 class RateClassForm(forms.Form):
@@ -8,13 +9,9 @@ class RateClassForm(forms.Form):
 
 class FileComplaintForm(forms.Form):
     name = forms.CharField(max_length = 60, required = True)
-<<<<<<< Updated upstream
-    reason = forms.CharField(widget = forms.Textarea, required = True)
-=======
-
     reason = forms.CharField(widget = forms.Textarea, required = True)
 
-class applicationForm(forms.Form):
+class ApplicationForm(forms.Form):
     email=forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -48,7 +45,7 @@ class applicationForm(forms.Form):
             }
         ),label=" Last Name"
     )
-    Gpa=forms.CharField(
+    gpa=forms.CharField(
         widget=forms.TextInput(
             attrs={
               
@@ -70,7 +67,7 @@ class applicationForm(forms.Form):
             }
         ),label="Semester"
     )
-    Birthday = forms.DateField(widget=forms.DateInput(attrs=
+    birthday = forms.DateField(widget=forms.DateInput(attrs=
                                 {
                                     'class': 'form-control datetimepicker-input',
                                     'data-target': '#datetimepicker1',
@@ -96,10 +93,10 @@ class applicationForm(forms.Form):
         required=True)
     zip = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}),
         required=True)
-    transcprit = forms.FileField(label="transcript",required=True)
-    letters=forms.FileField(label="recommandation letter",required=True)
-    personal_statement=forms.FileField(label="personal statement",required=True)
-    Major=forms.CharField(
+    transcript = forms.FileField(label="transcript",required=True)
+    letters = forms.FileField(label="recommandation letter",required=True)
+    personal_statement = forms.FileField(label="personal statement",required=True)
+    major = forms.CharField(
         widget=forms.TextInput(
             attrs={
               
@@ -112,7 +109,7 @@ class applicationForm(forms.Form):
     )
 
     class Meta:
-        model=Applcation
+        model=Application
         fields=['email',"firstname","lastname","Gpa","semester","Birthday","address","city","state","country","phone","zip","transcript","letters","personal_statement","Major"]
 
->>>>>>> Stashed changes
+
