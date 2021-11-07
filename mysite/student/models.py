@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Application(models.Model):
     email=models.EmailField()
     firstname=models.CharField(max_length=150,blank="True")

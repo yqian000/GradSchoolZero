@@ -113,3 +113,4 @@ class ApplicationForm(forms.Form):
         fields=['email',"firstname","lastname","Gpa","semester","Birthday","address","city","state","country","phone","zip","transcript","letters","personal_statement","Major"]
 
 
+

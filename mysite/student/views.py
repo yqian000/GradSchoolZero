@@ -1,7 +1,13 @@
+
 from django.shortcuts import render,redirect
 from .forms import *
+
 from django.core.mail import send_mail
 from django.conf import settings
+
+
+from django.shortcuts import render
+from .forms import RateClassForm, FileComplaintForm
 
 # Create your views here.
 
@@ -29,11 +35,12 @@ def fileComplaint(request):
 	return render(request, "student/fileComplaint.html", {"form":form})
 
 
-def Application(request):
+
+def application(request):
 	if request.method=="POST":
-		form=applicationForm(request.POST, request.FILES)
+		form=ApplicationForm(request.POST, request.FILES)
 			
-		application=Applcation(email=request.POST['email'],firstname=request.POST['firstname'],lastname=request.POST['lastname'],Gpa=request.POST['Gpa'],semester=request.POST['semester'],Birthday=request.POST['Birthday'],address=request.POST['address'],city=request.POST['city'],state=request.POST['state'],zip=request.POST['zip'],country=request.POST['country'],letters=request.FILES["letters"],personal_statement=request.FILES['personal_statement'],major=request.POST['Major'],transcprit=request.FILES['transcprit'])
+		application=Application(email=request.POST['email'],firstname=request.POST['firstname'],lastname=request.POST['lastname'],Gpa=request.POST['Gpa'],semester=request.POST['semester'],Birthday=request.POST['Birthday'],address=request.POST['address'],city=request.POST['city'],state=request.POST['state'],zip=request.POST['zip'],country=request.POST['country'],letters=request.FILES["letters"],personal_statement=request.FILES['personal_statement'],major=request.POST['Major'],transcprit=request.FILES['transcprit'])
 		application.save()
 		return redirect("home")
 	else:
