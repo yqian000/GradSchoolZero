@@ -9,6 +9,7 @@ django-crispy-forms = "*"
 django-bootstrap-v5 = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.9"
