@@ -8,9 +8,9 @@ class RateClassForm(forms.Form):
 
 class FileComplaintForm(forms.Form):
     name = forms.CharField(max_length = 60, required = True)
-<<<<<<< Updated upstream
+
     reason = forms.CharField(widget = forms.Textarea, required = True)
-=======
+
 
     reason = forms.CharField(widget = forms.Textarea, required = True)
 
@@ -115,4 +115,4 @@ class applicationForm(forms.Form):
         model=Applcation
         fields=['email',"firstname","lastname","Gpa","semester","Birthday","address","city","state","country","phone","zip","transcript","letters","personal_statement","Major"]
 
->>>>>>> Stashed changes
+
