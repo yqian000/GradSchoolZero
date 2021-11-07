@@ -2,11 +2,17 @@ from django.db import models
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 # Create your models here.
 =======
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+<<<<<<< Updated upstream
+# Create your models here.
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 =======
 <<<<<<< Updated upstream
 # Create your models here.
@@ -33,9 +39,13 @@ class Applcation(models.Model):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> Stashed changes
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 =======
 >>>>>>> Stashed changes
 >>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
