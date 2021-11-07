@@ -36,7 +36,7 @@ def fileComplaint(request):
 
 
 
-def Application(request):
+def application(request):
 	if request.method=="POST":
 		form=ApplicationForm(request.POST, request.FILES)
 			
