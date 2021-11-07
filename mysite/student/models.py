@@ -1,8 +1,5 @@
 from django.db import models
 
-<<<<<<< Updated upstream
-# Create your models here.
-=======
 class Applcation(models.Model):
     email=models.EmailField()
     firstname=models.CharField(max_length=150,blank="True")
@@ -22,4 +19,3 @@ class Applcation(models.Model):
  
 
 
->>>>>>> Stashed changes
