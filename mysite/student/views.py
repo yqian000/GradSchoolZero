@@ -1,13 +1,19 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 from django.shortcuts import render
 from .forms import RateClassForm, FileComplaintForm
 =======
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 <<<<<<< Updated upstream
 from django.shortcuts import render
 from .forms import RateClassForm, FileComplaintForm
 =======
+<<<<<<< HEAD
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 
 from django.shortcuts import render,redirect
 from .forms import *
@@ -15,6 +21,7 @@ from .forms import *
 from django.core.mail import send_mail
 from django.conf import settings
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 from django.shortcuts import render
@@ -28,6 +35,8 @@ from .forms import RateClassForm, FileComplaintForm
 
 
 =======
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 from django.shortcuts import render
 from .forms import RateClassForm, FileComplaintForm
 
@@ -60,7 +69,10 @@ def fileComplaint(request):
 <<<<<<< Updated upstream
 =======
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 
 
 def Application(request):
@@ -76,8 +88,13 @@ def Application(request):
 	context={'form':form}
 	return render(request,'main/admission.html',context)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 	
 >>>>>>> Stashed changes
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+	
+>>>>>>> Stashed changes
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)

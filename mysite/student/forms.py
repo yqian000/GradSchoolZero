@@ -9,6 +9,7 @@ class RateClassForm(forms.Form):
 class FileComplaintForm(forms.Form):
     name = forms.CharField(max_length = 60, required = True)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     reason = forms.CharField(widget = forms.Textarea, required = True)
 
@@ -24,6 +25,14 @@ class FileComplaintForm(forms.Form):
     reason = forms.CharField(widget = forms.Textarea, required = True)
 
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+<<<<<<< Updated upstream
+    reason = forms.CharField(widget = forms.Textarea, required = True)
+=======
+
+    reason = forms.CharField(widget = forms.Textarea, required = True)
+
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 class applicationForm(forms.Form):
     email=forms.CharField(
         widget=forms.TextInput(

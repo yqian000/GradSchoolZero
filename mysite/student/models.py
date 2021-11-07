@@ -1,11 +1,17 @@
 from django.db import models
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 # Create your models here.
 =======
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+<<<<<<< Updated upstream
+# Create your models here.
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 class Applcation(models.Model):
     email=models.EmailField()
     firstname=models.CharField(max_length=150,blank="True")
@@ -26,6 +32,10 @@ class Applcation(models.Model):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> Stashed changes
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
