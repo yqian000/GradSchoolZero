@@ -1,16 +1,22 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 <<<<<<< Updated upstream
 from django.shortcuts import render
 from .forms import RateClassForm, FileComplaintForm
 =======
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 =======
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 
 from django.shortcuts import render,redirect
 from .forms import *
@@ -20,6 +26,7 @@ from django.conf import settings
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 from django.shortcuts import render
 from .forms import RateClassForm, FileComplaintForm
@@ -27,14 +34,19 @@ from .forms import RateClassForm, FileComplaintForm
 =======
 =======
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 from django.shortcuts import render
 from .forms import RateClassForm, FileComplaintForm
 
 >>>>>>> Stashed changes
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 =======
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 # Create your views here.
 
 def studentView(request):
@@ -63,9 +75,12 @@ def fileComplaint(request):
 =======
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 
 
 def Application(request):
@@ -83,9 +98,13 @@ def Application(request):
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 >>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 =======
 >>>>>>> Stashed changes
 >>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+=======
+>>>>>>> Stashed changes
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
