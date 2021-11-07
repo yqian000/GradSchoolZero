@@ -8,12 +8,22 @@ class RateClassForm(forms.Form):
 
 class FileComplaintForm(forms.Form):
     name = forms.CharField(max_length = 60, required = True)
+<<<<<<< HEAD
 
     reason = forms.CharField(widget = forms.Textarea, required = True)
 
 
+=======
+<<<<<<< Updated upstream
+>>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
+    reason = forms.CharField(widget = forms.Textarea, required = True)
+=======
+
+<<<<<<< HEAD
+=======
     reason = forms.CharField(widget = forms.Textarea, required = True)
 
+>>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
 class applicationForm(forms.Form):
     email=forms.CharField(
         widget=forms.TextInput(
@@ -115,4 +125,4 @@ class applicationForm(forms.Form):
         model=Applcation
         fields=['email',"firstname","lastname","Gpa","semester","Birthday","address","city","state","country","phone","zip","transcript","letters","personal_statement","Major"]
 
-
+>>>>>>> Stashed changes
