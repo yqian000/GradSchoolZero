@@ -1,5 +1,6 @@
 from django.db import models
 
+<<<<<<< HEAD
 # Create your models here.
 class Application(models.Model):
     email=models.EmailField()
@@ -17,3 +18,6 @@ class Application(models.Model):
     letters= models.FileField(upload_to='student/documents/')
     personal_statement = models.FileField(upload_to='student/documents/')
     major=models.CharField(max_length=150,blank="True")
+=======
+# Create your models here.
+>>>>>>> parent of d70f5b3 (prototype of admission table database and form)

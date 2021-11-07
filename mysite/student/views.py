@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 from django.shortcuts import render,redirect
 from .forms import *
 from django.core.mail import send_mail
 from django.conf import settings
 
+=======
+from django.shortcuts import render
+from .forms import RateClassForm, FileComplaintForm
+>>>>>>> parent of d70f5b3 (prototype of admission table database and form)
 # Create your views here.
 
 def studentView(request):
@@ -27,6 +32,7 @@ def fileComplaint(request):
 	else:
 		form = FileComplaintForm()
 	return render(request, "student/fileComplaint.html", {"form":form})
+<<<<<<< HEAD
 
 
 def Application(request):
@@ -42,3 +48,5 @@ def Application(request):
 	context={'form':form}
 	return render(request,'main/admission.html',context)
 	
+=======
+>>>>>>> parent of d70f5b3 (prototype of admission table database and form)

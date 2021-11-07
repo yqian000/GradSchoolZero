@@ -9,6 +9,7 @@ class RateClassForm(forms.Form):
 
 class FileComplaintForm(forms.Form):
     name = forms.CharField(max_length = 60, required = True)
+<<<<<<< HEAD
     reason = forms.CharField(widget = forms.Textarea, required = True)
 
 class ApplicationForm(forms.Form):
@@ -113,3 +114,6 @@ class ApplicationForm(forms.Form):
         fields=['email',"firstname","lastname","Gpa","semester","Birthday","address","city","state","country","phone","zip","transcript","letters","personal_statement","Major"]
 
 
+=======
+    reason = forms.CharField(widget = forms.Textarea, required = True)
+>>>>>>> parent of d70f5b3 (prototype of admission table database and form)
