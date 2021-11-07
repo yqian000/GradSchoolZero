@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+from django.shortcuts import render
+from .forms import RateClassForm, FileComplaintForm
+=======
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 
 from django.shortcuts import render,redirect
 from .forms import *
@@ -5,10 +12,17 @@ from .forms import *
 from django.core.mail import send_mail
 from django.conf import settings
 
+<<<<<<< HEAD
 
 from django.shortcuts import render
 from .forms import RateClassForm, FileComplaintForm
 
+=======
+from django.shortcuts import render
+from .forms import RateClassForm, FileComplaintForm
+
+>>>>>>> Stashed changes
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
 # Create your views here.
 
 def studentView(request):
@@ -33,6 +47,9 @@ def fileComplaint(request):
 	else:
 		form = FileComplaintForm()
 	return render(request, "student/fileComplaint.html", {"form":form})
+<<<<<<< Updated upstream
+=======
+
 
 
 
@@ -44,8 +61,12 @@ def Application(request):
 		application.save()
 		return redirect("home")
 	else:
-		form=ApplicationForm()
+			form=applicationForm()
 
 	context={'form':form}
 	return render(request,'main/admission.html',context)
 	
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
