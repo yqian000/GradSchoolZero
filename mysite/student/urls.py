@@ -6,8 +6,11 @@ urlpatterns = [
 	path('studentView/', views.studentView, name='studentView'),
 	path('rateClass/', views.rateClass, name='rateClass'),
 <<<<<<< HEAD
+<<<<<<< HEAD
 	path('fileComplaint/', views.fileComplaint, name='fileComplaint'),]
 =======
+=======
+>>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
 <<<<<<< Updated upstream
 	path('fileComplaint/', views.fileComplaint, name='fileComplaint'),
 =======
@@ -15,5 +18,9 @@ urlpatterns = [
 	
 
 >>>>>>> Stashed changes
+<<<<<<< HEAD
 ]
 >>>>>>> parent of e2cf0a5 (Fix typos and html styling.)
+=======
+]
+>>>>>>> parent of e150cc2 (Merge pull request #7 from yqian000/addUser)
