@@ -18,13 +18,14 @@
         </thead>
         <tbody>
             <tr>
-                {% for homework in homeworks %}
+                {% for applications in application %}
                 <th scope="row">{{forloop.counter}}</th>
                
-                    <td>{{homework.subject}}</td>
-                    <td>{{homework.title}}</td>
-                    <td>{{homework.description}}</td>
-                    <td>{{homework.due}}</td>
+                    <td>{{applications.firstname}}</td>
+                    <td>{{applications.lastname}}</td>
+                    <td>{{applications.Gpa}}</td>
+                    <td>{{applications.major}}</td>
+                    
                     
                     <td>
                     <a href="#">
