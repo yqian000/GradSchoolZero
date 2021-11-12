@@ -26,23 +26,11 @@
                     <td>{{applications.Gpa}}</td>
                     <td>{{applications.major}}</td>
                     
-                    
-                    <td>
-                    <a href="#">
-                        <div class="form-check">
-                            {% if homework.is_finished == True%}
-                            <input class="form-check-input" type="checkbox" value="" checked >
-                            {% else %}
-                            <input class="form-check-input" type="checkbox" value="" checked >
-                            {% endif %}
-                            <label class="form-check-label text-light" for="flexCheckDefault">
-                                Mark as Completed
-                            </label>
-                        </div>
-                    </a>
-                </td>
-                <td><a href="#"><i class="fa fa-trash fa-2x"></i></a></td>
-                <td><a href="#"><i class="bi bi-check fa-2x"></i></a></td>
+                
+                <td><a href="{% url 'rejectapplications' applications.id %}"><i class="fa fa-trash fa-2x"></i></a></td>
+                <td><a href="{% url 'acceptapplications' applications.id %}" class="btn btn-info btn-sm">
+                    <span class="glyphicon glyphicon-ok"></span> Ok 
+                  </a></td>
                 
             </tr>
             {% endfor %}
