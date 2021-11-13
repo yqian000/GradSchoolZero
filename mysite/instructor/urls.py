@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1048e762934e7bddc8f3a157bb1f1c38d5966db2dfd1ff1537761a93e53774a5
-size 418
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+	path('instructorView/', views.instructorView, name='instructorView'),
+	path('accessCourse/', views.accessCourse, name='accessCourse'),
+	path('assignGrade/', views.assignGrade, name='assignGrade'),
+	path('complaintStudent/', views.complaintStudent, name='complaintStudent'),
+	path('viewWaitlist/', views.viewWaitlist, name='viewWaitlist'),
+]
