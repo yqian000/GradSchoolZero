@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4bbf0e3f4171c6a2221a5151eeddddbe40eb9264ae5de998cf6d4aaf6e777b6c
-size 747
+from django.shortcuts import render
+
+# Create your views here.
+def instructorView(request):
+	return render(request, "instructor/instructorView.html", {})
+
+def accessCourse(request):
+	return render(request, "instructor/accessCourse.html", {})
+
+def assignGrade(request):
+	return render(request, "instructor/assignGrade.html", {})
+
+def complaintStudent(request):
+	return render(request, "instructor/complaintStudent.html", {})
+
+def viewWaitlist(request):
+	return render(request, "instructor/viewWaitlist.html", {})

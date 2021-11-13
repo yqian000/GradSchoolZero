@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7acd2853b8ed0c32d827ec346413fd73ee50bb8e79d7125f6c742e3b9a5c16fe
-size 298
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+
+
+# Create your models here.
+class Student(models.Model):
+	name = models.CharField(max_length=60)
+
+	def __str__(self):
+		return self.name
+
+		
