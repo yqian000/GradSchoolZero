@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2361c5012f7f155cc2179c11c0e8633ca67c5357e5f801b8d0f6edbd3bbf875a
-size 758
+from django.urls import path
+import tkinter
+from tkinter import messagebox
+
+from . import views
+
+urlpatterns = [
+	path('registrarView/', views.registrarView, name='registrarView'),
+	path('viewNewUser/', views.viewNewUser, name='viewNewUser'),
+	path('viewGrad/', views.viewGrad, name='viewGrad'),
+	path('viewRating/', views.viewRating, name='viewRating'),
+	path('setClass/', views.setClass, name='setClass'),
+	path('manageComplaint/', views.manageComplaint, name='manageComplaint'),
+	path('manageSuspension/', views.manageSuspension, name='manageSuspension'),
+	path('rejectapplications/<int:pk>', views.rejectapplications, name='rejectapplications'),
+	path('acceptapplications/<int:pk>', views.acceptapplications, name='acceptapplications'),
+]

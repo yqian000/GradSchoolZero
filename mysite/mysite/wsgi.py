@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:911eb72572ab3ee758a95ba8609c35ec8e62cc1cbb6c094c6b9945582e7cd874
-size 405
+"""
+WSGI config for mysite project.
+
+It exposes the WSGI callable as a module-level variable named ``application``.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/3.2/howto/deployment/wsgi/
+"""
+
+import os
+
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+
+application = get_wsgi_application()

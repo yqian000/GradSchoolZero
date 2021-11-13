@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:775f12b9c2281fdee72d02526c7a0801ea53bf06c2ad4fe509ccb35687060af9
-size 953
+from django.db import models
+from django.forms.fields import EmailField
+
+class Applcation(models.Model):
+    email=models.EmailField()
+    firstname=models.CharField(max_length=150,blank="True")
+    lastname=models.CharField(max_length=150,blank="True")
+    Gpa=models.CharField(max_length=150,blank="True")
+    semester=models.CharField(max_length=150,blank="True")
+    Birthday=models.DateField()
+    address = models.CharField(max_length=50)
+    city = models.CharField(max_length=60, default="NewYork")
+    state = models.CharField(max_length=30, default="NewYork")
+    zip = models.CharField(max_length=5, default="11220")
+    country = models.CharField(max_length=50)
+    transcprit= models.FileField(upload_to='student/documents/')
+    letters= models.FileField(upload_to='student/documents/')
+    personal_statement = models.FileField(upload_to='student/documents/')
+    major=models.CharField(max_length=150,blank="True")
+ 
