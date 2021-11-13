@@ -7,17 +7,17 @@
 
   <div class="row justify-content-center">
   <form method="POST">
-  
+
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">Log In</legend>
       {% csrf_token %}
-      
+
       {% if msg %}
-        
-            
+
+
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>{{ msg|escape }}</strong>
-                </div>  
+                </div>
     {% endif %}
       {{form|crispy}}
     </fieldset>
@@ -33,11 +33,11 @@
     <small class="text-muted">Need an Account?
       <a class="ml-2" href="{% url 'signup' %}">Create an Account</a>
     </small>
-    <br> 
+    <br>
     <small class="text-muted">Lost your passwords?
       <a class="ml-2" href="{% url 'reset' %}">Reset passwords</a>
     </small>
   </div>
 
- 
+
 {% endblock %}
