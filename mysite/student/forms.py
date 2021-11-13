@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import models
-from django.forms import fields
+from django.forms import fields, ModelForm
 from django.forms.fields import EmailField,DateField
 import datetime
 from django.core.exceptions import ValidationError
@@ -13,9 +13,34 @@ class RateClassForm(forms.Form):
     star = forms.IntegerField(label =" Assign Stars (1 worst to 5 best): ", required = True)
     review = forms.CharField(widget = forms.Textarea, required = True)
 
-class FileComplaintForm(forms.Form):
-    name = forms.CharField(max_length = 60, required = True)
-    reason = forms.CharField(widget = forms.Textarea, required = True)
+class FileComplaintForm(ModelForm):
+    studentid=forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class":"form-control",
+                'required':True,
+                "placeholder":"8-digit number"
+            }
+        ),label=" Your ID"
+    )
+    complainee=forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class":"form-control",
+                'required':True,
+                "placeholder":"John Doe"
+            }
+        ),label=" Complainee Name"
+    )
+    text = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'class': 'form-control'}),
+        max_length=800,
+        required=True)
+
+    class Meta:
+        model = Complaints
+        fields = '__all__'
 
 class applicationForm(forms.Form):
     email=forms.CharField(
