@@ -1,4 +1,0 @@
-. filter=lfs diff=lfs merge=lfs -text
-*.py filter=lfs diff=lfs merge=lfs -text
-.py filter=lfs diff=lfs merge=lfs -text
-*[[:space:]].html filter=lfs diff=lfs merge=lfs -text
