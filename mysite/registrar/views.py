@@ -30,7 +30,8 @@ def setClass(request):
 	return render(request, "registrar/setClass.html", {})
 
 def manageComplaint(request):
-	return render(request, "registrar/manageComplaint.html", {})
+	complaint = Complaints.objects.all()
+	return render(request, "registrar/manageComplaint.html", {"c": complaint})
 
 def manageSuspension(request):
 	return render(request, "registrar/manageSuspension.html", {})
