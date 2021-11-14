@@ -6,8 +6,4 @@ __pycache__/
 local_settings.py
 db.sqlite3
 media
-<<<<<<< Updated upstream
-=======
-mysite/db.sqlite3
->>>>>>> Stashed changes
 *.sqlite3
