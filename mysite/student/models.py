@@ -17,15 +17,8 @@ class Applcation(models.Model):
     letters= models.FileField(upload_to='student/documents/')
     personal_statement = models.FileField(upload_to='student/documents/')
     major=models.CharField(max_length=150,blank="True")
- 
-class Student(models.Model):
-    firstname = models.CharField(max_length=150)
-    lastname = models.CharField(max_length=150)
-    studentid = models.PositiveIntegerField()
-    gpa = models.FloatField()
 
 class Complaints(models.Model):
-    # student = models.ForeignKey(Student, on_delete=models.CASCADE)
     studentid = models.PositiveIntegerField()
     complainee = models.CharField(max_length=150)
     text = models.CharField(max_length=800)

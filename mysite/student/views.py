@@ -28,6 +28,8 @@ def fileComplaint(request):
 	form = FileComplaintForm()
 	return render(request, "student/fileComplaint.html", {"form":form})
 
+def viewWarning(request):
+	return render(request, "student/viewWarning.html", {})
 
 def Application(request):
 	if request.method=="POST":

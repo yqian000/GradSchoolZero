@@ -2,8 +2,10 @@
 from django.shortcuts import render,redirect
 from student.models import *
 from account.models import *
+from registrar.models import *
 from django.core.mail import send_mail
 from django.conf import settings
+from .forms import *
 
 
 
@@ -29,12 +31,24 @@ def viewRating(request):
 def setClass(request):
 	return render(request, "registrar/setClass.html", {})
 
+def processComplaint(request):
+	if request.method == "POST":
+		form = ProcessStudentComplaintForm(request.POST)
+
+		if form.is_valid():
+			form.save()
+	# generate warnings ...
+	
+	form = ProcessStudentComplaintForm()
+	return render(request, "registrar/processComplaint.html", {"form":form})
+
 def manageComplaint(request):
 	complaint = Complaints.objects.all()
 	return render(request, "registrar/manageComplaint.html", {"c": complaint})
 
 def manageSuspension(request):
 	return render(request, "registrar/manageSuspension.html", {})
+
 def rejectapplications(request,pk=None):
 	try:
 		if Applcation.objects.get(id=pk)!=None:

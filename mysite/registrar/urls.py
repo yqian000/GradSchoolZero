@@ -11,6 +11,7 @@ urlpatterns = [
 	path('viewRating/', views.viewRating, name='viewRating'),
 	path('setClass/', views.setClass, name='setClass'),
 	path('manageComplaint/', views.manageComplaint, name='manageComplaint'),
+	path('processComplaint/', views.processComplaint, name='processComplaint'),
 	path('manageSuspension/', views.manageSuspension, name='manageSuspension'),
 	path('rejectapplications/<int:pk>', views.rejectapplications, name='rejectapplications'),
 	path('acceptapplications/<int:pk>', views.acceptapplications, name='acceptapplications'),

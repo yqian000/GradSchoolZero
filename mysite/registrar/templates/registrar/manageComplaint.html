@@ -8,6 +8,7 @@
       <th>Complainant ID</th>
       <th>Complainee Name</th>
       <th>Reason</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -16,6 +17,7 @@
 	      <td>{{i.studentid}}</td>
 	      <td>{{i.complainee}}</td>
 	      <td>{{i.text}}</td>
+        <td><a href="/processComplaint">take actions</a></td>
 	    </tr>
   	{% endfor %}
   </tbody>
