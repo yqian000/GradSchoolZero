@@ -71,5 +71,7 @@ class Instructor(models.Model):
     first_name=models.CharField(max_length=150,blank="True")
     last_name=models.CharField(max_length=150,blank="True")
     email=models.EmailField(gettext_lazy('email address'),unique=True,validators =[validate_mail])
+    ID=models.PositiveIntegerField(default=00000000)
+    warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     
 
