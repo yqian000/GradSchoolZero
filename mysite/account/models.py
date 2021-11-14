@@ -63,7 +63,7 @@ class Student(models.Model):
     last_name=models.CharField(max_length=150,blank="True")
     email=models.EmailField(gettext_lazy('email address'),unique=True,validators =[validate_mail])
     ID=models.PositiveIntegerField(default=0000000000)
-    
+    warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     
 
 class Instructor(models.Model):

@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from .forms import *
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 
@@ -22,10 +24,12 @@ def fileComplaint(request):
 
 		if form.is_valid():
 			form.save()
-	else:
-		form = FileComplaintForm()
+	
+	form = FileComplaintForm()
 	return render(request, "student/fileComplaint.html", {"form":form})
 
+def viewWarning(request):
+	return render(request, "student/viewWarning.html", {})
 
 def Application(request):
 	if request.method=="POST":

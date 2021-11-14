@@ -2,6 +2,39 @@
 
 {% block usercontent %}
 
-<p>can display all the basic info and the academic records of the students in his/her current class(es)</p>
+	<h4>Student information in your current class(es)</h4>
+	<br/>
+
+{% for student in student_list %}
+
+<div class="card">
+
+  <div class="card-header">
+  <h4><strong> {{ student }} </strong></h4>
+  </div>
+
+  <div class="card-body">
+    <h5 class="card-title">	<strong>Major:</strong> {{ student.major }}</h5>
+  
+  <p class="card-text">	
+		<ul>
+			<li><strong>Birthday:</strong> {{ student.Birthday }}</li>
+			<li><strong>Email:</strong> {{ student.email }}</li>
+			<li><strong>GPA:</strong> {{ student.Gpa }}</li>
+			<li><strong>Semester:</strong> {{ student.semester }}</li>
+			<li><strong>Address:</strong> {{ student.address }}</li>
+			<li><strong>City:</strong> {{ student.city  }}</li>
+			<li><strong>State:</strong> {{ student.state  }}</li>
+			<li><strong>Country:</strong> {{ student.country }}</li>
+			<li><strong>Zip Code:</strong> {{ student.zip  }}</li>
+		</ul>
+  </p>
+
+  </div>
+</div>
+
+<br/>
+{% endfor %}
+
 
 {% endblock %}

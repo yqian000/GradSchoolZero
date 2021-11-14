@@ -17,4 +17,13 @@ class Applcation(models.Model):
     letters= models.FileField(upload_to='student/documents/')
     personal_statement = models.FileField(upload_to='student/documents/')
     major=models.CharField(max_length=150,blank="True")
- 
+    def __str__(self):
+        return self.firstname + ' ' + self.lastname
+
+class Complaints(models.Model):
+    studentid = models.PositiveIntegerField()
+    complainee = models.CharField(max_length=150)
+    text = models.CharField(max_length=800)
+
+    def __str__(self):
+        return self.complainee + ": " + self.text
