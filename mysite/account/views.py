@@ -34,6 +34,7 @@ def signup(request):
     form=signupForm()
     context={'form':form,"msg":msg}
     return render(request,"main/signup.html",context)
+
 def resetpassword(request):
     msg=None
     if request.method=='POST':
@@ -66,7 +67,6 @@ def login_view(request):
         message=None
         if request.method=='POST':
            
-
             try:
                 email=request.POST['username']
                 user=User.objects.get(email=email)
@@ -76,26 +76,30 @@ def login_view(request):
                 context={'form':form,"msg":message}
                 return render(request,"main/login.html",context)
             
-
             email=request.POST['username']
             user=User.objects.get(email=email)
+
             if  user.First_login and user.is_admin==False:
                 return redirect("reset")
             form=loginForm(request.POST)
+
             if form.is_valid():
                 username=email
                 password=request.POST['password']
                 user=authenticate(username=username,password=password)
             
                 if user is not None:
-                  
                     login(request,user)
                     user.First_login=False
                     user.save
                     if user.is_admin:
                         return redirect("viewNewUser")
+                    elif user.is_student:
+                        return redirect("studentView")
+                    elif user.is_instructor:
+                        return redirect("instructorView")
                     else:
-                        return  redirect("home")
+                        return redirect("home")
                 else:
                     message="Credentials are not correct, please try one more time" 
              
