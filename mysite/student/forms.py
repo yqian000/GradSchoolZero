@@ -14,15 +14,6 @@ class RateClassForm(forms.Form):
     review = forms.CharField(widget = forms.Textarea, required = True)
 
 class FileComplaintForm(ModelForm):
-    studentid=forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class":"form-control",
-                'required':True,
-                "placeholder":"8-digit number"
-            }
-        ),label=" Your ID"
-    )
     complainee=forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -39,8 +30,8 @@ class FileComplaintForm(ModelForm):
         required=True)
 
     class Meta:
-        model = Complaints
-        fields = '__all__'
+        model = StudentComplaint
+        fields = ['complainee', 'text']
 
 class applicationForm(forms.Form):
     email=forms.CharField(
