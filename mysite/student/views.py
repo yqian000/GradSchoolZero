@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from .forms import *
+from .models import *
+from account.models import *
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -20,7 +22,9 @@ def rateClass(request):
 
 def fileComplaint(request):
 	if request.method == "POST":
-		form = FileComplaintForm(request.POST)
+		# create a new StudentComplaint model and set the ID and is_completed
+		c = StudentComplaint(user_id=Student.objects.get(email=request.user.email).ID, is_completed=False)
+		form = FileComplaintForm(request.POST, instance=c)
 
 		if form.is_valid():
 			form.save()
@@ -46,5 +50,3 @@ def Application(request):
 	
 def tutorial(request):
 	return render(request, "student/tutorial.html", {})
-            
-    
