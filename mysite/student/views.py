@@ -44,6 +44,7 @@ def Application(request):
 	context={'form':form}
 	return render(request,'main/admission.html',context)
 	
-     
+def tutorial(request):
+	return render(request, "student/tutorial.html", {})
             
     
