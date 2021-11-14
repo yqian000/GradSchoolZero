@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms import *
+from .models import *
 from student.forms import FileComplaintForm
 from student.models import Applcation
 
@@ -23,7 +24,7 @@ def complaintStudent(request):
 			form.save()
 	
 	form = FileComplaintForm()
-	return render(request, "student/fileComplaint.html", {"form":form})
+	return render(request, "instructor/fileComplaint.html", {"form":form})
 
 def viewWaitlist(request):
 	return render(request, "instructor/viewWaitlist.html", {})
