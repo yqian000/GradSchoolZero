@@ -26,7 +26,7 @@ def fileComplaint(request):
 			form.save()
 	
 	form = FileComplaintForm()
-	return render(request, "student/fileComplaint.html", {"form":form})
+	return render(request, "student/fileComplaint.html", {"form":form, "r":request})
 
 def viewWarning(request):
 	return render(request, "student/viewWarning.html", {})
@@ -44,6 +44,7 @@ def Application(request):
 	context={'form':form}
 	return render(request,'main/admission.html',context)
 	
-     
+def tutorial(request):
+	return render(request, "student/tutorial.html", {})
             
     
