@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from .forms import *
 from student.forms import FileComplaintForm
+from student.models import Applcation
 
 # Create your views here.
 def instructorView(request):
-	return render(request, "instructor/instructorView.html", {})
+	student_list = Applcation.objects.all()
+	return render(request, "instructor/instructorView.html", 
+		{'student_list': student_list})
 
 def accessCourse(request):
 	return render(request, "instructor/accessCourse.html", {})
