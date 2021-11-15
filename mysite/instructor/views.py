@@ -8,9 +8,12 @@ from django.conf import settings
 
 # Create your views here.
 def instructorView(request):
-	student_list = Applcation.objects.all()
-	return render(request, "instructor/instructorView.html", 
-		{'student_list': student_list})
+	if request.user.is_instructor:
+		student_list = Applcation.objects.all()
+		instructor = Instructor.objects.get(user=request.user)
+		return render(request, "instructor/instructorView.html", {'student_list': student_list, 'i':instructor})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def accessCourse(request):
 	return render(request, "instructor/accessCourse.html", {})

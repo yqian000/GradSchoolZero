@@ -82,12 +82,12 @@ def rejectapplications(request,pk=None):
 				Applcation.objects.get(id=pk).delete()
 				return render(request,"registrar/reasonform.html")
 	except:
-			
+
 		return redirect("viewNewUser")
 
 def acceptapplications(request,pk=None):
 	try:
-	
+
 			if  float(Applcation.objects.get(id=pk).Gpa)>3:
 				user=User.objects.last()
 				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
@@ -113,13 +113,7 @@ def acceptapplications(request,pk=None):
 				Applcation.objects.get(id=pk).delete()
 				return render(request,"registrar/reasonform.html")
 
-	
+
 	except:
-			
+
 			return redirect("viewNewUser")
-	
-
-	
-	
-	
-

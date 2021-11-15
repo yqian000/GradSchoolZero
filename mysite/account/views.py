@@ -30,7 +30,7 @@ def signup(request):
         else:
             context={'form':form}
             return render(request,"main/signup.html",context)
-            
+
     form=signupForm()
     context={'form':form,"msg":msg}
     return render(request,"main/signup.html",context)
@@ -50,20 +50,20 @@ def resetpassword(request):
             u.save()
             u.First_login=False
             u.save()
-            try: 
+            try:
                 subject="Reset"
                 message="Password has changed"
                 email_from=settings.EMAIL_HOST_USER
                 recipent_list=[email,]
                 send_mail(subject,message,email_from,recipent_list)
-                
+
                 return  redirect("login")
             except:
                 return  redirect("login")
         else:
             context={'form':form,'msg':msg}
             return render(request,"main/resetpassword.html",context)
-            
+
     form=ResetpasswordForm()
     context={'form':form,"msg":msg}
     return render(request,"main/resetpassword.html",context)
@@ -71,7 +71,7 @@ def resetpassword(request):
 def login_view(request):
         message=None
         if request.method=='POST':
-           
+
             try:
                 email=request.POST['username']
                 user=User.objects.get(email=email)
@@ -80,7 +80,7 @@ def login_view(request):
                 form=loginForm()
                 context={'form':form,"msg":message}
                 return render(request,"main/login.html",context)
-            
+
             email=request.POST['username']
             user=User.objects.get(email=email)
 
@@ -92,7 +92,7 @@ def login_view(request):
                 username=email
                 password=request.POST['password']
                 user=authenticate(username=username,password=password)
-            
+
                 if user is not None:
                     login(request,user)
                     if user.is_admin:
@@ -103,10 +103,9 @@ def login_view(request):
                         return  redirect("home")
 
                 else:
-                    message="Credentials are not correct, please try one more time" 
-             
-            
+                    message="Credentials are not correct, please try one more time"
+
+
         form=loginForm()
         context={'form':form,"msg":message}
         return render(request,"main/login.html",context)
-

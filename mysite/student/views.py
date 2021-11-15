@@ -8,7 +8,11 @@ from django.conf import settings
 # Create your views here.
 
 def studentView(request):
-	return render(request, "student/studentView.html", {})
+	if request.user.is_student:
+		student = Student.objects.get(user=request.user)
+		return render(request, "student/studentView.html", {"s":student})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def rateClass(request):
 	if request.method == "POST":

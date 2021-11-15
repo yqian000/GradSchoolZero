@@ -15,7 +15,7 @@ def validate_mail(value):
     else:
         raise ValidationError("This field accepts mail id of CUNY only")
 class CustomUserManager(BaseUserManager):
-    
+
     def create_user(self, email, password):
         if not email:
             raise ValueError('The Email must be set')
@@ -46,16 +46,16 @@ class User(AbstractUser,PermissionsMixin):
     is_instructor=models.BooleanField('is instrutor',default=False)
     is_student=models.BooleanField('is student',default=False)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False) 
+    is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_superuser=models.BooleanField(default=False)
     First_login=models.BooleanField(default=True)
     object= CustomUserManager()
-    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-   
+
 
 class Student(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
@@ -66,10 +66,10 @@ class Student(models.Model):
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
     GPA=models.IntegerField(default=0)
-    is_suspanded=models.BooleanField(default=False)
+    is_suspended=models.BooleanField(default=False)
     is_graduate=models.BooleanField(default=False)
 
-    
+
 
 class Instructor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
@@ -81,5 +81,3 @@ class Instructor(models.Model):
     is_warned=models.BooleanField(default=False)
     is_suspanded=models.BooleanField(default=False)
     is_working=models.BooleanField(default=True)
-    
-
