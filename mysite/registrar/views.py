@@ -34,13 +34,35 @@ def setClass(request):
 
 def processStudentComplaint(request, pk=None):
 	if request.method == "POST":
+		# get the corresponding complaint
 		c = StudentComplaint.objects.get(id=pk)
+		c.is_completed = True
+		c.save()
 
 		form = ProcessStudentComplaintForm(request.POST, instance=c)
 
 		if form.is_valid():
 			form.save()
-			# generate warnings ...
+			# mark is as completed
+			res = StudentComplaint.objects.get(id=pk)
+			res.is_completed = True
+			res.save()
+
+			# process actions: 
+			# warn the student
+			if res.action == "ws":
+				s = Student.objects.get(ID=res.punish_id)
+				s.warning += 1
+				s.save()
+			# warn the instructor
+			elif res.action == "wi":
+				i = Instructor.objects.get(ID=res.punish_id)
+				i.warning += 1
+				i.save()
+
+			scomplaint = StudentComplaint.objects.all()
+			icomplaint = InstructorComplaint.objects.all()
+			return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
 	form = ProcessStudentComplaintForm()
 	return render(request, "registrar/processStudentComplaint.html", {"form":form})
@@ -53,7 +75,30 @@ def processInstructorComplaint(request, pk=None):
 
 		if form.is_valid():
 			form.save()
-			# generate warnings ...
+			# mark is as completed
+			res = InstructorComplaint.objects.get(id=pk)
+			res.is_completed = True
+			res.save()
+
+			# process actions
+			# warn the student
+			if res.action == "ws":
+				s = Student.objects.get(ID=res.punish_id)
+				s.warning += 1
+				s.save()
+			# warn the instructor
+			elif res.action == "wi":
+				i = Instructor.objects.get(ID=res.punish_id)
+				i.warning += 1
+				i.save()
+			elif res.action == "ds":
+				s = Student.objects.get(ID=res.punish_id)
+				s.is_suspended = True
+				s.save()
+
+			scomplaint = StudentComplaint.objects.all()
+			icomplaint = InstructorComplaint.objects.all()
+			return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
 	form = ProcessInstructorComplaintForm()
 	return render(request, "registrar/processInstructorComplaint.html", {"form":form})

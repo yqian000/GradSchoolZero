@@ -37,7 +37,8 @@ def fileComplaint(request):
 	return render(request, "student/fileComplaint.html", {"form":form, "r":request})
 
 def viewWarning(request):
-	return render(request, "student/viewWarning.html", {})
+	student = Student.objects.get(user=request.user)
+	return render(request, "student/viewWarning.html", {"s":student})
 
 def Application(request):
 	if request.method=="POST":
