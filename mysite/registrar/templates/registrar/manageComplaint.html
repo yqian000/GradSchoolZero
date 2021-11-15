@@ -2,9 +2,12 @@
 
 {% block usercontent %}
 
+<h4>Pending complaints from students</h4>
+
 <table class="table">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Complainant ID</th>
       <th>Complainee Name</th>
       <th>Reason</th>
@@ -14,13 +17,43 @@
   <tbody>
   	{% for i in sc %}
 	  	<tr>
+        <td>{{i.id}}</td>
 	      <td>{{i.user_id}}</td>
 	      <td>{{i.complainee}}</td>
 	      <td>{{i.text}}</td>
-        <td><a href="/processComplaint">take actions</a></td>
+        <td><a href="/processStudentComplaint/{{i.id}}">take actions</a></td>
 	    </tr>
   	{% endfor %}
   </tbody>
 </table>
+
+</br>
+
+<h4>Pending complaints from instructors</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Complainant ID</th>
+      <th>Complainee Name</th>
+      <th>Reason</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in ic %}
+      <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.user_id}}</td>
+        <td>{{i.complainee}}</td>
+        <td>{{i.text}}</td>
+        <td><a href="/processInstructorComplaint/{{i.id}}">take actions</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
 
 {% endblock %}
