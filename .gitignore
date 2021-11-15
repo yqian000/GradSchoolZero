@@ -1,7 +1,6 @@
-### Django ###
-*.log
-*.pot
+
+mysite/db.sqlite3git
 *.pyc
-__pycache__/
-db.sqlite3
-media
+**/*..sqlite3git
+**/*.pyc
+
