@@ -1,0 +1,6 @@
+
+mysite/db.sqlite3git
+*.pyc
+**/*..sqlite3git
+**/*.pyc
+
