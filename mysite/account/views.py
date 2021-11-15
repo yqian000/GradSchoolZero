@@ -34,6 +34,7 @@ def signup(request):
     form=signupForm()
     context={'form':form,"msg":msg}
     return render(request,"main/signup.html",context)
+
 def resetpassword(request):
     msg=None
     if request.method=='POST':
@@ -43,7 +44,11 @@ def resetpassword(request):
         form=ResetpasswordForm(request.POST)
         if form.is_valid():
             u = User.objects.get(email=email)
+            if password1!=password2:
+                msg="Password not matching please try agiain!"
             u.set_password(password1)
+            u.save()
+            u.First_login=False
             u.save()
             try: 
                 subject="Reset"
@@ -51,11 +56,12 @@ def resetpassword(request):
                 email_from=settings.EMAIL_HOST_USER
                 recipent_list=[email,]
                 send_mail(subject,message,email_from,recipent_list)
+                
                 return  redirect("login")
             except:
                 return  redirect("login")
         else:
-            context={'form':form}
+            context={'form':form,'msg':msg}
             return render(request,"main/resetpassword.html",context)
             
     form=ResetpasswordForm()
@@ -66,7 +72,6 @@ def login_view(request):
         message=None
         if request.method=='POST':
            
-
             try:
                 email=request.POST['username']
                 user=User.objects.get(email=email)
@@ -76,22 +81,20 @@ def login_view(request):
                 context={'form':form,"msg":message}
                 return render(request,"main/login.html",context)
             
-
             email=request.POST['username']
             user=User.objects.get(email=email)
+
             if  user.First_login and user.is_admin==False:
                 return redirect("reset")
             form=loginForm(request.POST)
+
             if form.is_valid():
                 username=email
                 password=request.POST['password']
                 user=authenticate(username=username,password=password)
             
                 if user is not None:
-                  
                     login(request,user)
-                    user.First_login=False
-                    user.save
                     if user.is_admin:
                         return redirect("registrarView")
                     elif user.is_student:

@@ -1,6 +1,7 @@
 
 from django.shortcuts import render,redirect
 from student.models import *
+from instructor.models import *
 from account.models import *
 from registrar.models import *
 from django.core.mail import send_mail
@@ -31,20 +32,36 @@ def viewRating(request):
 def setClass(request):
 	return render(request, "registrar/setClass.html", {})
 
-def processComplaint(request):
+def processStudentComplaint(request, pk=None):
 	if request.method == "POST":
-		form = ProcessStudentComplaintForm(request.POST)
+		c = StudentComplaint.objects.get(id=pk)
+
+		form = ProcessStudentComplaintForm(request.POST, instance=c)
 
 		if form.is_valid():
 			form.save()
-	# generate warnings ...
-	
+			# generate warnings ...
+
 	form = ProcessStudentComplaintForm()
-	return render(request, "registrar/processComplaint.html", {"form":form})
+	return render(request, "registrar/processStudentComplaint.html", {"form":form})
+
+def processInstructorComplaint(request, pk=None):
+	if request.method == "POST":
+		c = InstructorComplaint.objects.get(id=pk)
+
+		form = ProcessInstructorComplaintForm(request.POST, instance=c)
+
+		if form.is_valid():
+			form.save()
+			# generate warnings ...
+
+	form = ProcessInstructorComplaintForm()
+	return render(request, "registrar/processInstructorComplaint.html", {"form":form})
 
 def manageComplaint(request):
-	complaint = Complaints.objects.all()
-	return render(request, "registrar/manageComplaint.html", {"c": complaint})
+	scomplaint = StudentComplaint.objects.all()
+	icomplaint = InstructorComplaint.objects.all()
+	return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
 def manageSuspension(request):
 	return render(request, "registrar/manageSuspension.html", {})
