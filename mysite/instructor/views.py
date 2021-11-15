@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .forms import *
 from .models import *
-from student.forms import FileComplaintForm
+from account.models import *
 from student.models import Applcation
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 def instructorView(request):
