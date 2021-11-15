@@ -9,8 +9,8 @@ from django.conf import settings
 # Create your views here.
 def instructorView(request):
 	student_list = Applcation.objects.all()
-	return render(request, "instructor/instructorView.html", 
-		{'student_list': student_list})
+	instructor = Instructor.objects.get(user=request.user)
+	return render(request, "instructor/instructorView.html", {'student_list': student_list, 'i':instructor})
 
 def accessCourse(request):
 	return render(request, "instructor/accessCourse.html", {})

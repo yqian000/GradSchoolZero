@@ -66,7 +66,7 @@ class Student(models.Model):
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
     GPA=models.IntegerField(default=0)
-    is_suspanded=models.BooleanField(default=False)
+    is_suspended=models.BooleanField(default=False)
     is_graduate=models.BooleanField(default=False)
 
     
@@ -79,7 +79,7 @@ class Instructor(models.Model):
     ID=models.PositiveIntegerField(default=00000000)
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
-    is_suspanded=models.BooleanField(default=False)
+    is_suspended=models.BooleanField(default=False)
     is_working=models.BooleanField(default=False)
     
 
