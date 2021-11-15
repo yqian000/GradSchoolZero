@@ -3,4 +3,14 @@ mysite/db.sqlite3git
 *.pyc
 **/*..sqlite3git
 **/*.pyc
-
+mysite/db.sqlite3
+*.log
+*.pot
+*.pyc
+migrations/
+__pycache__/
+*/*/*/__pycache__/
+*/*/__pycache__/
+*/__pycache__/
+db.sqlite3
+media
