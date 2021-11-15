@@ -8,7 +8,12 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import *
 
-
+#add those two lines before you write your fuctions to make sure not everyone can visit it
+# user=User.objects.filter(email=request.user)
+#	if  user[0].is_admin==True:
+#your code .................
+#else:
+		#return render(request, "registrar/forbidden.html",{})
 
 # Create your views here.
 def registrarView(request):

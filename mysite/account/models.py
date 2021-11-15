@@ -80,6 +80,6 @@ class Instructor(models.Model):
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
     is_suspanded=models.BooleanField(default=False)
-    is_working=models.BooleanField(default=False)
+    is_working=models.BooleanField(default=True)
     
 
