@@ -93,9 +93,12 @@ def login_view(request):
                     user.First_login=False
                     user.save
                     if user.is_admin:
-                        return redirect("viewNewUser")
+                        return redirect("registrarView")
+                    elif user.is_student:
+                        return  redirect("studentView")
                     else:
                         return  redirect("home")
+
                 else:
                     message="Credentials are not correct, please try one more time" 
              
