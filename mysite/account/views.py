@@ -96,13 +96,12 @@ def login_view(request):
                 if user is not None:
                     login(request,user)
                     if user.is_admin:
-                        return redirect("viewNewUser")
+                        return redirect("registrarView")
                     elif user.is_student:
-                        return redirect("studentView")
-                    elif user.is_instructor:
-                        return redirect("instructorView")
+                        return  redirect("studentView")
                     else:
-                        return redirect("home")
+                        return  redirect("home")
+
                 else:
                     message="Credentials are not correct, please try one more time" 
              
