@@ -64,6 +64,8 @@ class Student(models.Model):
     email=models.EmailField(gettext_lazy('email address'),unique=True,validators =[validate_mail])
     ID=models.PositiveIntegerField(default=00000000)
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
+    is_warned=models.BooleanField(default=False)
+    GPA=models.IntegerField(default=0)
     
 
 class Instructor(models.Model):
@@ -73,5 +75,6 @@ class Instructor(models.Model):
     email=models.EmailField(gettext_lazy('email address'),unique=True,validators =[validate_mail])
     ID=models.PositiveIntegerField(default=00000000)
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
+    is_warned=models.BooleanField(default=False)
     
 

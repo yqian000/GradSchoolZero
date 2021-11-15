@@ -44,7 +44,11 @@ def resetpassword(request):
         form=ResetpasswordForm(request.POST)
         if form.is_valid():
             u = User.objects.get(email=email)
+            if password1!=password2:
+                msg="Password not matching please try agiain!"
             u.set_password(password1)
+            u.save()
+            u.First_login=False
             u.save()
             try: 
                 subject="Reset"
@@ -52,11 +56,12 @@ def resetpassword(request):
                 email_from=settings.EMAIL_HOST_USER
                 recipent_list=[email,]
                 send_mail(subject,message,email_from,recipent_list)
+                
                 return  redirect("login")
             except:
                 return  redirect("login")
         else:
-            context={'form':form}
+            context={'form':form,'msg':msg}
             return render(request,"main/resetpassword.html",context)
             
     form=ResetpasswordForm()
@@ -90,8 +95,6 @@ def login_view(request):
             
                 if user is not None:
                     login(request,user)
-                    user.First_login=False
-                    user.save
                     if user.is_admin:
                         return redirect("viewNewUser")
                     elif user.is_student:
