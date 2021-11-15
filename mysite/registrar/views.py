@@ -1,6 +1,7 @@
 
 from django.shortcuts import render,redirect
 from student.models import *
+from instructor.models import *
 from account.models import *
 from registrar.models import *
 from django.core.mail import send_mail
@@ -43,8 +44,9 @@ def processComplaint(request):
 	return render(request, "registrar/processComplaint.html", {"form":form})
 
 def manageComplaint(request):
-	complaint = Complaints.objects.all()
-	return render(request, "registrar/manageComplaint.html", {"c": complaint})
+	scomplaint = StudentComplaint.objects.all()
+	icomplaint = InstructorComplaint.objects.all()
+	return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
 def manageSuspension(request):
 	return render(request, "registrar/manageSuspension.html", {})
