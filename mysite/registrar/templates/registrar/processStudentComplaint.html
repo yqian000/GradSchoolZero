@@ -1,0 +1,23 @@
+{% extends 'registrar/registrarBase.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block usercontent %}
+
+<div class="row justify-content-center">
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Process a complaint</legend>
+      {{form|crispy}}
+    </fieldset>
+
+    <div class="form-group">
+      <button href="" class="btn btn-outline-info" class="row justify-content-center" type="submit">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+ 
+{% endblock %}
