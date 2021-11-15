@@ -21,7 +21,7 @@ def viewNewUser(request):
 		context={'application':application}
 		return render(request, "registrar/viewNewUser.html",context)
 	else:
-		return render(request, "registrar/forbidden.html",{})
+		return render(request, "main/forbidden.html",{})
 
 def viewGrad(request):
 	return render(request, "registrar/viewGrad.html", {})
