@@ -8,12 +8,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import *
 
-#add those two lines before you write your fuctions to make sure not everyone can visit it
-# user=User.objects.filter(email=request.user)
-#	if  user[0].is_admin==True:
-#your code .................
-#else:
-		#return render(request, "registrar/forbidden.html",{})
+
 
 # Create your views here.
 def registrarView(request):
@@ -26,7 +21,7 @@ def viewNewUser(request):
 		context={'application':application}
 		return render(request, "registrar/viewNewUser.html",context)
 	else:
-		return render(request, "registrar/forbidden.html",{})
+		return render(request, "main/forbidden.html",{})
 
 def viewGrad(request):
 	return render(request, "registrar/viewGrad.html", {})
@@ -39,13 +34,35 @@ def setClass(request):
 
 def processStudentComplaint(request, pk=None):
 	if request.method == "POST":
+		# get the corresponding complaint
 		c = StudentComplaint.objects.get(id=pk)
+		c.is_completed = True
+		c.save()
 
 		form = ProcessStudentComplaintForm(request.POST, instance=c)
 
 		if form.is_valid():
 			form.save()
-			# generate warnings ...
+			# mark is as completed
+			res = StudentComplaint.objects.get(id=pk)
+			res.is_completed = True
+			res.save()
+
+			# process actions: 
+			# warn the student
+			if res.action == "ws":
+				s = Student.objects.get(ID=res.punish_id)
+				s.warning += 1
+				s.save()
+			# warn the instructor
+			elif res.action == "wi":
+				i = Instructor.objects.get(ID=res.punish_id)
+				i.warning += 1
+				i.save()
+
+			scomplaint = StudentComplaint.objects.all()
+			icomplaint = InstructorComplaint.objects.all()
+			return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
 	form = ProcessStudentComplaintForm()
 	return render(request, "registrar/processStudentComplaint.html", {"form":form})
@@ -58,7 +75,30 @@ def processInstructorComplaint(request, pk=None):
 
 		if form.is_valid():
 			form.save()
-			# generate warnings ...
+			# mark is as completed
+			res = InstructorComplaint.objects.get(id=pk)
+			res.is_completed = True
+			res.save()
+
+			# process actions
+			# warn the student
+			if res.action == "ws":
+				s = Student.objects.get(ID=res.punish_id)
+				s.warning += 1
+				s.save()
+			# warn the instructor
+			elif res.action == "wi":
+				i = Instructor.objects.get(ID=res.punish_id)
+				i.warning += 1
+				i.save()
+			elif res.action == "ds":
+				s = Student.objects.get(ID=res.punish_id)
+				s.is_suspended = True
+				s.save()
+
+			scomplaint = StudentComplaint.objects.all()
+			icomplaint = InstructorComplaint.objects.all()
+			return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
 	form = ProcessInstructorComplaintForm()
 	return render(request, "registrar/processInstructorComplaint.html", {"form":form})
@@ -82,12 +122,12 @@ def rejectapplications(request,pk=None):
 				Applcation.objects.get(id=pk).delete()
 				return render(request,"registrar/reasonform.html")
 	except:
-
+			
 		return redirect("viewNewUser")
 
 def acceptapplications(request,pk=None):
 	try:
-
+	
 			if  float(Applcation.objects.get(id=pk).Gpa)>3:
 				user=User.objects.last()
 				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
@@ -113,7 +153,13 @@ def acceptapplications(request,pk=None):
 				Applcation.objects.get(id=pk).delete()
 				return render(request,"registrar/reasonform.html")
 
-
+	
 	except:
-
+			
 			return redirect("viewNewUser")
+	
+
+	
+	
+	
+

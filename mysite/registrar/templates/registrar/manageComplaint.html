@@ -16,13 +16,15 @@
   </thead>
   <tbody>
   	{% for i in sc %}
-	  	<tr>
-        <td>{{i.id}}</td>
-	      <td>{{i.user_id}}</td>
-	      <td>{{i.complainee}}</td>
-	      <td>{{i.text}}</td>
-        <td><a href="/processStudentComplaint/{{i.id}}">take actions</a></td>
-	    </tr>
+      {% if i.is_completed == False%}
+  	  	<tr>
+          <td>{{i.id}}</td>
+  	      <td>{{i.user_id}}</td>
+  	      <td>{{i.complainee}}</td>
+  	      <td>{{i.text}}</td>
+          <td><a href="/processStudentComplaint/{{i.id}}">take actions</a></td>
+  	    </tr>
+      {% endif%}
   	{% endfor %}
   </tbody>
 </table>
@@ -43,13 +45,57 @@
   </thead>
   <tbody>
     {% for i in ic %}
-      <tr>
-        <td>{{i.id}}</td>
-        <td>{{i.user_id}}</td>
-        <td>{{i.complainee}}</td>
-        <td>{{i.text}}</td>
-        <td><a href="/processInstructorComplaint/{{i.id}}">take actions</a></td>
-      </tr>
+      {% if i.is_completed == False%}
+        <tr>
+          <td>{{i.id}}</td>
+          <td>{{i.user_id}}</td>
+          <td>{{i.complainee}}</td>
+          <td>{{i.text}}</td>
+          <td><a href="/processInstructorComplaint/{{i.id}}">take actions</a></td>
+        </tr>
+      {% endif%}
+    {% endfor %}
+  </tbody>
+</table>
+
+</br>
+
+<h4>Completed complaints</h4>
+<small>* ws = warn the student, wi = warn the instructor, ds = register the student</small>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Complainant ID</th>
+      <th>Complainee Name</th>
+      <th>Reason</th>
+      <th>Action Taken</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in sc %}
+      {% if i.is_completed == True%}
+        <tr>
+          <td>{{i.id}}</td>
+          <td>{{i.user_id}}</td>
+          <td>{{i.complainee}}</td>
+          <td>{{i.text}}</td>
+          <td>{{i.action}}</td>
+        </tr>
+      {% endif%}
+    {% endfor %}
+
+    {% for i in ic %}
+      {% if i.is_completed == True%}
+        <tr>
+          <td>{{i.id}}</td>
+          <td>{{i.user_id}}</td>
+          <td>{{i.complainee}}</td>
+          <td>{{i.text}}</td>
+          <td>{{i.action}}</td>
+        </tr>
+      {% endif%}
     {% endfor %}
   </tbody>
 </table>

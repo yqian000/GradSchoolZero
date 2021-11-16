@@ -18,6 +18,7 @@
     body { 
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
+      overflow-y:scroll;
     }
 
     .header {
@@ -75,7 +76,8 @@
     <title>GradSchoolZero</title>
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target=".navbar" data-offset="50">
+
     <div class="header">
       <a href="/" class="logo">GradSchoolZero</a>
     

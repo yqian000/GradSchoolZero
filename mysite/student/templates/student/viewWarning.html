@@ -4,6 +4,20 @@
 
 {% block usercontent %}
 
-<p>student warning</p>
+<h4>Warning Information</h4>
+
+</br>
+
+<p>Warning Total: {{s.warning}}</p>
+
+<p>
+	Current Status (Active / Inactive): 
+	{% if s.is_suspended == False %}
+		Active
+	{% else %}
+		Inactive (Reason: You have been suspended by the registrar for one semester)
+	{% endif %}
+</p>
+
  
 {% endblock %}
