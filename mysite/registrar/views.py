@@ -145,7 +145,8 @@ def acceptapplications(request,pk=None):
 				user=User(email=StudentEmail,username=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,is_student=True,First_login=True)
 				user.set_password(StudentEmail)
 				user.save()
-				student=Student(email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname)
+				ID=20000000+int(user.id)+1
+				student=Student(email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,ID=ID)
 				student.save()
 				try:
 					subject="Congratulations"
