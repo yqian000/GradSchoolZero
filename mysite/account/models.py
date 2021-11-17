@@ -78,6 +78,8 @@ class Student(models.Model):
     def __str__(self):
         return self.email
 
+
+
 class Instructor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
     first_name=models.CharField(max_length=150,blank="True")
@@ -88,7 +90,7 @@ class Instructor(models.Model):
     is_warned=models.BooleanField(default=False)
     is_suspanded=models.BooleanField(default=False)
     is_working=models.BooleanField(default=True)
-    is_suspended=models.BooleanField(default=False)
+    is_suspanded=models.BooleanField(default=False)
     is_working=models.BooleanField(default=False)
 
     def __str__(self):
@@ -108,4 +110,3 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-
