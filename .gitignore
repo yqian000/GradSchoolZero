@@ -1,5 +1,4 @@
 
-mysite/db.sqlite3git
 *.pyc
 **/*..sqlite3git
 **/*.pyc
@@ -12,5 +11,5 @@ __pycache__/
 */*/*/__pycache__/
 */*/__pycache__/
 */__pycache__/
-db.sqlite3
+
 media
