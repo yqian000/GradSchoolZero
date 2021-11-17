@@ -1,9 +1,8 @@
 
-mysite/db.sqlite3git
 *.pyc
 **/*..sqlite3git
 **/*.pyc
-mysite/db.sqlite3
+
 *.log
 *.pot
 *.pyc
