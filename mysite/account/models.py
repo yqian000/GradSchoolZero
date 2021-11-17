@@ -55,7 +55,10 @@ class User(AbstractUser,PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    def __str__(self):
+        return self.email
 
+   
 
 class Student(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
@@ -66,10 +69,14 @@ class Student(models.Model):
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
     GPA=models.IntegerField(default=0)
-    is_suspended=models.BooleanField(default=False)
+    is_suspanded=models.BooleanField(default=False)
     is_graduate=models.BooleanField(default=False)
+    credit=models.PositiveSmallIntegerField(default=0) #[0, 32767]
+    fine=models.PositiveSmallIntegerField(default=0) # 0->no fine; 1->has fine; 2->fine received
 
 
+    def __str__(self):
+        return self.email
 
 class Instructor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
@@ -81,3 +88,24 @@ class Instructor(models.Model):
     is_warned=models.BooleanField(default=False)
     is_suspanded=models.BooleanField(default=False)
     is_working=models.BooleanField(default=True)
+    is_suspended=models.BooleanField(default=False)
+    is_working=models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.email
+    
+class Course(models.Model):
+    name=models.CharField(max_length=200)
+    student=models.ManyToManyField(Student)
+    instructor=models.ForeignKey(Instructor,on_delete=models.CASCADE,blank=True,null=True)
+    rate=models.DecimalField(max_digits=3,decimal_places=2)
+    curr_size=models.PositiveSmallIntegerField(default=0) # number of students in class
+    max_size=models.PositiveSmallIntegerField(default=8) # upper limit
+    is_open=models.BooleanField(default=False) # closed or cancelled class will be False
+    is_dropped=models.BooleanField(default=False)
+    rate=models.DecimalField(max_digits=3,decimal_places=2)
+    grade=models.CharField(max_length=1,blank=True)
+
+    def __str__(self):
+        return self.name
+

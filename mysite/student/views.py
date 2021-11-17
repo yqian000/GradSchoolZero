@@ -10,6 +10,11 @@ from django.conf import settings
 def studentView(request):
 	if request.user.is_student:
 		student = Student.objects.get(user=request.user)
+		if student.warning%3 == 0 and student.fine == 0:
+			student.fine = 1 # set to has fine
+			student.is_suspended = True
+			student.save()
+
 		return render(request, "student/studentView.html", {"s":student})
 	else:
 		return render(request, "main/forbidden.html",{})
@@ -35,10 +40,6 @@ def fileComplaint(request):
 	
 	form = FileComplaintForm()
 	return render(request, "student/fileComplaint.html", {"form":form, "r":request})
-
-def viewWarning(request):
-	student = Student.objects.get(user=request.user)
-	return render(request, "student/viewWarning.html", {"s":student})
 
 def Application(request):
 	if request.method=="POST":

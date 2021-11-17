@@ -11,6 +11,9 @@ def instructorView(request):
 	if request.user.is_instructor:
 		student_list = Applcation.objects.all()
 		instructor = Instructor.objects.get(user=request.user)
+		if instructor.warning%3 == 0:
+			instructor.is_suspended = True
+			instructor.save()
 		return render(request, "instructor/instructorView.html", {'student_list': student_list, 'i':instructor})
 	else:
 		return render(request, "main/forbidden.html",{})

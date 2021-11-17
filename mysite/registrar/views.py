@@ -3,10 +3,10 @@ from django.shortcuts import render,redirect
 from student.models import *
 from instructor.models import *
 from account.models import *
-from registrar.models import *
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import *
+from .models import *
 
 
 
@@ -34,6 +34,16 @@ def viewRating(request):
 
 def setClass(request):
 	return render(request, "registrar/setClass.html", {})
+
+def tabooList(request):
+	if request.method == "POST":
+		form = TabooForm(request.POST)
+		if form.is_valid():
+			form.save()
+
+	taboo = Taboo.objects.all()
+	form = TabooForm()
+	return render(request, "registrar/tabooList.html", {"form":form, "taboo":taboo})
 
 def processStudentComplaint(request, pk=None):
 	if request.method == "POST":
