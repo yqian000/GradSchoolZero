@@ -10,7 +10,7 @@ from django.conf import settings
 def studentView(request):
 	if request.user.is_student:
 		student = Student.objects.get(user=request.user)
-		if student.warning%3 == 0 and student.fine == 0:
+		if student.warning == 3 and student.fine == 0:
 			student.fine = 1 # set to has fine
 			student.is_suspended = True
 			student.save()

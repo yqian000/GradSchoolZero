@@ -49,8 +49,6 @@ def processStudentComplaint(request, pk=None):
 	if request.method == "POST":
 		# get the corresponding complaint
 		c = StudentComplaint.objects.get(id=pk)
-		c.is_completed = True
-		c.save()
 
 		form = ProcessStudentComplaintForm(request.POST, instance=c)
 
