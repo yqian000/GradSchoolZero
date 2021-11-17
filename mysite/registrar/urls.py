@@ -16,4 +16,5 @@ urlpatterns = [
 	path('manageSuspension/', views.manageSuspension, name='manageSuspension'),
 	path('rejectapplications/<int:pk>', views.rejectapplications, name='rejectapplications'),
 	path('acceptapplications/<int:pk>', views.acceptapplications, name='acceptapplications'),
+	path('tabooList/', views.tabooList, name='tabooList'),
 ]
