@@ -1,0 +1,56 @@
+{% extends 'registrar/registrarBase.html' %}
+{% load crispy_forms_tags %}
+
+{% block usercontent %}
+
+
+
+
+<div id="tabooaction">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          View the list of all taboo words
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#tabooaction">
+      <div class="card-body">
+        {% for t in taboo %}
+			{{t.word}} | 
+		{% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Add a word to the list
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#tabooaction">
+      <div class="card-body">
+        <div class="row">
+		  <form method="POST">
+		    {% csrf_token %}
+		    <fieldset class="form-group">
+		      {{form|crispy}}
+		    </fieldset>
+
+		    <div class="form-group">
+		      <button href="" class="btn btn-outline-info" type="submit">
+		        Add
+		      </button>
+		    </div>
+		  </form>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

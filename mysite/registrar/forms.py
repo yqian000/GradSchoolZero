@@ -23,3 +23,9 @@ class ProcessInstructorComplaintForm(ModelForm):
 			"person_id": "Person's ID: "
         }
 		fields = ['is_investigated', 'action', 'punish_id']
+
+class TabooForm(ModelForm):
+
+	class Meta:
+		model = Taboo
+		fields = '__all__'
