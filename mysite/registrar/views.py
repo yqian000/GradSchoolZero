@@ -169,52 +169,54 @@ def acceptapplications(request,pk=None):
 	except:
 			
 			return redirect("viewNewUser")
-'''
+
 def reject_job_application(request,pk=None):
 	try:
 		if career.objects.get(id=pk)!=None:
+
+
+				try:
+					subject="Sorry"
+					message="We appreciate your interest in CUNY and the time you’ve invested in applying for instructor role. There has been significant interest in this role At this time, we have made the decision to move forward with other applicants."
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[Applcation.objects.get(id=pk).email]
+					send_mail(subject,message,email_from,recipent_list)
+				except:
+					pass
 			
-				Applcation.objects.get(id=pk).delete()
+				career.objects.get(id=pk).delete()
 				return redirect("viewNewUser")
 	except:
 			
 		return redirect("viewNewUser")
 
-def acceptapplications(request,pk=None):
+def accept_job_applications(request,pk=None):
 	
 	try:
-			if  float(Applcation.objects.get(id=pk).Gpa)>3:
+			if career.objects.get(id=pk)!=None:
 				user=User.objects.last()
-				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
-				user=User(email=StudentEmail,username=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,is_student=True,First_login=True)
-				user.set_password(StudentEmail)
+				ProfesorEmail=career.objects.get(id=pk).firstname[0]+career.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
+				user=User(email=ProfesorEmail,username=ProfesorEmail,first_name=career.objects.get(id=pk).firstname,last_name=career.objects.get(id=pk).lastname,is_instructor=True,First_login=True)
+				user.set_password(ProfesorEmail)
 				user.save()
-				ID=20000000+int(user.id)+1
-				student=Student(email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,ID=ID)
-				student.save()
+				ID=10000000+int(user.id)+1
+				instructor=Instructor(email=ProfesorEmail,first_name=career.objects.get(id=pk).firstname,last_name=career.objects.get(id=pk).lastname,ID=ID)
+				instructor.save()
 				try:
 					subject="Congratulations"
 					message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be .., and login password will be same."
 					email_from=settings.EMAIL_HOST_USER
-					recipent_list=[Applcation.objects.get(id=pk).email]
+					recipent_list=[career.objects.get(id=pk).email]
 					send_mail(subject,message,email_from,recipent_list)
 				except:
-					print("hello")
+					pass
 
-				Applcation.objects.get(id=pk).delete()
+				career.objects.get(id=pk).delete()
 				return redirect("viewNewUser")
-
-			else:
-				Applcation.objects.get(id=pk).delete()
-				return render(request,"registrar/reasonform.html")
 
 	
 	except:
 			
 			return redirect("viewNewUser")
-	
-'''
-	
-	
 	
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .forms import *
 from .models import *
 from account.models import *
@@ -40,5 +40,14 @@ def viewWaitlist(request):
 	return render(request, "instructor/viewWaitlist.html", {})
 
 
-def jobapplication(request):
-	return render(request, "instructor/job.html", {})
+def JobApplication(request):
+	if request.method=="POST":
+		form=jobForm(request.POST, request.FILES)
+		application=career(email=request.POST['email'],firstname=request.POST['firstname'],lastname=request.POST['lastname'],Birthday=request.POST['Birthday'],salary_requirement=request.POST['salary_requirement'],phone=request.POST['phone'],startdate=request.POST['start_date'],work_experiences=request.POST['work_experience'],departments=request.POST['department'],resume=request.FILES['resume'], Portfolio_website=request.POST['Portfolio_website'])
+		application.save()
+		return redirect("home")
+	else:
+		form=jobForm()
+
+	context={'form':form}
+	return render(request,'instructor/job.html',context)
