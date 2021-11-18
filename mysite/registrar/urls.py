@@ -17,4 +17,6 @@ urlpatterns = [
 	path('rejectapplications/<int:pk>', views.rejectapplications, name='rejectapplications'),
 	path('acceptapplications/<int:pk>', views.acceptapplications, name='acceptapplications'),
 	path('tabooList/', views.tabooList, name='tabooList'),
+	path('rejectjobapplications/<int:pk>', views.reject_job_application, name='rejectjobapplications'),
+	path('acceptjobapplications/<int:pk>', views.accept_job_applications, name='acceptjobapplications'),
 ]

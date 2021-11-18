@@ -1,54 +1,38 @@
 {% extends 'main/base.html' %}
 
-
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <form  id="EmploymentApplication100" method="post">
-    <table border="0" cellpadding="5" cellspacing="0">
-    <tr> <td style="width: 50%">
-    <label for="First_Name" required="true"><b>First name *</b></label><br />
-    <input name="First_Name" type="text" required="true" maxlength="50" style="width:100%;max-width: 260px" />
-    </td> <td style="width: 50%">
-    <label for="Last_Name"><b>Last name *</b></label><br />
-    <input name="Last_Name"  required="true" type="text" maxlength="50" style="width:100%;max-width: 260px" />
-    </td> </tr> <tr> <td colspan="2">
-    <label for="Email_Address"><b>Email *</b></label><br />
-    <input name="Email_Address"  required="true" type="text" maxlength="100" style="width:100%;max-width: 535px" />
-    </td> </tr> <tr> <td colspan="2">
-    <label for="Portfolio"><b>Portfolio website</b></label><br />
-    <input name="Portfolio"  required="true"  type="text" maxlength="255" value="http://" style="width:100%;max-width: 535px" />
-    </td> </tr> <tr> <td colspan="2">
-    <label for="Position"><b>Departments you are applying for *</b></label><br />
-    <input name="Position"  required="true" type="text" maxlength="100" style="width:100%;max-width: 535px" />
-    </td> </tr> <tr> <td>
-    <label for="Salary"><b>Salary requirements</b></label><br /> <input name="Salary" type="text" maxlength="50" style="width:100%;max-width: 260px" /> </td> <td>
-    <label for="StartDate"  required="true"><b>When can you start?</b></label><br />
-    <input name="StartDate" required="true"  type="date" maxlength="50" style="width:100%;max-width: 260px" />
-    </td> </tr> <tr> <td>
-    <label for="Phone"><b>Phone *</b></label><br />
-    <input name="Phone" type="text"  required="true" maxlength="50" style="width:100%;max-width: 260px" />
-    </td> <td>
-    <label for="Fax"><b>Fax</b></label><br />
-    <input name="Fax"  type="text" maxlength="50" style="width:100%;max-width: 260px" />
-    </td> </tr> <tr> <td colspan="2">
-        <label for="Position"><b>Resume*</b></label><br />
 
-        <input type="file"  required="true" id="avatar" name="CV">
-    </td> </tr> <tr> <td colspan="2">
-    <label for="Organization"><b>Last company you worked for</b></label><br />
-    <input name="Organization"  required="true" type="text" maxlength="100" style="width:100%;max-width: 535px" />
-    </td> </tr> <tr> <td colspan="2">
-        
-    <label for="Reference"><b>Reference / Comments / Questions</b></label><br />
-    <textarea name="Reference" rows="7" cols="40" style="width:100%;max-width: 535px"></textarea>
-    </td> </tr> <tr> <td colspan="2" style="text-align: center;">
-    </td> </tr>
-    </td> </tr> <tr> <td colspan="2">
-    <button href="#" class="btn btn-outline-info" type="submit">
-        submit
-      </button>
-    </td> </tr> <tr> <td colspan="2">
-    </table>
-   
-    </form></center>
-{% endblock%}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Student-dashboard</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+</head>
+<body>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">CUNY Careers</legend>
+      {{form|crispy}}
+    </fieldset>
+    <div class="form-group">
+
+      <div class="form-row">
+</head>
+        <div class="col">
+          <button href="" class="btn btn-outline-info" type="submit">
+            Submit</button>
+          </div>
+      </div>
+     
+    </div>
+  </form>
+  
+{%endblock%}
