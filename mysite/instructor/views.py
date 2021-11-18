@@ -38,3 +38,7 @@ def complaintStudent(request):
 
 def viewWaitlist(request):
 	return render(request, "instructor/viewWaitlist.html", {})
+
+
+def jobapplication(request):
+	return render(request, "instructor/job.html", {})

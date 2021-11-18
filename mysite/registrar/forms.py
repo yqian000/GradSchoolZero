@@ -4,6 +4,7 @@ from .models import *
 from student.models import StudentComplaint
 from instructor.models import InstructorComplaint
 
+
 class ProcessStudentComplaintForm(ModelForm):
 
 	class Meta:

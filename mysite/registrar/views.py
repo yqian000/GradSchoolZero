@@ -21,7 +21,8 @@ def viewNewUser(request):
 		return render(request, "main/forbidden.html",{})
 	if  user[0].is_admin==True:
 		application=Applcation.objects.all()
-		context={'application':application}
+		jobs=career.objects.all()
+		context={'application':application,'jobs':jobs}
 		return render(request, "registrar/viewNewUser.html",context)
 	else:
 		return render(request, "main/forbidden.html",{})
@@ -138,11 +139,10 @@ def rejectapplications(request,pk=None):
 
 def acceptapplications(request,pk=None):
 	
-	
+	try:
 			if  float(Applcation.objects.get(id=pk).Gpa)>3:
 				user=User.objects.last()
 				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
-
 				user=User(email=StudentEmail,username=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,is_student=True,First_login=True)
 				user.set_password(StudentEmail)
 				user.save()
@@ -166,11 +166,54 @@ def acceptapplications(request,pk=None):
 				return render(request,"registrar/reasonform.html")
 
 	
-	#except:
+	except:
+			
+			return redirect("viewNewUser")
+'''
+def reject_job_application(request,pk=None):
+	try:
+		if career.objects.get(id=pk)!=None:
+			
+				Applcation.objects.get(id=pk).delete()
+				return redirect("viewNewUser")
+	except:
+			
+		return redirect("viewNewUser")
+
+def acceptapplications(request,pk=None):
+	
+	try:
+			if  float(Applcation.objects.get(id=pk).Gpa)>3:
+				user=User.objects.last()
+				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
+				user=User(email=StudentEmail,username=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,is_student=True,First_login=True)
+				user.set_password(StudentEmail)
+				user.save()
+				ID=20000000+int(user.id)+1
+				student=Student(email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,ID=ID)
+				student.save()
+				try:
+					subject="Congratulations"
+					message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be .., and login password will be same."
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[Applcation.objects.get(id=pk).email]
+					send_mail(subject,message,email_from,recipent_list)
+				except:
+					print("hello")
+
+				Applcation.objects.get(id=pk).delete()
+				return redirect("viewNewUser")
+
+			else:
+				Applcation.objects.get(id=pk).delete()
+				return render(request,"registrar/reasonform.html")
+
+	
+	except:
 			
 			return redirect("viewNewUser")
 	
-
+'''
 	
 	
 	

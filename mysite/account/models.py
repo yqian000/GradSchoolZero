@@ -61,10 +61,11 @@ class User(AbstractUser,PermissionsMixin):
    
 
 class Student(models.Model):
+   
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
     first_name=models.CharField(max_length=150,blank="True")
     last_name=models.CharField(max_length=150,blank="True")
-    email=models.EmailField(gettext_lazy('email address'),unique=True,validators =[validate_mail])
+    email=models.EmailField(gettext_lazy('CUNY Email'),unique=True)
     ID=models.PositiveIntegerField(default=0)
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
