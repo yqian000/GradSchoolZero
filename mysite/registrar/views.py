@@ -179,7 +179,7 @@ def reject_job_application(request,pk=None):
 					subject="Sorry"
 					message="We appreciate your interest in CUNY and the time you’ve invested in applying for instructor role. There has been significant interest in this role At this time, we have made the decision to move forward with other applicants."
 					email_from=settings.EMAIL_HOST_USER
-					recipent_list=[Applcation.objects.get(id=pk).email]
+					recipent_list=[career.objects.get(id=pk).email]
 					send_mail(subject,message,email_from,recipent_list)
 				except:
 					pass
