@@ -19,4 +19,5 @@ urlpatterns = [
 	path('tabooList/', views.tabooList, name='tabooList'),
 	path('rejectjobapplications/<int:pk>', views.reject_job_application, name='rejectjobapplications'),
 	path('acceptjobapplications/<int:pk>', views.accept_job_applications, name='acceptjobapplications'),
+	path('periodsetup/', views.PeriodSetup, name='periodsetup'),
 ]

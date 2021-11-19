@@ -1,0 +1,28 @@
+{% extends 'registrar/registrarBase.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block usercontent %}
+
+<div class="row justify-content-center"  >
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Set Up Semester Period</legend>
+      {{form|crispy}}
+    </fieldset>
+
+    <div class="form-group" >
+      <button href="" class="btn btn-outline-info" onclick="myFunction()" class="row justify-content-center" type="submit">
+        Submit
+      </button>
+    </div>
+    <script>
+      function myFunction() {
+        alert("Set up sucessfully");
+      }
+      </script>
+  </form>
+</div>
+ 
+{% endblock %}

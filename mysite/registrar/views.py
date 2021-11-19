@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import *
 from .models import *
-
+from django.contrib import messages
 
 
 # Create your views here.
@@ -218,5 +218,33 @@ def accept_job_applications(request,pk=None):
 	except:
 			
 			return redirect("viewNewUser")
+def PeriodSetup(request):
+	if request.method=='POST':
+		form=Periodsetup(request.POST)
+		period=Period.objects.last()
+		
+
+		class_setup=request.POST.get('is_class_setup')
+		course_registration=request.POST.get('is_course_registration')
+		class_running_period=request.POST.get('is_class_running_period')
+		grading_period=request.POST.get('is_grading_period')
+		if class_setup=='on':
+			period.is_class_setup=True
+		if course_registration =='on':
+			period.is_course_registration=True
+		if class_running_period=='on':
+			period.is_class_running_period=True
+		if 	grading_period=='on':
+			period.is_grading_period=True
+		period.save()
+		messages.success(request, 'Period set up successful')
+		return render(request, "registrar/periodsetup.html", {"form":form})
+	else :
+		form=Periodsetup()
+		return render(request, "registrar/periodsetup.html", {"form":form})
+
+
+
+
 	
 
