@@ -230,12 +230,27 @@ def PeriodSetup(request):
 		grading_period=request.POST.get('is_grading_period')
 		if class_setup=='on':
 			period.is_class_setup=True
+			period.is_course_registration=False
+			period.is_class_running_period=False
+			period.is_grading_period=False
 		if course_registration =='on':
 			period.is_course_registration=True
+			period.is_class_setup=False
+			period.is_class_running_period=False
+			period.is_grading_period=False
+
 		if class_running_period=='on':
 			period.is_class_running_period=True
+		
+			period.is_class_setup=False
+			period.s_course_registration=False
+			period.is_grading_period=False
+
 		if 	grading_period=='on':
 			period.is_grading_period=True
+			period.is_class_setup=False
+			period.is_class_running_period=False
+			period.is_course_registration=False
 		period.save()
 		messages.success(request, 'Period set up successful')
 		return render(request, "registrar/periodsetup.html", {"form":form})
