@@ -8,7 +8,7 @@ from django.conf import settings
 from .forms import *
 from .models import *
 from django.contrib import messages
-
+import csv
 
 # Create your views here.
 def registrarView(request):
@@ -259,7 +259,31 @@ def PeriodSetup(request):
 		return render(request, "registrar/periodsetup.html", {"form":form})
 
 
+def setClass(request):
+	fields = []
+	rows = []
+	if request.method=="POST":
+		form=read_class_form(request.POST, request.FILES)
+		Class=request.FILES['csv']
+		'''Csv=upload_to_class_documents(csv_file=request.FILES['csv'])
+		Csv.save()'''
+		rows = []
+		with open("registrar/ClassDocuments/"+str(Class), 'r') as file:
+			csvreader = csv.reader(file)
+			for row in csvreader:
+				rows.append(row)
+		print(rows)
+	
+	
 
+		
+	else:
+
+		form=read_class_form(request.POST, request.FILES)
+  
+	return render(request, "registrar/setClass.html", {"form":form})
+
+	
 
 	
 
