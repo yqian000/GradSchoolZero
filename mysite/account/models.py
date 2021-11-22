@@ -103,11 +103,12 @@ class Course(models.Model):
     name=models.CharField(max_length=200)
     student=models.ManyToManyField(Student)
     instructor=models.ForeignKey(Instructor,on_delete=models.CASCADE,blank=True,null=True)
-    rate=models.DecimalField(max_digits=3,decimal_places=2)
     curr_size=models.PositiveSmallIntegerField(default=0) # number of students in class
     max_size=models.PositiveSmallIntegerField(default=8) # upper limit
     is_open=models.BooleanField(default=False) # closed or cancelled class will be False
     is_dropped=models.BooleanField(default=False)
+    start_time=models.CharField(max_length=200,default='')
+    end_time=models.CharField(max_length=200,default='')
     rate=models.DecimalField(max_digits=3,decimal_places=2)
     grade=models.CharField(max_length=1,blank=True)
 
