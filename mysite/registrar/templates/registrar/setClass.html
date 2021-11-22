@@ -2,24 +2,33 @@
 {% load crispy_forms_tags %}
 {% block usercontent %}
 
+<h4>All classes</h4>
 
-<div class="col-md-8">
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Upload Classes</legend>
-      {{form|crispy}}
-    </fieldset>
-</div>  
-    <div class="form-group">                    
-        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
-             <button type="submit" onclick="myFunction()" class="btn btn-primary"> <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
-        </div>
-          <script>
-            function myFunction() {
-              alert("Set up sucessfully");
-            }
-            </script>
-    </form>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Course</th>
+      <th>Time</th>
+      <th>Size</th>
+      <th>Instructor</th>
+      <th>Open</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in c %}
+      <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.start_time}} - {{i.end_time}}</td>
+        <td>{{i.max_size}}</td>
+        <td>{{i.instructor}}</td>
+        <td>{{i.is_open}}</td>
+        <td><a href="/processClass/{{i.id}}">set up</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

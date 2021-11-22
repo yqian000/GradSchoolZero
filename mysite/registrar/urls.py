@@ -10,6 +10,7 @@ urlpatterns = [
 	path('viewGrad/', views.viewGrad, name='viewGrad'),
 	path('viewRating/', views.viewRating, name='viewRating'),
 	path('setClass/', views.setClass, name='setClass'),
+	path('processClass/<int:pk>', views.processClass, name='processClass'),
 	path('manageComplaint/', views.manageComplaint, name='manageComplaint'),
 	path('processStudentComplaint/<int:pk>', views.processStudentComplaint, name='processStudentComplaint'),
 	path('processInstructorComplaint/<int:pk>', views.processInstructorComplaint, name='processInstructorComplaint'),
