@@ -99,6 +99,8 @@ def login_view(request):
                         return redirect("registrarView")
                     elif user.is_student:
                         return  redirect("studentView")
+                    elif user.is_instructor:
+                        return  redirect("instructorView")
                     else:
                         return  redirect("home")
 

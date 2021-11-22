@@ -2,10 +2,10 @@ from django import forms
 from django.db.models.fields import  BooleanField
 from django.forms import fields, ModelForm
 from django.forms.forms import Form
-from .models import *
+from account.models import Course
 from student.models import StudentComplaint
 from instructor.models import InstructorComplaint
-
+from .models import *
 
 class ProcessStudentComplaintForm(ModelForm):
 
@@ -42,6 +42,9 @@ class Periodsetup(forms.Form):
 		model = Period
 		fields = '__all__'
 
-class read_class_form(forms.Form):
 
-		csv=forms.FileField(label="Upload the class CSV",required=False)
+class SetClassForm(ModelForm):
+
+	class Meta:
+		model = Course
+		fields = ['instructor', 'max_size', 'is_open','start_time','end_time']
