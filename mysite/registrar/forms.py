@@ -42,3 +42,6 @@ class Periodsetup(forms.Form):
 		model = Period
 		fields = '__all__'
 
+class read_class_form(forms.Form):
+
+		csv=forms.FileField(label="Upload the class CSV",required=False)
