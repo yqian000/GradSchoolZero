@@ -1,5 +1,9 @@
 from django.db import models
+from django.db.models.fields.related import OneToOneField
 from django.forms.fields import EmailField
+from account.models import *
+
+
 
 class Applcation(models.Model):
     email=models.EmailField()
@@ -39,3 +43,7 @@ class StudentComplaint(models.Model):
 
     def __str__(self):
         return self.complainee + ": " + self.text
+    
+class Cart(models.Model):
+        CourseID=models.IntegerField(blank=True)
+        Email=models.EmailField(blank=True)

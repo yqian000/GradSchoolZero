@@ -4,21 +4,25 @@ from .models import *
 from account.models import *
 from django.core.mail import send_mail
 from django.conf import settings
-
+from django.contrib import messages
 # Create your views here.
 
 def studentView(request):
-	if request.user.is_student:
-		student = Student.objects.get(user=request.user)
-		if student.warning == 3:
-			student.fine = 1 # set to has fine
-			student.is_suspended = True
-			student.save()
 
-		return render(request, "student/studentView.html", {"s":student})
-	else:
-		return render(request, "main/forbidden.html",{})
 
+	try:
+		if request.user.is_student:
+			student = Student.objects.get(user=request.user)
+			if student.warning == 3:
+				student.fine = 1 # set to has fine
+				student.is_suspended = True
+				student.save()
+
+			return render(request, "student/studentView.html", {"s":student})
+		else:
+			return render(request, "main/forbidden.html",{})
+	except:
+			return render(request, "main/forbidden.html",{})
 def rateClass(request):
 	if request.method == "POST":
 		form = RateClassForm(request.POST)
@@ -56,3 +60,118 @@ def Application(request):
 	
 def tutorial(request):
 	return render(request, "student/tutorial.html", {})
+def avalibleclasses(request):
+	courses=Course.objects.filter(is_open=True)
+	return render(request,'student/Enrollment.html',{"courses":courses})
+def add_sucessfully(request,pk):
+	student=Student.objects.filter(email=request.user)[0]
+	Enroll=Cart(CourseID=pk,Email=student.email)
+	Enroll.save()
+	student.enrollcart=Enroll
+	student.save()
+	courses=Course.objects.filter(is_open=True)
+	return redirect("enrollment")
+def enrollmentcart(request):
+	
+	try:
+		CD=Cart.objects.filter(Email=request.user)
+		row=[]
+		for ID in range(len(CD)):
+				if CD[ID].CourseID not in row:
+					row.append(CD[ID].CourseID)
+		course=[Course.objects.get(id=x) for x in row]
+
+		cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
+		return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
+	except:
+		return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
+
+def deletefromEnrollment(request,pk=None):
+
+	try:
+		if Cart.objects.get(id=pk)!=None:
+	
+				Cart.objects.get(id=pk).delete()
+			
+
+		return redirect("enrollmentcart")
+
+	except:
+			
+		return redirect("enrollmentcart")
+
+def enroll(request):
+	try:
+		st=Student.objects.get(email=request.user)
+		CD=Cart.objects.filter(Email=request.user)
+		row=[]
+		for ID in range(len(CD)):
+				if CD[ID].CourseID not in row:
+					row.append(CD[ID].CourseID)
+		
+
+		cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
+
+		course=[Course.objects.get(id=x) for x in row]
+		
+		Monday=[]
+		Tuseday=[]
+		Wednesday=[]
+		Thurseday=[]
+		Friday=[]
+
+		for i in range (len(course)):
+				
+			if  "Monday".lower() in course[i].meeting_date.lower():
+				Monday.append([float(course[i].start_time),float(course[i].end_time)])
+				Monday.sort()
+			if  "Tuseday".lower() in course[i].meeting_date.lower():
+				Tuseday.append([float(course[i].start_time),float(course[i].end_time)])
+				Tuseday.sort()
+			if "Wednesday".lower() in course[i].meeting_date.lower():
+				Wednesday.append([float(course[i].start_time),float(course[i].end_time)])
+				Wednesday.sort()
+			if "Thurseday".lower() in course[i].meeting_date.lower():
+				Thurseday.append([float(course[i].start_time),float(course[i].end_time)])
+				Thurseday.sort()
+			if "Friday".lower() in course[i].meeting_date.lower():
+				Friday.append([float(course[i].start_time),float(course[i].end_time)])
+				Friday.sort()
+		conflicts = []
+		message =None
+		for i, this in enumerate(Monday):
+				for next_ in Monday[i+1:]:
+					if this[1] > next_[0]: 
+						messages.success(request, 'Schedule conflicts founded, enroll failed') # this ends *after* next_ starts
+						return redirect("enrollmentcart")
+					
+		for i, this in enumerate(Tuseday):
+				for next_ in Thurseday[i+1:]:
+					if this[1] > next_[0]:  # this ends *after* next_ starts
+						return redirect("enrollmentcart")
+		for i, this in enumerate(Thurseday):
+				for next_ in Thurseday[i+1:]:
+					if this[1] > next_[0]:  # this ends *after* next_ starts
+						return redirect("enrollmentcart")
+		for i, this in enumerate(Wednesday):
+				for next_ in Wednesday[i+1:]:
+					if this[1] > next_[0]:  # this ends *after* next_ starts
+						return redirect("enrollmentcart")
+		for i, this in enumerate(Friday):
+				for next_ in Friday[i+1:]:
+					if this[1] > next_[0]:  # this ends *after* next_ starts
+						return redirect("enrollmentcart")
+		
+
+		
+		for i in course :
+			i.student.add(st)
+			i.curr_size+=1
+			i.save()
+		for c in cd:
+			c.delete()
+		return redirect("enrollmentcart")
+	except:
+
+
+		return redirect("enrollmentcart")

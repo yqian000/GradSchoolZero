@@ -27,7 +27,10 @@
       background-color: #f1f1f1;
       padding: 20px 10px;
     }
-   
+    .alert {
+  opacity: 1;
+  transition: opacity 0.6s; /* 600ms to fade out */
+  }
     .header a {
       float: left;
       color: black;
@@ -64,7 +67,29 @@
         text-align: left;
       }
 
- 
+      alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
       
       .header-right {
         float: none;
