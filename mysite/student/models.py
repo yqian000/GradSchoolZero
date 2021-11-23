@@ -53,14 +53,14 @@ STAR_CHOICES = (
 )
 
 COURSE_CHOICES = (
-    ('1', 'Programming Languages'),
-    ('2', 'Advanced Data Structures'),
-    ('3', 'Advanced Algorithms'),
-    ('4', 'Software Engineering'),
-    ('5', 'Operating Systems'),
-    ('6', 'Computer Systems'),
-    ('7', 'Computer Security'),
-    ('8', 'Machine Learning'),
+    ('Programming Languages', 'Programming Languages'),
+    ('Advanced Data Structures', 'Advanced Data Structures'),
+    ('Advanced Algorithms', 'Advanced Algorithms'),
+    ('Software Engineering', 'Software Engineering'),
+    ('Operating Systems', 'Operating Systems'),
+    ('Computer Systems', 'Computer Systems'),
+    ('Computer Security', 'Computer Security'),
+    ('Machine Learning', 'Machine Learning'),
 )
 
 class RateClass(models.Model):

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .forms import *
 from .models import *
+from registrar.models import Taboo
 from account.models import *
 from django.core.mail import send_mail
 from django.conf import settings
@@ -26,7 +27,37 @@ def studentView(request):
 
 def rateClass(request):
 	if request.method == "POST":
-		c = RateClass(email=Student.objects.get(email=request.user.email).email)
+		s = Student.objects.get(email=request.user.email)
+
+		# validate if the student is currently enrolled in the course
+		# code goes here
+		
+		c = RateClass(email=s.email)
+		tabooList = Taboo.objects.all()
+		warning = 0
+
+		# clean up reviews and update warning if any
+		post = request.POST.copy()
+		review = (post['review']).lower()
+		for taboo in tabooList:
+			word = (taboo.word).lower()
+			while word in review:
+				review = review.replace(word, '*', 1)
+				warning = warning + 1
+
+		# update warning
+		if warning > 2:
+			s.warning += 2
+			s.save()
+			form = RateClassForm()
+			return render(request, "student/rateClass.html", {"form":form})
+		elif warning > 0:
+			s.warning += 1
+			s.save()
+
+		# update POST and save to db
+		post['review'] = review
+		request.POST = post
 		form = RateClassForm(request.POST, instance=c)
 
 		if form.is_valid():
