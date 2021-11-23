@@ -4,7 +4,7 @@ from .models import *
 from account.models import *
 from django.core.mail import send_mail
 from django.conf import settings
-
+from django.contrib import messages
 # Create your views here.
 
 def studentView(request):
@@ -122,61 +122,56 @@ def enroll(request):
 
 		for i in range (len(course)):
 				
-			if course[i].meeting_date.lower()=="Monday".lower():
+			if  "Monday".lower() in course[i].meeting_date.lower():
 				Monday.append([float(course[i].start_time),float(course[i].end_time)])
 				Monday.sort()
-			if course[i].meeting_date.lower()=="Tuseday".lower():
+			if  "Tuseday".lower() in course[i].meeting_date.lower():
 				Tuseday.append([float(course[i].start_time),float(course[i].end_time)])
 				Tuseday.sort()
-			if course[i].meeting_date.lower()=="Wednesday".lower():
+			if "Wednesday".lower() in course[i].meeting_date.lower():
 				Wednesday.append([float(course[i].start_time),float(course[i].end_time)])
 				Wednesday.sort()
-			if course[i].meeting_date.lower()=="Thurseday".lower():
+			if "Thurseday".lower() in course[i].meeting_date.lower():
 				Thurseday.append([float(course[i].start_time),float(course[i].end_time)])
 				Thurseday.sort()
-			if course[i].meeting_date.lower()=="Friday".lower():
+			if "Friday".lower() in course[i].meeting_date.lower():
 				Friday.append([float(course[i].start_time),float(course[i].end_time)])
 				Friday.sort()
 		conflicts = []
 		message =None
 		for i, this in enumerate(Monday):
 				for next_ in Monday[i+1:]:
-					if this[1] > next_[0]:  # this ends *after* next_ starts
-						message="Schedule conflicts! Enrollment failed"
-						return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd),'m':message})
+					if this[1] > next_[0]: 
+						messages.success(request, 'Schedule conflicts founded, enroll failed') # this ends *after* next_ starts
+						return redirect("enrollmentcart")
 					
 		for i, this in enumerate(Tuseday):
 				for next_ in Thurseday[i+1:]:
 					if this[1] > next_[0]:  # this ends *after* next_ starts
-						message="Schedule conflicts! Enrollment failed"
-						return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd),'m':message})
+						return redirect("enrollmentcart")
 		for i, this in enumerate(Thurseday):
 				for next_ in Thurseday[i+1:]:
 					if this[1] > next_[0]:  # this ends *after* next_ starts
-						message="Schedule conflicts! Enrollment failed"
-						return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd),'m':message})
+						return redirect("enrollmentcart")
 		for i, this in enumerate(Wednesday):
 				for next_ in Wednesday[i+1:]:
 					if this[1] > next_[0]:  # this ends *after* next_ starts
-						message="Schedule conflicts! Enrollment failed"
-						return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd),'m':message})
+						return redirect("enrollmentcart")
 		for i, this in enumerate(Friday):
 				for next_ in Friday[i+1:]:
 					if this[1] > next_[0]:  # this ends *after* next_ starts
-						message="Schedule conflicts! Enrollment failed Check it carefully"
-						return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd),'m':message})
+						return redirect("enrollmentcart")
 		
 
 		
 		for i in course :
 			i.student.add(st)
 			i.curr_size+=1
-			i.max_size-=1
 			i.save()
 		for c in cd:
 			c.delete()
-		return redirect("enrollmentcart",m=message)
+		return redirect("enrollmentcart")
 	except:
 
 
-		return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd),'m':message})
+		return redirect("enrollmentcart")

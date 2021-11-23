@@ -105,7 +105,7 @@ class Instructor(models.Model):
     
 class Course(models.Model):
     name=models.CharField(max_length=200)
-    student=models.ManyToManyField(Student,null=True)
+    student=models.ManyToManyField(Student,blank=True)
     instructor=models.ForeignKey(Instructor,on_delete=models.CASCADE,blank=True,null=True)
     meeting_date=models.CharField(max_length=200,null=True,blank=True)
     curr_size=models.PositiveSmallIntegerField(default=0) # number of students in class

@@ -6,9 +6,22 @@
 
 <div class="container">
     
-    <h3>Avalible Classes</h3>
+    <h3>Enrollment Cart</h3>
     <table class="table table-striped table-bordered table-hover table-dark">
         <thead>
+        
+            {% if messages %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                
+              
+                {% for message in messages %}
+                  <strong> {{ message }} </strong>
+                {% endfor %}
+                
+               
+              </div>
+              {% endif %}
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Course Name</th>
@@ -36,21 +49,22 @@
                 <td>{{course.instructor}}</td>
                 
              
-            {% if cart %}
+          
                 
                 
                 <td><a  href= "{% url 'deletenrollemt' cart.id %}"><i class="fa fa-trash fa-2x"></i></a></td>
                
-            {% endif %}
+         
             </tr>
             {% endfor %}
         </tbody>
 
         </table>
-        <form alig>
+        <form method="POST">
         
         
           <div class="form-group" method="POST" align="center" >
+            {% csrf_token %}
             <button href="{% url 'enrollpage' %}" class="btn btn-outline-info" class="row justify-content-center" type="submit">
                 Enroll
             </button>
@@ -58,6 +72,27 @@
          
           
         </form>
+        <script>
+            // Get all elements with class="closebtn"
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+            
+            // Loop through all close buttons
+            for (i = 0; i < close.length; i++) {
+              // When someone clicks on a close button
+              close[i].onclick = function(){
+            
+                // Get the parent of <span class="closebtn"> (<div class="alert">)
+                var div = this.parentElement;
+            
+                // Set the opacity of div to 0 (transparent)
+                div.style.opacity = "0";
+            
+                // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+              }
+            }
+            </script>
    
 </div>
 
