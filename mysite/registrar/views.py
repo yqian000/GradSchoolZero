@@ -217,8 +217,6 @@ def PeriodSetup(request):
 	if request.method=='POST':
 		form=Periodsetup(request.POST)
 		period=Period.objects.last()
-		
-
 		class_setup=request.POST.get('is_class_setup')
 		course_registration=request.POST.get('is_course_registration')
 		class_running_period=request.POST.get('is_class_running_period')
@@ -236,7 +234,6 @@ def PeriodSetup(request):
 
 		if class_running_period=='on':
 			period.is_class_running_period=True
-		
 			period.is_class_setup=False
 			period.s_course_registration=False
 			period.is_grading_period=False
