@@ -23,14 +23,16 @@ def studentView(request):
 			return render(request, "main/forbidden.html",{})
 	except:
 			return render(request, "main/forbidden.html",{})
+
 def rateClass(request):
 	if request.method == "POST":
-		form = RateClassForm(request.POST)
+		c = RateClass(email=Student.objects.get(email=request.user.email).email)
+		form = RateClassForm(request.POST, instance=c)
 
 		if form.is_valid():
 			form.save()
-	else:
-		form = RateClassForm()
+
+	form = RateClassForm()
 	return render(request, "student/rateClass.html", {"form":form})
 
 def fileComplaint(request):

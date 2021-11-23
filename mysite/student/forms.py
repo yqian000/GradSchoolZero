@@ -8,10 +8,20 @@ from .models import *
 
 
 
-class RateClassForm(forms.Form):
-    course = forms.CharField(label = "Select a course: ", required = True)
-    star = forms.IntegerField(label =" Assign Stars (1 worst to 5 best): ", required = True)
-    review = forms.CharField(widget = forms.Textarea, required = True)
+class RateClassForm(ModelForm):
+
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'class': 'form-control'}),
+        max_length=800,
+        required=True)
+
+    class Meta:
+        model = RateClass
+        labels = {
+            "star": "Assign Stars (1 worst to 5 best): ",
+        }
+        fields = ['course', 'star', 'review']
 
 class FileComplaintForm(ModelForm):
     complainee=forms.CharField(

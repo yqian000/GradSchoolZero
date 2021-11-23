@@ -5,5 +5,6 @@ from .models import *
 admin.site.register(Applcation)
 
 admin.site.register(StudentComplaint)
+admin.site.register(RateClass)
 admin.site.register(Cart)
 

@@ -2,6 +2,28 @@
 
 {% block usercontent %}
 
-<p>view rating</p>
+<h4>All class ratings from students</h4>
+<small>* ws = warn the student, wi = warn the instructor, ds = register the student</small>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Course</th>
+      <th>Star</th>
+      <th>Review</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in rates %}
+    <tr>
+      <td>{{i.email}}</td>
+      <td>{{i.course}}</td>
+      <td>{{i.star}}</td>
+      <td>{{i.review}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

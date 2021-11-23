@@ -31,7 +31,8 @@ def viewGrad(request):
 	return render(request, "registrar/viewGrad.html", {})
 
 def viewRating(request):
-	return render(request, "registrar/viewRating.html", {})
+	rateClass = RateClass.objects.all()
+	return render(request, "registrar/viewRating.html", {"rates": rateClass})
 
 def setClass(request):
 	return render(request, "registrar/setClass.html", {})

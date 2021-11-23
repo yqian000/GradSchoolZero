@@ -43,6 +43,32 @@ class StudentComplaint(models.Model):
 
     def __str__(self):
         return self.complainee + ": " + self.text
+
+STAR_CHOICES = (
+    ('1', '1 star'),
+    ('2', '2 stars'),
+    ('3', '3 stars'),
+    ('4', '4 stars'),
+    ('5', '5 stars'),
+)
+
+COURSE_CHOICES = (
+    ('1', 'Programming Languages'),
+    ('2', 'Advanced Data Structures'),
+    ('3', 'Advanced Algorithms'),
+    ('4', 'Software Engineering'),
+    ('5', 'Operating Systems'),
+    ('6', 'Computer Systems'),
+    ('7', 'Computer Security'),
+    ('8', 'Machine Learning'),
+)
+
+class RateClass(models.Model):
+    email = models.EmailField()
+    course = models.CharField(max_length=50, choices=COURSE_CHOICES)
+    star = models.CharField(max_length=50, choices=STAR_CHOICES)
+    review = models.CharField(max_length=800)
+
     
 class Cart(models.Model):
         CourseID=models.IntegerField(blank=True)
