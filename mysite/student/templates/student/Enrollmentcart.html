@@ -63,11 +63,15 @@
         <form method="POST">
         
         
-          <div class="form-group" method="POST" align="center" >
+          <div class="form-group" method="POST" style="position: absolute; right: 0;">
             {% csrf_token %}
             <a href="{% url 'enrollpage' %}" class="btn btn-outline-info" class="row justify-content-center" type="submit">Enroll</a>
           </div>
          
+          <span class="form-group" method="POST" align="left" >
+           
+            <a href="{% url 'deleteAll' %}" class="btn btn-outline-info" class="row justify-content-center" type="submit">Clear</a>
+          </apan>
           
         </form>
         <script>
