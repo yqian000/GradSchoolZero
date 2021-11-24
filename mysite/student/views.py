@@ -105,7 +105,8 @@ def add_sucessfully(request,pk):
 	courses=Course.objects.filter(is_open=True)
 	return redirect("enrollment")
 def enrollmentcart(request):
-	
+	CR=course_record.objects.filter(student_email=request.user,grade="F")
+	print(CR)
 	try:
 		CD=Cart.objects.filter(Email=request.user)
 		row=[]
@@ -120,6 +121,7 @@ def enrollmentcart(request):
 		return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
 
 def deletefromEnrollment(request,pk=None):
+	
 
 	try:
 		if Cart.objects.get(id=pk)!=None:
@@ -134,27 +136,45 @@ def deletefromEnrollment(request,pk=None):
 		return redirect("enrollmentcart")
 
 def enroll(request):
-	try:
-		st=Student.objects.get(email=request.user)
-		CD=Cart.objects.filter(Email=request.user)
+	
+		st=Student.objects.get(email=request.user)#student
+		CD=Cart.objects.filter(Email=request.user)#course has been added to cart
 		row=[]
 		for ID in range(len(CD)):
 				if CD[ID].CourseID not in row:
 					row.append(CD[ID].CourseID)
+
+		course=[Course.objects.get(id=x) for x in row]
+		
+		if len(Cart.objects.filter(Email=request.user))+len(course_record.objects.filter(student_email=request.user,grade=""))>4:
+			messages.success(request, "Enroll failed, you have reached the maxmium classes you can take per semester") # this ends *after* next_ starts
+			return redirect("enrollmentcart")
+		for	i in range(len(CD)):
+				# to check if the courses in enrollemnt cart is already in the enrolled classes 
+			if  len(course_record.objects.filter(student_email=request.user,course_name=course[i].name,grade=""))>0:
+				messages.success(request, "Enroll failed, you tried to enroll same classes")
+				return redirect("enrollmentcart")
+
+			try:
+				if  course_record.objects.filter(student_email=request.user,course_name=course[i].name).reverse()[0]!="F":
+						messages.success(request, "Enroll Failed,according to CUNY policy, students can't retake the courses if they got D or higer before")
+						return redirect("enrollmentcart")
+			except:
+				pass
+	
 		
 
 		cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
 
-		course=[Course.objects.get(id=x) for x in row]
+		
 		
 		Monday=[]
 		Tuseday=[]
 		Wednesday=[]
 		Thurseday=[]
 		Friday=[]
-
+		
 		for i in range (len(course)):
-				
 			if  "Monday".lower() in course[i].meeting_date.lower():
 				Monday.append([float(course[i].start_time),float(course[i].end_time)])
 				Monday.sort()
@@ -170,8 +190,7 @@ def enroll(request):
 			if "Friday".lower() in course[i].meeting_date.lower():
 				Friday.append([float(course[i].start_time),float(course[i].end_time)])
 				Friday.sort()
-		conflicts = []
-		message =None
+		
 		for i, this in enumerate(Monday):
 				for next_ in Monday[i+1:]:
 					if this[1] > next_[0]: 
@@ -198,13 +217,33 @@ def enroll(request):
 
 		
 		for i in course :
-			i.student.add(st)
+			st.course.add(i)
 			i.curr_size+=1
 			i.save()
+			st.save()
+		try:
+			CR=course_record(course_name=i.name,Instructor_email=i.instructor,student_email=st.email)
+			CR.save()
+		except:
+			CR=course_record(course_name=i.name,Instructor_email="TBD",student_email=st.email)
+			CR.save()
+			st.cr=CR
+			st.save()
 		for c in cd:
 			c.delete()
+		messages.success(request, "You've sucessfully enrolled in the classes")
+		return redirect("enrollmentcart")
+	
+		messages.success(request, "oops!Something went wrong..")
+		return redirect("enrollmentcart")
+def clearall(request):
+	try:
+		CD=Cart.objects.filter(Email=request.user)
+		for  i in CD:
+			i.delete()
+		messages.success(request, 'Your cart has been cleared')
 		return redirect("enrollmentcart")
 	except:
-
-
+		print("Hello")
+		messages.success(request, 'Somthing seems wrong, please try it one more time')
 		return redirect("enrollmentcart")

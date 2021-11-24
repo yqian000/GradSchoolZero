@@ -13,5 +13,6 @@ urlpatterns = [
     path('enrollmentcart/', views.enrollmentcart, name='enrollmentcart'),
     path('deletenrollemt/<int:pk>', views.deletefromEnrollment, name='deletenrollemt'),
     path('enrollpage/', views.enroll, name='enrollpage'),
+    path('deleteAll/', views.clearall, name='deleteAll'),
 
 ]
