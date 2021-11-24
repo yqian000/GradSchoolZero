@@ -105,8 +105,8 @@ def add_sucessfully(request,pk):
 	courses=Course.objects.filter(is_open=True)
 	return redirect("enrollment")
 def enrollmentcart(request):
-	CR=course_record.objects.filter(student_email=request.user,grade="F")
-	print(CR)
+	
+
 	try:
 		CD=Cart.objects.filter(Email=request.user)
 		row=[]
@@ -136,14 +136,15 @@ def deletefromEnrollment(request,pk=None):
 		return redirect("enrollmentcart")
 
 def enroll(request):
-	
+	try:
 		st=Student.objects.get(email=request.user)#student
 		CD=Cart.objects.filter(Email=request.user)#course has been added to cart
 		row=[]
 		for ID in range(len(CD)):
 				if CD[ID].CourseID not in row:
 					row.append(CD[ID].CourseID)
-
+		
+		# course in enrollment cart
 		course=[Course.objects.get(id=x) for x in row]
 		
 		if len(Cart.objects.filter(Email=request.user))+len(course_record.objects.filter(student_email=request.user,grade=""))>4:
@@ -191,6 +192,25 @@ def enroll(request):
 				Friday.append([float(course[i].start_time),float(course[i].end_time)])
 				Friday.sort()
 		
+		# course has enrolled
+		course=st.course.all()
+		for i in range (len(course)):
+			if  "Monday".lower() in course[i].meeting_date.lower():
+				Monday.append([float(course[i].start_time),float(course[i].end_time)])
+				Monday.sort()
+			if  "Tuseday".lower() in course[i].meeting_date.lower():
+				Tuseday.append([float(course[i].start_time),float(course[i].end_time)])
+				Tuseday.sort()
+			if "Wednesday".lower() in course[i].meeting_date.lower():
+				Wednesday.append([float(course[i].start_time),float(course[i].end_time)])
+				Wednesday.sort()
+			if "Thurseday".lower() in course[i].meeting_date.lower():
+				Thurseday.append([float(course[i].start_time),float(course[i].end_time)])
+				Thurseday.sort()
+			if "Friday".lower() in course[i].meeting_date.lower():
+				Friday.append([float(course[i].start_time),float(course[i].end_time)])
+				Friday.sort()
+		
 		for i, this in enumerate(Monday):
 				for next_ in Monday[i+1:]:
 					if this[1] > next_[0]: 
@@ -221,19 +241,19 @@ def enroll(request):
 			i.curr_size+=1
 			i.save()
 			st.save()
-		try:
-			CR=course_record(course_name=i.name,Instructor_email=i.instructor,student_email=st.email)
-			CR.save()
-		except:
-			CR=course_record(course_name=i.name,Instructor_email="TBD",student_email=st.email)
-			CR.save()
+			try:
+				CR=course_record(course_name=i.name,Instructor_email=i.instructor,student_email=st.email)
+				CR.save()
+			except:
+				CR=course_record(course_name=i.name,Instructor_email="TBD",student_email=st.email)
+				CR.save()
 			st.cr=CR
 			st.save()
 		for c in cd:
 			c.delete()
 		messages.success(request, "You've sucessfully enrolled in the classes")
 		return redirect("enrollmentcart")
-	
+	except:
 		messages.success(request, "oops!Something went wrong..")
 		return redirect("enrollmentcart")
 def clearall(request):
