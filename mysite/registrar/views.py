@@ -10,7 +10,9 @@ from .models import *
 from django.contrib import messages
 import csv
 
-# Create your views here.
+
+
+
 def registrarView(request):
 	return render(request, "registrar/registrarView.html", {})
 
@@ -245,11 +247,13 @@ def PeriodSetup(request):
 			period.is_class_running_period=False
 			period.is_course_registration=False
 		period.save()
+		
 		messages.success(request, 'Period set up successful')
-		return render(request, "registrar/periodsetup.html", {"form":form})
+		return render(request, "registrar/periodsetup.html", {"form":form,"period":period})
 	else :
+		period=Period.objects.last()
 		form=Periodsetup()
-		return render(request, "registrar/periodsetup.html", {"form":form})
+		return render(request, "registrar/periodsetup.html",{"form":form,"period":period})
 
 def processClass(request, pk=None):
 	if request.method == "POST":

@@ -2,6 +2,53 @@
 
 {% block usercontent %}
 
-<p>students in wait-list if any....</p>
+<h4>Pending waiting list for students</h4>
+            {% if messages %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                
+              
+                {% for message in messages %}
+                  <strong> <i>{{ message }}</i> </strong>
+                  <br>
+                {% endfor %}
+                
+               
+              </div>
+              {% endif %}
+<table class="table">
+  <thead>
+    <tr>
+     
+      <th>course name</th>
+      <th>student_email</th>
+      <th>semster</th>
+      <th>instructor</th>
+      <th>approve</th>
+      <th>reject</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in WL %}
+  	  	<tr>
+          <td>{{i.course_name}}</td>
+  	      <td>{{i.student_email}}</td>
+  	      <td>{{i.semester}}</td>
+  	      <td>{{i.Instructor_email}}</td>
+          <td><a href="{% url 'acceptlist' i.id %}"><svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" fill="currentColor" class="bi bi-align-middle" viewBox="0 0 16 16">
+            <path d="M6 13a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v10zM1 8a.5.5 0 0 0 .5.5H6v-1H1.5A.5.5 0 0 0 1 8zm14 0a.5.5 0 0 1-.5.5H10v-1h4.5a.5.5 0 0 1 .5.5z"/>
+          </svg></a></td>
+          <td><strong><a href="{% url 'rejectlist' i.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg></a></strong></strong></td>
+
+        
+  	    </tr>
+    
+  	{% endfor %}
+  </tbody>
+</table>
+
+</br>
 
 {% endblock %}

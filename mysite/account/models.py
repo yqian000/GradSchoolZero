@@ -66,8 +66,6 @@ class Instructor(models.Model):
     last_name=models.CharField(max_length=150,blank="True")
     email=models.EmailField(gettext_lazy('email address'),unique=True,validators =[validate_mail])
     ID=models.PositiveIntegerField(default=00000000)
-
-   
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
     is_suspanded=models.BooleanField(default=False)
@@ -98,12 +96,13 @@ class course_record(models.Model):
     Instructor_email=models.EmailField(blank=True)
     semster=models.CharField(blank=True,max_length=20)
     grade=models.CharField(blank=True,max_length=3)
+    waiting_list=models.BooleanField(default=False)
     
 
 class Student(models.Model):
    
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
-    cr=models.OneToOneField(course_record,on_delete=models.CASCADE,blank=True,null=True)
+    cr=models.OneToOneField(course_record,on_delete=models.SET_NULL,blank=True,null=True)
     first_name=models.CharField(max_length=150,blank="True")
     last_name=models.CharField(max_length=150,blank="True")
     email=models.EmailField(gettext_lazy('CUNY Email'),unique=True)
@@ -120,9 +119,6 @@ class Student(models.Model):
 
     def __str__(self):
         return self.email
-
-
-
 
 
     
