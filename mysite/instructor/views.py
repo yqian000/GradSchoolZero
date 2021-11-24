@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.core import exceptions
 from django.shortcuts import render,redirect
 from .forms import *
 from .models import *
@@ -37,8 +39,12 @@ def complaintStudent(request):
 	return render(request, "instructor/fileComplaint.html", {"form":form, "r":request})
 
 def viewWaitlist(request):
-	return render(request, "instructor/viewWaitlist.html", {})
-
+	try:
+		WL=course_record.objects.filter(waiting_list=True,Instructor_email=request.user).order_by('course_name')
+		
+		return render(request, "instructor/viewWaitlist.html", {"WL":WL})
+	except:
+		return render(request, "instructor/viewWaitlist.html", {"WL":WL})
 
 def JobApplication(request):
 	if request.method=="POST":
@@ -51,3 +57,30 @@ def JobApplication(request):
 
 	context={'form':form}
 	return render(request,'instructor/job.html',context)
+
+def accept_waiting_list(request,pk=None):
+	try:
+		c=course_record.objects.get(id=pk)
+		c.waiting_list=False
+		c.save()
+		st=Student.objects.get(email=c.student_email)
+		CR=Course.objects.get(name=c.course_name,instructor=Instructor.objects.get(email=c.Instructor_email))
+		CR.curr_size+=1
+		CR.save()
+		st.course.add(CR)
+		st.save()
+		messages.success(request,"Successfully add students to the class")
+		return redirect("viewWaitlist")
+	except:
+		messages.success(request,"Something seems wrong")
+		return redirect("viewWaitlist")
+
+
+def reject_waiting_list(request,pk=None):
+	try:
+		c=course_record.objects.get(id=pk)
+		c.delete()
+		messages.success(request,"Reject the enrollment for students in "+ c.course_name)
+		return redirect("viewWaitlist")
+	except:
+		return redirect("viewWaitlist")
