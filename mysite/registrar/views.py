@@ -24,7 +24,7 @@ def registrarView(request):
 		for link in h2.find_all('a', href=True):
 			row.append(link["href"])
 			text.append(link.text)
-			print(text)
+		
 	
 	registrar=User.objects.get(email=request.user)
 	currentTime = datetime.datetime.now()

@@ -10,7 +10,7 @@ from registrar.models import *
 # Create your views here.
 
 def studentView(request):
-
+	
 
 	try:
 		if request.user.is_student:
@@ -19,7 +19,8 @@ def studentView(request):
 				student.fine = 1 # set to has fine
 				student.is_suspended = True
 				student.save()
-
+		if request. user. is_authenticated:
+			log=True
 			return render(request, "student/studentView.html", {"s":student})
 		else:
 			return render(request, "main/forbidden.html",{})
@@ -27,58 +28,62 @@ def studentView(request):
 			return render(request, "main/forbidden.html",{})
 
 def rateClass(request):
-	if request.method == "POST":
-		s = Student.objects.get(email=request.user.email)
+	if request.user.is_student:
+		if request.method == "POST":
+			s = Student.objects.get(email=request.user.email)
 
-		# validate if the student is currently enrolled in the course
-		# code goes here
-		
-		c = RateClass(email=s.email)
-		tabooList = Taboo.objects.all()
-		warning = 0
+			# validate if the student is currently enrolled in the course
+			# code goes here
+			
+			c = RateClass(email=s.email)
+			tabooList = Taboo.objects.all()
+			warning = 0
 
-		# clean up reviews and update warning if any
-		post = request.POST.copy()
-		review = (post['review']).lower()
-		for taboo in tabooList:
-			word = (taboo.word).lower()
-			while word in review:
-				review = review.replace(word, '*', 1)
-				warning = warning + 1
+			# clean up reviews and update warning if any
+			post = request.POST.copy()
+			review = (post['review']).lower()
+			for taboo in tabooList:
+				word = (taboo.word).lower()
+				while word in review:
+					review = review.replace(word, '*', 1)
+					warning = warning + 1
 
-		# update warning
-		if warning > 2:
-			s.warning += 2
-			s.save()
-			form = RateClassForm()
-			return render(request, "student/rateClass.html", {"form":form})
-		elif warning > 0:
-			s.warning += 1
-			s.save()
+			# update warning
+			if warning > 2:
+				s.warning += 2
+				s.save()
+				form = RateClassForm()
+				return render(request, "student/rateClass.html", {"form":form})
+			elif warning > 0:
+				s.warning += 1
+				s.save()
 
-		# update POST and save to db
-		post['review'] = review
-		request.POST = post
-		form = RateClassForm(request.POST, instance=c)
+			# update POST and save to db
+			post['review'] = review
+			request.POST = post
+			form = RateClassForm(request.POST, instance=c)
 
-		if form.is_valid():
-			form.save()
+			if form.is_valid():
+				form.save()
 
-	form = RateClassForm()
-	return render(request, "student/rateClass.html", {"form":form})
-
+		form = RateClassForm()
+		return render(request, "student/rateClass.html", {"form":form})
+	else:
+		return render(request, "main/forbidden.html",{})
 def fileComplaint(request):
-	if request.method == "POST":
-		# create a new StudentComplaint model and set the ID and is_completed
-		c = StudentComplaint(user_id=Student.objects.get(email=request.user.email).ID, is_completed=False)
-		form = FileComplaintForm(request.POST, instance=c)
+	if request.user.is_student:
+		if request.method == "POST":
+			# create a new StudentComplaint model and set the ID and is_completed
+			c = StudentComplaint(user_id=Student.objects.get(email=request.user.email).ID, is_completed=False)
+			form = FileComplaintForm(request.POST, instance=c)
 
-		if form.is_valid():
-			form.save()
-	
-	form = FileComplaintForm()
-	return render(request, "student/fileComplaint.html", {"form":form, "r":request})
-
+			if form.is_valid():
+				form.save()
+		
+		form = FileComplaintForm()
+		return render(request, "student/fileComplaint.html", {"form":form, "r":request})
+	else:
+		return render(request, "main/forbidden.html",{})
 def Application(request):
 	if request.method=="POST":
 		form=applicationForm(request.POST, request.FILES)
@@ -93,47 +98,57 @@ def Application(request):
 	return render(request,'main/admission.html',context)
 	
 def tutorial(request):
-	return render(request, "student/tutorial.html", {})
+	if request.user.is_student:
+		return render(request, "student/tutorial.html", {})
+	else:
+		return render(request, "main/forbidden.html",{})
 def avalibleclasses(request):
-	courses=Course.objects.filter(is_open=True)
-	return render(request,'student/Enrollment.html',{"courses":courses})
+	if request.user.is_student:
+		courses=Course.objects.filter(is_open=True)
+		return render(request,'student/Enrollment.html',{"courses":courses})
+	else:
+		return render(request, "main/forbidden.html",{})
 def add_sucessfully(request,pk):
-	student=Student.objects.get(email=request.user)
-	Enroll=Cart(CourseID=pk,Email=student.email)
-	Enroll.save()
-	student.enrollcart=Enroll
-	student.save()
-	courses=Course.objects.filter(is_open=True)
-	return redirect("enrollment")
+		student=Student.objects.get(email=request.user)
+		Enroll=Cart(CourseID=pk,Email=student.email)
+		Enroll.save()
+		student.enrollcart=Enroll
+		student.save()
+		courses=Course.objects.filter(is_open=True)
+		return redirect("enrollment")
 def enrollmentcart(request):
 	
+	if request.user.is_student:
+		try:
+			CD=Cart.objects.filter(Email=request.user)
+			row=[]
+			for ID in range(len(CD)):
+					if CD[ID].CourseID not in row:
+						row.append(CD[ID].CourseID)
+			course=[Course.objects.get(id=x) for x in row]
 
-	try:
-		CD=Cart.objects.filter(Email=request.user)
-		row=[]
-		for ID in range(len(CD)):
-				if CD[ID].CourseID not in row:
-					row.append(CD[ID].CourseID)
-		course=[Course.objects.get(id=x) for x in row]
-
-		cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
-		return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
-	except:
-		return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
+			cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
+			return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
+		except:
+			return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def deletefromEnrollment(request,pk=None):
-	
+	if request.user.is_student:
 
-	try:
-		if Cart.objects.get(id=pk)!=None:
-	
-				Cart.objects.get(id=pk).delete()
+		try:
+			if Cart.objects.get(id=pk)!=None:
+		
+					Cart.objects.get(id=pk).delete()
 
-		return redirect("enrollmentcart")
+			return redirect("enrollmentcart")
 
-	except:
-			
-		return redirect("enrollmentcart")
+		except:
+				
+			return redirect("enrollmentcart")
+	else :
+		return render(request, "main/forbidden.html",{})
 
 def enroll(request):
 
@@ -162,7 +177,7 @@ def enroll(request):
 
 						try:
 							if  course_record.objects.filter(student_email=request.user,course_name=course[i].name).reverse()[0]!="F":
-									messages.success(request, "Enroll Failed,according to CUNY policy, students can't retake the courses if they got D or higer before")
+									messages.success(request, "Enroll Failed,according to CUNY policy, students can't retake the courses if they got a grade of  D or higer")
 									return redirect("enrollmentcart")
 						except:
 							pass
@@ -298,5 +313,5 @@ def clearall(request):
 			return redirect("enrollmentcart")
 		except:
 			print("Hello")
-			messages.success(request, 'Somthing seems wrong, please try it one more time')
+			messages.success(request, 'Somthing seems wrong, please try it one more time , refresh pages or contact CUNY technology center')
 			return redirect("enrollmentcart")

@@ -2,6 +2,39 @@
 
 {% block usercontent %}
 
-<p>list of courses...</p>
+<h4>Courses overview</h4>
+           
+<table class="table">
+  <thead>
+    <tr>
+     
+    
+                <th >Course Name</th>
+                <th >Capacity</th>
+                <th >Enrolled Numbers</th>
+                <th>Start Time</th>
+                <th>Endtime</th>
+                <th>Meeting Date</th>
+             
+    
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in WL %}
+  	  	<tr>
+                    <td>{{i.name}}</td>
+                    <td>{{i.max_size}}</td>
+                    <td>{{i.curr_size}}</td>
+                    <td>{{i.start_time}}</td>
+                    <td>{{i.end_time}}</td>
+                    <td>{{i.meeting_date}}</td>
+                   
+  	    </tr>
+    
+  	{% endfor %}
+  </tbody>
+</table>
+
+</br>
 
 {% endblock %}

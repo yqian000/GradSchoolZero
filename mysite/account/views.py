@@ -5,11 +5,13 @@ from .forms import loginForm, signupForm,ResetpasswordForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import User
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.forms import fields,ValidationError
 # Create your views here.
 
-
+def logoutview(request):
+    logout(request)
+    return redirect('login')
 
 def signup(request):
     msg=None

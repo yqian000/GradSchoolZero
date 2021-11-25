@@ -10,7 +10,8 @@ urlpatterns = [
 	path('viewWaitlist/', views.viewWaitlist, name='viewWaitlist'),
 	path('career/', views.JobApplication, name='career'),
 	path('acceptlist/<int:pk>',views.accept_waiting_list,name='acceptlist'),
-	path('rejectlist/<int:pk>',views.reject_waiting_list,name="rejectlist")
+	path('rejectlist/<int:pk>',views.reject_waiting_list,name="rejectlist"),
+	path('accessCourse/',views.accessCourse,name="accessCourse")
 
 
 ]
