@@ -9,12 +9,33 @@ from .forms import *
 from .models import *
 from django.contrib import messages
 import csv
-
-
+import datetime
+from bs4 import BeautifulSoup
+import requests
 
 
 def registrarView(request):
-	return render(request, "registrar/registrarView.html", {})
+	url="https://www1.cuny.edu/mu/forum/"
+	r = requests.get(url)
+	row=[]
+	text=[]
+	soup = BeautifulSoup(r.content, 'html5lib')
+	for h2 in soup.find_all('h2'):
+		for link in h2.find_all('a', href=True):
+			row.append(link["href"])
+			text.append(link.text)
+			print(text)
+	
+	registrar=User.objects.get(email=request.user)
+	currentTime = datetime.datetime.now()
+	if currentTime.hour < 12:
+		greeting="good morning "
+	elif 12 <= currentTime.hour < 18:
+		greeting="good afternoon "
+	else:
+		greeting="Good evening "
+	
+	return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
 
 def viewNewUser(request):
 	try:

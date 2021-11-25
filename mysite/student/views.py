@@ -150,7 +150,7 @@ def enroll(request):
 					
 					# course in enrollment cart
 					course=[Course.objects.get(id=x) for x in row]
-					
+					cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
 					if len(Cart.objects.filter(Email=request.user))+len(course_record.objects.filter(student_email=request.user,grade=""))>4:
 						messages.success(request, "Enroll failed, you have reached the maxmium classes you can take per semester") # this ends *after* next_ starts
 						return redirect("enrollmentcart")
@@ -169,7 +169,7 @@ def enroll(request):
 				
 					
 
-					cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
+					
 
 					
 					
@@ -221,24 +221,28 @@ def enroll(request):
 					for i, this in enumerate(Monday):
 							for next_ in Monday[i+1:]:
 								if this[1] > next_[0]: 
-									messages.success(request, 'Schedule conflicts founded, enroll failed') # this ends *after* next_ starts
+									messages.success(request, 'Schedule conflicts founded in Monday, enroll failed') # this ends *after* next_ starts
 									return redirect("enrollmentcart")
 								
 					for i, this in enumerate(Tuseday):
 							for next_ in Thurseday[i+1:]:
 								if this[1] > next_[0]:  # this ends *after* next_ starts
+									messages.success(request, 'Schedule conflicts founded in Tuseday, enroll failed')
 									return redirect("enrollmentcart")
 					for i, this in enumerate(Thurseday):
 							for next_ in Thurseday[i+1:]:
 								if this[1] > next_[0]:  # this ends *after* next_ starts
+									messages.success(request, 'Schedule conflicts founded in Wednesday, enroll failed')
 									return redirect("enrollmentcart")
 					for i, this in enumerate(Wednesday):
 							for next_ in Wednesday[i+1:]:
 								if this[1] > next_[0]:  # this ends *after* next_ starts
+									messages.success(request, 'Schedule conflicts founded in Thursday, enroll failed')
 									return redirect("enrollmentcart")
 					for i, this in enumerate(Friday):
 							for next_ in Friday[i+1:]:
 								if this[1] > next_[0]:  # this ends *after* next_ starts
+									messages.success(request, 'Schedule conflicts founded in Friday, enroll failed')
 									return redirect("enrollmentcart")
 					
 					
@@ -256,7 +260,7 @@ def enroll(request):
 								CR.save()
 								st.cr=CR
 								st.save()
-							messages.success(request,i.name+"has been put in waiting list")
+							messages.success(request,i.name+" has been put in waiting list")
 							if(len(course))==1:
 								return redirect("enrollmentcart")
 
