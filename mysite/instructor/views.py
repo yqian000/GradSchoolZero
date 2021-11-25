@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.core import exceptions
 from django.shortcuts import render,redirect
+
+from mysite import instructor
 from .forms import *
 from .models import *
 from account.models import *
@@ -21,7 +23,12 @@ def instructorView(request):
 		return render(request, "main/forbidden.html",{})
 
 def accessCourse(request):
-	return render(request, "instructor/accessCourse.html", {})
+	try:
+		WL=Course.objects.filter(instructor=User.objects.get(email=request.user).id).order_by('name')
+		return render(request, "instructor/accessCourse.html", {"WL":WL})
+	except:
+		return render(request, "instructor/accessCourse.html")
+	
 
 def assignGrade(request):
 	return render(request, "instructor/assignGrade.html", {})
