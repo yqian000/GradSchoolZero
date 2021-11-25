@@ -2,6 +2,15 @@
 
 {% block usercontent %}
 
-<p>can see everything</p>
+<h1>{{g}} <bold>{{r.first_name}} {{r.last_name}}</bold>!</h1>
 
+<br>
+<br>
+<br>
+<h4><strong>News & Events </strong></h4>
+<div>
+{% for r,t in all_data %}
+<p><a href={{r}}>{{t}} </a></p>
+{% endfor %} 
+</div>
 {% endblock %}
