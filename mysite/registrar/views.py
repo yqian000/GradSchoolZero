@@ -293,24 +293,25 @@ def processClass(request, pk=None):
 		end_time1=c.end_time		if not request.POST['end_time'] else request.POST['end_time'] 
 		meeting_date1=c.meeting_date if not request.POST['meeting_date'] else request.POST['meeting_date'] 
 		max_size1=c.maxt_size  if not request.POST['max_size'] else request.POST['max_size'] 
-		
-		is_open1=c.is_open if not request.POST['start_time'] else request.POST['start_time'] 
+		instructor1=c.instructor  if not request.POST['instructor'] else request.POST['instructor']
+		is_open1=True if  request.POST.get('is_open')=='on' else False 
 		 
 		if form.is_valid():
 			form.save()
 		
 			cr=course_record.objects.filter(course_name=c.name,semester=Period.objects.last().term_info+ str(Period.objects.last().year),Instructor_email="TBD")
 			
-			for i in cr:
-				cr.Instructor_email=User.objects.get(id=c.instructor).email
-				i.save()
+			
 			c.start_time=start_time1
 			c.end_time=end_time1
 			c.meeting_date=meeting_date1
 			c.max_size=max_size1
 			c.is_open=is_open1
+			c.instructor=Instructor.objects.get(email=User.objects.get(id=instructor1).email)
 			c.save()
-		
+			for i in cr:
+				cr.Instructor_email=c.instructor
+				i.save()
 			pass
 			c = Course.objects.all()
 			return render(request, "registrar/setClass.html", {"c": c})
