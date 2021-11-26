@@ -89,7 +89,7 @@ class Course(models.Model):
     meeting_date=models.CharField(max_length=200,null=True,blank=True,help_text="If more than one meeting date,seperate by period")
     curr_size=models.PositiveSmallIntegerField(default=0) # number of students in class
     max_size=models.PositiveSmallIntegerField(default=8) # upper limit
-    is_open=models.BooleanField(default=False) # closed or cancelled class will be False
+    is_open=models.BooleanField(default=False,help_text="always check the box if you want to keep the classes open") # closed or cancelled class will be False
     is_dropped=models.BooleanField(default=False)
     start_time=models.CharField(max_length=5,null=True,blank=True)
     end_time=models.CharField(max_length=5,null=True,blank=True)

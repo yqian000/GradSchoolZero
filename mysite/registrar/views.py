@@ -307,7 +307,7 @@ def PeriodSetup(request):
 				period.is_course_registration=False
 			period.save()
 
-			messages.success(request, 'Period set up successful')
+			
 			return render(request, "registrar/periodsetup.html", {"form":form,"period":period})
 		else :
 			period=Period.objects.last()
