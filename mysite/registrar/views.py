@@ -10,22 +10,25 @@ from .models import *
 from django.contrib import messages
 import csv
 import datetime
+
 from bs4 import BeautifulSoup
 import requests
 
 
 def registrarView(request):
-	url="https://www1.cuny.edu/mu/forum/"
-	r = requests.get(url)
-	row=[]
-	text=[]
-	soup = BeautifulSoup(r.content, 'html5lib')
-	for h2 in soup.find_all('h2'):
-		for link in h2.find_all('a', href=True):
-			row.append(link["href"])
-			text.append(link.text)
-		
-	
+	if request.user.is_admin:
+		url="https://www1.cuny.edu/mu/forum/"
+		r = requests.get(url)
+		row=[]
+		text=[]
+		soup = BeautifulSoup(r.content, 'html5lib')
+		for h2 in soup.find_all('h2'):
+			for link in h2.find_all('a', href=True):
+				row.append(link["href"])
+				text.append(link.text)
+
+
+
 	registrar=User.objects.get(email=request.user)
 	currentTime = datetime.datetime.now()
 	if currentTime.hour < 12:
@@ -34,8 +37,20 @@ def registrarView(request):
 		greeting="Good Afternoon "
 	else:
 		greeting="Good Evening "
-	
+
 	return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
+		registrar=User.objects.get(email=request.user)
+		currentTime = datetime.datetime.now()
+		if currentTime.hour < 12:
+			greeting="good morning "
+		elif 12 <= currentTime.hour < 18:
+			greeting="good afternoon "
+		else:
+			greeting="Good evening "
+
+		return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def viewNewUser(request):
 	try:
@@ -51,280 +66,284 @@ def viewNewUser(request):
 		return render(request, "main/forbidden.html",{})
 
 def viewGrad(request):
-	return render(request, "registrar/viewGrad.html", {})
+	if request.user.is_admin:
+		return render(request, "registrar/viewGrad.html", {})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def viewRating(request):
-	rateClass = RateClass.objects.all()
-	return render(request, "registrar/viewRating.html", {"rates": rateClass})
+	if request.user.is_admin:
+		rateClass = RateClass.objects.all()
+		return render(request, "registrar/viewRating.html", {"rates": rateClass})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def setClass(request):
-	return render(request, "registrar/setClass.html", {})
+	if request.user.is_admin:
+		return render(request, "registrar/setClass.html", {})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def tabooList(request):
-	if request.method == "POST":
-		form = TabooForm(request.POST)
-		if form.is_valid():
-			form.save()
+	if request.user.is_admin:
+		if request.method == "POST":
+			form = TabooForm(request.POST)
+			if form.is_valid():
+				form.save()
 
-	taboo = Taboo.objects.all()
-	form = TabooForm()
-	return render(request, "registrar/tabooList.html", {"form":form, "taboo":taboo})
+		taboo = Taboo.objects.all()
+		form = TabooForm()
+		return render(request, "registrar/tabooList.html", {"form":form, "taboo":taboo})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def processStudentComplaint(request, pk=None):
-	if request.method == "POST":
-		# get the corresponding complaint
-		c = StudentComplaint.objects.get(id=pk)
+	if request.user.is_admin:
+		if request.method == "POST":
+			# get the corresponding complaint
+			c = StudentComplaint.objects.get(id=pk)
 
-		form = ProcessStudentComplaintForm(request.POST, instance=c)
+			form = ProcessStudentComplaintForm(request.POST, instance=c)
 
-		if form.is_valid():
-			form.save()
-			# mark is as completed
-			res = StudentComplaint.objects.get(id=pk)
-			res.is_completed = True
-			res.save()
+			if form.is_valid():
+				form.save()
+				# mark is as completed
+				res = StudentComplaint.objects.get(id=pk)
+				res.is_completed = True
+				res.save()
 
-			# process actions: 
-			# warn the student
-			if res.action == "ws":
-				s = Student.objects.get(ID=res.punish_id)
-				s.warning += 1
-				s.save()
-			# warn the instructor
-			elif res.action == "wi":
-				i = Instructor.objects.get(ID=res.punish_id)
-				i.warning += 1
-				i.save()
+				# process actions:
+				# warn the student
+				if res.action == "ws":
+					s = Student.objects.get(ID=res.punish_id)
+					s.warning += 1
+					s.save()
+				# warn the instructor
+				elif res.action == "wi":
+					i = Instructor.objects.get(ID=res.punish_id)
+					i.warning += 1
+					i.save()
 
-			scomplaint = StudentComplaint.objects.all()
-			icomplaint = InstructorComplaint.objects.all()
-			return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
+				scomplaint = StudentComplaint.objects.all()
+				icomplaint = InstructorComplaint.objects.all()
+				return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
-	form = ProcessStudentComplaintForm()
-	return render(request, "registrar/processStudentComplaint.html", {"form":form})
+		form = ProcessStudentComplaintForm()
+		return render(request, "registrar/processStudentComplaint.html", {"form":form})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def processInstructorComplaint(request, pk=None):
-	if request.method == "POST":
-		c = InstructorComplaint.objects.get(id=pk)
+	if request.user.is_admin:
+		if request.method == "POST":
+			c = InstructorComplaint.objects.get(id=pk)
 
-		form = ProcessInstructorComplaintForm(request.POST, instance=c)
+			form = ProcessInstructorComplaintForm(request.POST, instance=c)
 
-		if form.is_valid():
-			form.save()
-			# mark is as completed
-			res = InstructorComplaint.objects.get(id=pk)
-			res.is_completed = True
-			res.save()
+			if form.is_valid():
+				form.save()
+				# mark is as completed
+				res = InstructorComplaint.objects.get(id=pk)
+				res.is_completed = True
+				res.save()
 
-			# process actions
-			# warn the student
-			if res.action == "ws":
-				s = Student.objects.get(ID=res.punish_id)
-				s.warning += 1
-				s.save()
-			# warn the instructor
-			elif res.action == "wi":
-				i = Instructor.objects.get(ID=res.punish_id)
-				i.warning += 1
-				i.save()
-			elif res.action == "ds":
-				s = Student.objects.get(ID=res.punish_id)
-				s.is_suspended = True
-				s.save()
+				# process actions
+				# warn the student
+				if res.action == "ws":
+					s = Student.objects.get(ID=res.punish_id)
+					s.warning += 1
+					s.save()
+				# warn the instructor
+				elif res.action == "wi":
+					i = Instructor.objects.get(ID=res.punish_id)
+					i.warning += 1
+					i.save()
+				elif res.action == "ds":
+					s = Student.objects.get(ID=res.punish_id)
+					s.is_suspended = True
+					s.save()
 
-			scomplaint = StudentComplaint.objects.all()
-			icomplaint = InstructorComplaint.objects.all()
-			return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
+				scomplaint = StudentComplaint.objects.all()
+				icomplaint = InstructorComplaint.objects.all()
+				return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
 
-	form = ProcessInstructorComplaintForm()
-	return render(request, "registrar/processInstructorComplaint.html", {"form":form})
+		form = ProcessInstructorComplaintForm()
+		return render(request, "registrar/processInstructorComplaint.html", {"form":form})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def manageComplaint(request):
-	scomplaint = StudentComplaint.objects.all()
-	icomplaint = InstructorComplaint.objects.all()
-	return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
+	if request.user.is_admin:
+		scomplaint = StudentComplaint.objects.all()
+		icomplaint = InstructorComplaint.objects.all()
+		return render(request, "registrar/manageComplaint.html", {"sc": scomplaint, "ic": icomplaint})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def manageSuspension(request):
-	return render(request, "registrar/manageSuspension.html", {})
+	if request.user.is_admin:
+		return render(request, "registrar/manageSuspension.html", {})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def rejectapplications(request,pk=None):
-	try:
-		if Applcation.objects.get(id=pk)!=None:
-			if  float(Applcation.objects.get(id=pk).Gpa)<3:
+	if request.user.is_admin:
+		try:
+			if Applcation.objects.get(id=pk)!=None:
+				if  float(Applcation.objects.get(id=pk).Gpa)<3:
+					Applcation.objects.get(id=pk).delete()
+					return redirect("viewNewUser")
+
+				else:
+					Applcation.objects.get(id=pk).delete()
+					return render(request,"registrar/reasonform.html")
+		except:
+			return redirect("viewNewUser")
+	else:
+		return render(request, "main/forbidden.html",{})
+
+def acceptapplications(request,pk=None):
+	if request.user.is_admin:
+		try:
+			if  float(Applcation.objects.get(id=pk).Gpa)>3:
+				user=User.objects.last()
+				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
+				user=User(email=StudentEmail,username=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,is_student=True,First_login=True)
+				user.set_password(StudentEmail)
+				user.save()
+				ID=20000000+int(user.id)+1
+				student=Student(email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,ID=ID)
+				student.save()
+				try:
+					subject="Congratulations"
+					message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be .., and login password will be same."
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[Applcation.objects.get(id=pk).email]
+					send_mail(subject,message,email_from,recipent_list)
+				except:
+					print("hello")
+
 				Applcation.objects.get(id=pk).delete()
 				return redirect("viewNewUser")
 
 			else:
 				Applcation.objects.get(id=pk).delete()
 				return render(request,"registrar/reasonform.html")
-	except:
-			
-		return redirect("viewNewUser")
-
-def acceptapplications(request,pk=None):
-	
-	try:
-		if  float(Applcation.objects.get(id=pk).Gpa)>3:
-			user=User.objects.last()
-			StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
-			user=User(email=StudentEmail,username=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,is_student=True,First_login=True)
-			user.set_password(StudentEmail)
-			user.save()
-			ID=20000000+int(user.id)+1
-			student=Student(email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,ID=ID)
-			student.save()
-			try:
-				subject="Congratulations"
-				message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be .., and login password will be same."
-				email_from=settings.EMAIL_HOST_USER
-				recipent_list=[Applcation.objects.get(id=pk).email]
-				send_mail(subject,message,email_from,recipent_list)
-			except:
-				print("hello")
-
-			Applcation.objects.get(id=pk).delete()
+		except:
 			return redirect("viewNewUser")
-
-		else:
-			Applcation.objects.get(id=pk).delete()
-			return render(request,"registrar/reasonform.html")
-
-	
-	except:
-		return redirect("viewNewUser")
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def reject_job_application(request,pk=None):
-	try:
-		if career.objects.get(id=pk)!=None:
-			try:
-				subject="Sorry"
-				message="We appreciate your interest in CUNY and the time you’ve invested in applying for instructor role. There has been significant interest in this role At this time, we have made the decision to move forward with other applicants."
-				email_from=settings.EMAIL_HOST_USER
-				recipent_list=[career.objects.get(id=pk).email]
-				send_mail(subject,message,email_from,recipent_list)
-			except:
-				pass
-		
-			career.objects.get(id=pk).delete()
+	if request.user.is_admin:
+		try:
+			if career.objects.get(id=pk)!=None:
+				try:
+					subject="Sorry"
+					message="We appreciate your interest in CUNY and the time you’ve invested in applying for instructor role. There has been significant interest in this role At this time, we have made the decision to move forward with other applicants."
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[career.objects.get(id=pk).email]
+					send_mail(subject,message,email_from,recipent_list)
+				except:
+					pass
+
+				career.objects.get(id=pk).delete()
+				return redirect("viewNewUser")
+		except:
 			return redirect("viewNewUser")
-	except:
-		return redirect("viewNewUser")
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def accept_job_applications(request,pk=None):
-	
-	try:
-		if career.objects.get(id=pk)!=None:
-			user=User.objects.last()
-			ProfesorEmail=career.objects.get(id=pk).firstname[0]+career.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
-			user=User(email=ProfesorEmail,username=ProfesorEmail,first_name=career.objects.get(id=pk).firstname,last_name=career.objects.get(id=pk).lastname,is_instructor=True,First_login=True)
-			user.set_password(ProfesorEmail)
-			user.save()
-			ID=10000000+int(user.id)+1
-			instructor=Instructor(email=ProfesorEmail,first_name=career.objects.get(id=pk).firstname,last_name=career.objects.get(id=pk).lastname,ID=ID)
-			instructor.save()
-			try:
-				subject="Congratulations"
-				message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be .., and login password will be same."
-				email_from=settings.EMAIL_HOST_USER
-				recipent_list=[career.objects.get(id=pk).email]
-				send_mail(subject,message,email_from,recipent_list)
-			except:
-				pass
+	if request.user.is_admin:
+		try:
+			if career.objects.get(id=pk)!=None:
+				user=User.objects.last()
+				ProfesorEmail=career.objects.get(id=pk).firstname[0]+career.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
+				user=User(email=ProfesorEmail,username=ProfesorEmail,first_name=career.objects.get(id=pk).firstname,last_name=career.objects.get(id=pk).lastname,is_instructor=True,First_login=True)
+				user.set_password(ProfesorEmail)
+				user.save()
+				ID=10000000+int(user.id)+1
+				instructor=Instructor(email=ProfesorEmail,first_name=career.objects.get(id=pk).firstname,last_name=career.objects.get(id=pk).lastname,ID=ID)
+				instructor.save()
+				try:
+					subject="Congratulations"
+					message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be .., and login password will be same."
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[career.objects.get(id=pk).email]
+					send_mail(subject,message,email_from,recipent_list)
+				except:
+					pass
 
-			career.objects.get(id=pk).delete()
+				career.objects.get(id=pk).delete()
+				return redirect("viewNewUser")
+		except:
 			return redirect("viewNewUser")
-	except:
-			
-			return redirect("viewNewUser")
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def PeriodSetup(request):
-	if request.method=='POST':
-		
-	
-		
-		period=Period.objects.last()
-		form=Periodsetup(request.POST,instance=period)
-		class_setup=request.POST.get('is_class_setup')
-		course_registration=request.POST.get('is_course_registration')
-		class_running_period=request.POST.get('is_class_running_period')
+	if request.user.is_admin:
+		if request.method=='POST':
+			form=Periodsetup(request.POST)
+			period=Period.objects.last()
+			class_setup=request.POST.get('is_class_setup')
+			course_registration=request.POST.get('is_course_registration')
+			class_running_period=request.POST.get('is_class_running_period')
+			grading_period=request.POST.get('is_grading_period')
+			if class_setup=='on':
+				period.is_class_setup=True
+				period.is_course_registration=False
+				period.is_class_running_period=False
+				period.is_grading_period=False
+			if course_registration =='on':
+				period.is_course_registration=True
+				period.is_class_setup=False
+				period.is_class_running_period=False
+				period.is_grading_period=False
 
-		grading_period=request.POST.get('is_grading_period')
-	
-		if class_setup=='on':
-			period.is_class_setup=True
-			period.is_course_registration=False
-			period.is_class_running_period=False
-			period.is_grading_period=False
-		if course_registration =='on':
-			period.is_course_registration=True
-			period.is_class_setup=False
-			period.is_class_running_period=False
-			period.is_grading_period=False
+			if class_running_period=='on':
+				period.is_class_running_period=True
+				period.is_class_setup=False
+				period.s_course_registration=False
+				period.is_grading_period=False
 
-		if class_running_period=='on':
-			period.is_class_running_period=True
-			period.is_class_setup=False
-			period.s_course_registration=False
-			period.is_grading_period=False
+			if 	grading_period=='on':
+				period.is_grading_period=True
+				period.is_class_setup=False
+				period.is_class_running_period=False
+				period.is_course_registration=False
+			period.save()
 
-		if 	grading_period=='on':
-			period.is_grading_period=True
-			period.is_class_setup=False
-			period.is_class_running_period=False
-			period.is_course_registration=False
-		
-		
-		period.save()
-		form.save()
-		
-		messages.success(request, 'Period set up successful')
-		return render(request, "registrar/periodsetup.html", {"form":form,"period":period})
-	else :
-		period=Period.objects.last()
-		form=Periodsetup()
-		return render(request, "registrar/periodsetup.html",{"form":form,"period":period})
+			messages.success(request, 'Period set up successful')
+			return render(request, "registrar/periodsetup.html", {"form":form,"period":period})
+		else :
+			period=Period.objects.last()
+			form=Periodsetup()
+			return render(request, "registrar/periodsetup.html",{"form":form,"period":period})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def processClass(request, pk=None):
-	if request.method == "POST":
-		c = Course.objects.get(id=pk)
-		form = SetClassForm(request.POST, instance=c)
-		start_time1=c.start_time if not request.POST['start_time'] else request.POST['start_time'] 
-		end_time1=c.end_time		if not request.POST['end_time'] else request.POST['end_time'] 
-		meeting_date1=c.meeting_date if not request.POST['meeting_date'] else request.POST['meeting_date'] 
-		max_size1=c.maxt_size  if not request.POST['max_size'] else request.POST['max_size'] 
-		instructor1=c.instructor  if not request.POST['instructor'] else request.POST['instructor']
-		is_open1=True if  request.POST.get('is_open')=='on' else False 
-		 
-		if form.is_valid():
-			form.save()
-		
-			cr=course_record.objects.filter(course_name=c.name,semester=Period.objects.last().term_info+ str(Period.objects.last().year),Instructor_email="TBD")
-			
-			
-			c.start_time=start_time1
-			c.end_time=end_time1
-			c.meeting_date=meeting_date1
-			c.max_size=max_size1
-			c.is_open=is_open1
-			c.instructor=Instructor.objects.get(email=User.objects.get(id=instructor1).email)
-			c.save()
-			for i in cr:
-				cr.Instructor_email=c.instructor
-				i.save()
-			pass
-			c = Course.objects.all()
-			return render(request, "registrar/setClass.html", {"c": c})
-	
+	if request.user.is_admin:
+		if request.method == "POST":
+			c = Course.objects.get(id=pk)
+			form = SetClassForm(request.POST, instance=c)
 
-	form = SetClassForm()
-	return render(request, "registrar/processClass.html", {"form":form})
+			if form.is_valid():
+				form.save()
+
+				c = Course.objects.all()
+				return render(request, "registrar/setClass.html", {"c": c})
+
+		form = SetClassForm()
+		return render(request, "registrar/processClass.html", {"form":form})
+	else:
+		return render(request, "main/forbidden.html",{})
 
 def setClass(request):
-	c = Course.objects.all()
-	return render(request, "registrar/setClass.html", {"c": c})
-
-
-	
-
-	
-
+	if request.user.is_admin:
+		c = Course.objects.all()
+		return render(request, "registrar/setClass.html", {"c": c})
+	else:
+		return render(request, "main/forbidden.html",{})
