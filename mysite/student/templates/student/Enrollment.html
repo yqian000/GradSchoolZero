@@ -6,7 +6,7 @@
 
 <div class="container">
     
-    <h3>Avalible Classes</h3>
+    <h3>Available Classes</h3>
     <table class="table table-striped table-bordered table-hover table-dark">
         <thead>
             <tr>
@@ -37,9 +37,6 @@
                     <td>{{course.meeting_date}}</td>
                     <td>{{course.instructor}}</td>
         
-                    
-                
-            
                 <td><a onclick="myFunction()" href="{% url 'addclass' course.id %}" class="btn btn-info btn-sm">
                     <dive  class="glyphicon glyphicon-ok"></span> Add
                   </a></td>
@@ -50,13 +47,11 @@
 
         </table>
 
-        
-   
 </div>
 
 <script>
   function myFunction() {
-    alert("Sucessfully add the classes to enrollements");
+    alert("Successfully add the classes to enrollements");
   }
   </script>
 </form>
