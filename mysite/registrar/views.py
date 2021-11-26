@@ -10,6 +10,7 @@ from .models import *
 from django.contrib import messages
 import csv
 import datetime
+
 from bs4 import BeautifulSoup
 import requests
 
@@ -25,8 +26,19 @@ def registrarView(request):
 			for link in h2.find_all('a', href=True):
 				row.append(link["href"])
 				text.append(link.text)
-			
-		
+
+
+
+	registrar=User.objects.get(email=request.user)
+	currentTime = datetime.datetime.now()
+	if currentTime.hour < 12:
+		greeting="Good Morning "
+	elif 12 <= currentTime.hour < 18:
+		greeting="Good Afternoon "
+	else:
+		greeting="Good Evening "
+
+	return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
 		registrar=User.objects.get(email=request.user)
 		currentTime = datetime.datetime.now()
 		if currentTime.hour < 12:
@@ -35,7 +47,7 @@ def registrarView(request):
 			greeting="good afternoon "
 		else:
 			greeting="Good evening "
-		
+
 		return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
 	else:
 		return render(request, "main/forbidden.html",{})
@@ -100,7 +112,7 @@ def processStudentComplaint(request, pk=None):
 				res.is_completed = True
 				res.save()
 
-				# process actions: 
+				# process actions:
 				# warn the student
 				if res.action == "ws":
 					s = Student.objects.get(ID=res.punish_id)
@@ -234,7 +246,7 @@ def reject_job_application(request,pk=None):
 					send_mail(subject,message,email_from,recipent_list)
 				except:
 					pass
-			
+
 				career.objects.get(id=pk).delete()
 				return redirect("viewNewUser")
 		except:
@@ -302,7 +314,7 @@ def PeriodSetup(request):
 				period.is_class_running_period=False
 				period.is_course_registration=False
 			period.save()
-			
+
 			messages.success(request, 'Period set up successful')
 			return render(request, "registrar/periodsetup.html", {"form":form,"period":period})
 		else :
@@ -335,9 +347,3 @@ def setClass(request):
 		return render(request, "registrar/setClass.html", {"c": c})
 	else:
 		return render(request, "main/forbidden.html",{})
-
-
-	
-
-	
-

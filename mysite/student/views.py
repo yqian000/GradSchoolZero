@@ -10,6 +10,7 @@ from registrar.models import *
 # Create your views here.
 
 def studentView(request):
+
 	try:
 		if request.user.is_student:
 			student = Student.objects.get(user=request.user)
@@ -117,7 +118,7 @@ def fileComplaint(request):
 				messages.warning(request, "Failure: This person does not exist.")
 				form = FileComplaintForm()
 				return render(request, "student/fileComplaint.html", {"form":form})
-		
+
 		form = FileComplaintForm()
 		return render(request, "student/fileComplaint.html", {"form":form})
 	else:
@@ -126,7 +127,7 @@ def fileComplaint(request):
 def Application(request):
 	if request.method=="POST":
 		form=applicationForm(request.POST, request.FILES)
-			
+
 		application=Applcation(email=request.POST['email'],firstname=request.POST['firstname'],lastname=request.POST['lastname'],Gpa=request.POST['Gpa'],semester=request.POST['semester'],Birthday=request.POST['Birthday'],address=request.POST['address'],city=request.POST['city'],state=request.POST['state'],zip=request.POST['zip'],country=request.POST['country'],letters=request.FILES["letters"],personal_statement=request.FILES['personal_statement'],major=request.POST['Major'],transcprit=request.FILES['transcprit'])
 		application.save()
 		return redirect("home")
@@ -135,7 +136,7 @@ def Application(request):
 
 	context={'form':form}
 	return render(request,'main/admission.html',context)
-	
+
 def tutorial(request):
 	if request.user.is_student:
 		return render(request, "student/tutorial.html", {})
@@ -159,7 +160,7 @@ def add_sucessfully(request,pk):
 		return redirect("enrollment")
 
 def enrollmentcart(request):
-	
+
 	if request.user.is_student:
 		try:
 			CD=Cart.objects.filter(Email=request.user)
@@ -181,13 +182,13 @@ def deletefromEnrollment(request,pk=None):
 
 		try:
 			if Cart.objects.get(id=pk)!=None:
-		
+
 					Cart.objects.get(id=pk).delete()
 
 			return redirect("enrollmentcart")
 
 		except:
-				
+
 			return redirect("enrollmentcart")
 	else :
 		return render(request, "main/forbidden.html",{})
@@ -196,14 +197,14 @@ def enroll(request):
 
 	try:
 		if Period.objects.last().is_course_registration or Student.objects.get(email=request.user).is_special_assigned:
-		
+
 			st=Student.objects.get(email=request.user)#student
 			CD=Cart.objects.filter(Email=request.user)#course has been added to cart
 			row=[]
 			for ID in range(len(CD)):
 					if CD[ID].CourseID not in row:
 						row.append(CD[ID].CourseID)
-			
+
 			# course in enrollment cart
 			course=[Course.objects.get(id=x) for x in row]
 			cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
@@ -211,7 +212,7 @@ def enroll(request):
 				messages.warning(request, "Enroll failed, you have reached the maxmium classes you can take per semester") # this ends *after* next_ starts
 				return redirect("enrollmentcart")
 			for	i in range(len(CD)):
-					# to check if the courses in enrollemnt cart is already in the enrolled classes 
+					# to check if the courses in enrollemnt cart is already in the enrolled classes
 				if  len(course_record.objects.filter(student_email=request.user,course_name=course[i].name,grade=""))>0:
 					messages.warning(request, "Enroll failed, you tried to enroll same classes")
 					return redirect("enrollmentcart")
@@ -228,7 +229,7 @@ def enroll(request):
 			Wednesday=[]
 			Thurseday=[]
 			Friday=[]
-			
+
 			for i in range (len(course)):
 				if  "Monday".lower() in course[i].meeting_date.lower():
 					Monday.append([float(course[i].start_time),float(course[i].end_time)])
@@ -245,7 +246,7 @@ def enroll(request):
 				if "Friday".lower() in course[i].meeting_date.lower():
 					Friday.append([float(course[i].start_time),float(course[i].end_time)])
 					Friday.sort()
-			
+
 			try:
 				# course has enrolled
 				C=st.course.all()
@@ -267,13 +268,13 @@ def enroll(request):
 						Friday.sort()
 			except:
 				pass
-				
+
 			for i, this in enumerate(Monday):
 					for next_ in Monday[i+1:]:
-						if this[1] > next_[0]: 
+						if this[1] > next_[0]:
 							messages.success(request, 'Schedule conflicts founded in Monday, enroll failed') # this ends *after* next_ starts
 							return redirect("enrollmentcart")
-						
+
 			for i, this in enumerate(Tuseday):
 					for next_ in Thurseday[i+1:]:
 						if this[1] > next_[0]:  # this ends *after* next_ starts
@@ -294,12 +295,12 @@ def enroll(request):
 						if this[1] > next_[0]:  # this ends *after* next_ starts
 							messages.success(request, 'Schedule conflicts founded in Friday, enroll failed')
 							return redirect("enrollmentcart")
-			
-			
-			
+
+
+
 			for i in course :
 				if i. curr_size>=i.max_size:
-					
+
 					try:
 						CR=course_record(course_name=i.name,Instructor_email=i.instructor,student_email=st.email,waiting_list=True)
 						CR.save()
@@ -315,7 +316,7 @@ def enroll(request):
 						return redirect("enrollmentcart")
 
 				else:
-					
+
 					try:
 						CR=course_record(course_name=i.name,Instructor_email=i.instructor,student_email=st.email)
 						CR.save()
@@ -328,12 +329,12 @@ def enroll(request):
 					i.curr_size+=1
 					i.save()
 					st.save()
-				
+
 			for c in cd:
 				c.delete()
 			messages.success(request, "You've successfully enrolled in the classes")
 			return redirect("enrollmentcart")
-	except:	
+	except:
 				messages.error(request, "Oops! Something went wrong...")
 				return redirect("enrollmentcart")
 	else:
