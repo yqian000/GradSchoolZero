@@ -11,7 +11,7 @@ from registrar.models import *
 
 def studentView(request):
 	
-
+	
 	try:
 		if request.user.is_student:
 			student = Student.objects.get(user=request.user)

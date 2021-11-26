@@ -6,6 +6,12 @@ from account.models import Course
 from student.models import StudentComplaint
 from instructor.models import InstructorComplaint
 from .models import *
+import datetime
+def yearcheck(p1):
+	if p1!=int(datetime.datetime.now().year):
+		raise forms.ValidationError("Acdeimic year is "+str(date.today().year))
+
+	return p1
 
 class ProcessStudentComplaintForm(ModelForm):
 
@@ -33,18 +39,18 @@ class TabooForm(ModelForm):
 		model = Taboo
 		fields = '__all__'
 
-class Periodsetup(forms.Form):
+class Periodsetup(ModelForm):
 	is_class_setup=forms.BooleanField(label="calss set up period",required=False)
 	is_course_registration=forms.BooleanField(label="courser registrtion",required=False)
 	is_class_running_period=forms.BooleanField(label="class running period",required=False)
 	is_grading_period=forms.BooleanField(label="grading class period",required=False)
+
 	class Meta:
 		model = Period
 		fields = '__all__'
 
 
 class SetClassForm(ModelForm):
-
 	class Meta:
 		model = Course
-		fields = ['instructor', 'max_size', 'is_open','start_time','end_time']
+		fields = ['instructor','meeting_date','max_size', 'is_open','start_time','end_time']

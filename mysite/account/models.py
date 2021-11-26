@@ -1,5 +1,6 @@
 
 # Create your models here.
+from django.contrib.messages.api import MessageFailure
 from django.db import models
 from django.contrib.auth.models import AbstractUser,PermissionsMixin
 from django.db.models.base import Model
@@ -10,13 +11,20 @@ from django.contrib.auth.base_user import BaseUserManager
 import django.utils.timezone
 from django.conf import settings
 from student.models import *
-
+from registrar.models import*
+from django.contrib import messages
 
 def validate_mail(value):
     if "cuny.edu" in value:
         return value
     else:
         raise ValidationError("This field accepts mail id of CUNY only")
+def acdemic_check(value):
+    if value != Period.objects.last().term_info+ str(Period.objects.last().year):
+        print(value)
+        raise ValidationError("Acdemic year should be "+Period.objects.last().term_info+ str(Period.objects.last().year))
+ 
+
 class CustomUserManager(BaseUserManager):
 
     def create_user(self, email, password):
@@ -78,7 +86,7 @@ class Instructor(models.Model):
 class Course(models.Model):
     name=models.CharField(max_length=200)
     instructor=models.ForeignKey(Instructor,on_delete=models.CASCADE,blank=True,null=True)
-    meeting_date=models.CharField(max_length=200,null=True,blank=True)
+    meeting_date=models.CharField(max_length=200,null=True,blank=True,help_text="If more than one meeting date,seperate by period")
     curr_size=models.PositiveSmallIntegerField(default=0) # number of students in class
     max_size=models.PositiveSmallIntegerField(default=8) # upper limit
     is_open=models.BooleanField(default=False) # closed or cancelled class will be False
@@ -87,6 +95,7 @@ class Course(models.Model):
     end_time=models.CharField(max_length=5,null=True,blank=True)
     rate=models.DecimalField(max_digits=3,decimal_places=2)
     grade=models.CharField(max_length=1,blank=True,null=True)
+    semester=models.CharField(max_length=200,blank=True,null=True,validators=[acdemic_check],default=Period.objects.last().term_info+ str(Period.objects.last().year),help_text=Period.objects.last().term_info+ str(Period.objects.last().year))
 
     def __str__(self):
         return self.name
@@ -94,9 +103,10 @@ class course_record(models.Model):
     course_name=models.CharField(blank=True,max_length=200)
     student_email=models.EmailField(blank=True)
     Instructor_email=models.EmailField(blank=True)
-    semster=models.CharField(blank=True,max_length=20)
+    semester=models.CharField(blank=True,max_length=20,default=Period.objects.last().term_info+ str(Period.objects.last().year))
     grade=models.CharField(blank=True,max_length=3)
     waiting_list=models.BooleanField(default=False)
+    is_dropped=models.BooleanField(default=False)
     
 
 class Student(models.Model):

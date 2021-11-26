@@ -13,7 +13,8 @@ import datetime
 from bs4 import BeautifulSoup
 import requests
 
-
+def yearcheck():
+    return int(date.today().year)
 def registrarView(request):
 	url="https://www1.cuny.edu/mu/forum/"
 	r = requests.get(url)
@@ -29,11 +30,11 @@ def registrarView(request):
 	registrar=User.objects.get(email=request.user)
 	currentTime = datetime.datetime.now()
 	if currentTime.hour < 12:
-		greeting="good morning "
+		greeting="Good Morning "
 	elif 12 <= currentTime.hour < 18:
-		greeting="good afternoon "
+		greeting="Good Afternoon "
 	else:
-		greeting="Good evening "
+		greeting="Good Evening "
 	
 	return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
 
@@ -239,12 +240,17 @@ def accept_job_applications(request,pk=None):
 
 def PeriodSetup(request):
 	if request.method=='POST':
-		form=Periodsetup(request.POST)
+		
+	
+		
 		period=Period.objects.last()
+		form=Periodsetup(request.POST,instance=period)
 		class_setup=request.POST.get('is_class_setup')
 		course_registration=request.POST.get('is_course_registration')
 		class_running_period=request.POST.get('is_class_running_period')
+
 		grading_period=request.POST.get('is_grading_period')
+	
 		if class_setup=='on':
 			period.is_class_setup=True
 			period.is_course_registration=False
@@ -267,7 +273,10 @@ def PeriodSetup(request):
 			period.is_class_setup=False
 			period.is_class_running_period=False
 			period.is_course_registration=False
+		
+		
 		period.save()
+		form.save()
 		
 		messages.success(request, 'Period set up successful')
 		return render(request, "registrar/periodsetup.html", {"form":form,"period":period})
@@ -280,12 +289,32 @@ def processClass(request, pk=None):
 	if request.method == "POST":
 		c = Course.objects.get(id=pk)
 		form = SetClassForm(request.POST, instance=c)
-
+		start_time1=c.start_time if not request.POST['start_time'] else request.POST['start_time'] 
+		end_time1=c.end_time		if not request.POST['end_time'] else request.POST['end_time'] 
+		meeting_date1=c.meeting_date if not request.POST['meeting_date'] else request.POST['meeting_date'] 
+		max_size1=c.maxt_size  if not request.POST['max_size'] else request.POST['max_size'] 
+		
+		is_open1=c.is_open if not request.POST['start_time'] else request.POST['start_time'] 
+		 
 		if form.is_valid():
 			form.save()
-
+		
+			cr=course_record.objects.filter(course_name=c.name,semester=Period.objects.last().term_info+ str(Period.objects.last().year),Instructor_email="TBD")
+			
+			for i in cr:
+				cr.Instructor_email=User.objects.get(id=c.instructor).email
+				i.save()
+			c.start_time=start_time1
+			c.end_time=end_time1
+			c.meeting_date=meeting_date1
+			c.max_size=max_size1
+			c.is_open=is_open1
+			c.save()
+		
+			pass
 			c = Course.objects.all()
 			return render(request, "registrar/setClass.html", {"c": c})
+	
 
 	form = SetClassForm()
 	return render(request, "registrar/processClass.html", {"form":form})
