@@ -93,7 +93,7 @@ class Course(models.Model):
     is_dropped=models.BooleanField(default=False)
     start_time=models.CharField(max_length=5,null=True,blank=True)
     end_time=models.CharField(max_length=5,null=True,blank=True)
-    rate=models.DecimalField(max_digits=3,decimal_places=2)
+    rate=models.DecimalField(max_digits=3,decimal_places=2,null=True,blank=True)
     grade=models.CharField(max_length=1,blank=True,null=True)
     semester=models.CharField(max_length=200,blank=True,null=True,validators=[acdemic_check],default=Period.objects.last().term_info+ str(Period.objects.last().year),help_text=Period.objects.last().term_info+ str(Period.objects.last().year))
 

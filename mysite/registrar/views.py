@@ -13,8 +13,7 @@ import datetime
 from bs4 import BeautifulSoup
 import requests
 
-def yearcheck():
-    return int(date.today().year)
+
 def registrarView(request):
 	url="https://www1.cuny.edu/mu/forum/"
 	r = requests.get(url)
