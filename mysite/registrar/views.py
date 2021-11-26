@@ -325,21 +325,41 @@ def PeriodSetup(request):
 		return render(request, "main/forbidden.html",{})
 
 def processClass(request, pk=None):
-	if request.user.is_admin:
-		if request.method == "POST":
-			c = Course.objects.get(id=pk)
-			form = SetClassForm(request.POST, instance=c)
+  if request.user.is_admin:
+    if request.method == "POST":
+      c = Course.objects.get(id=pk)
+      form = SetClassForm(request.POST, instance=c)
+      start_time1=c.start_time if not request.POST['start_time'] else request.POST['start_time'] 
+      end_time1=c.end_time		if not request.POST['end_time'] else request.POST['end_time'] 
+      meeting_date1=c.meeting_date if not request.POST['meeting_date'] else request.POST['meeting_date'] 
+      max_size1=c.maxt_size  if not request.POST['max_size'] else request.POST['max_size'] 
+      instructor1=c.instructor  if not request.POST['instructor'] else request.POST['instructor']
+      is_open1=True if  request.POST.get('is_open')=='on' else False 
 
-			if form.is_valid():
-				form.save()
+      if form.is_valid():
+        form.save()
 
-				c = Course.objects.all()
-				return render(request, "registrar/setClass.html", {"c": c})
+        cr=course_record.objects.filter(course_name=c.name,semester=Period.objects.last().term_info+ str(Period.objects.last().year),Instructor_email="TBD")
 
-		form = SetClassForm()
-		return render(request, "registrar/processClass.html", {"form":form})
-	else:
-		return render(request, "main/forbidden.html",{})
+
+        c.start_time=start_time1
+        c.end_time=end_time1
+        c.meeting_date=meeting_date1
+        c.max_size=max_size1
+        c.is_open=is_open1
+        c.instructor=Instructor.objects.get(email=User.objects.get(id=instructor1).email)
+        c.save()
+        for i in cr:
+          cr.Instructor_email=User.objects.get(email=c.instructor)
+          i.save()
+        pass
+        c = Course.objects.all()
+        return render(request, "registrar/setClass.html", {"c": c})
+  return render(request, "main/forbidden.html",{})
+
+    form = SetClassForm()
+    return render(request, "registrar/processClass.html", {"form":form})
+	
 
 def setClass(request):
 	if request.user.is_admin:
