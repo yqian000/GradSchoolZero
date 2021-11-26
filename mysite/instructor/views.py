@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.core import exceptions
 from django.shortcuts import render,redirect
 
-from mysite import instructor
+# from mysite import instructor
 from .forms import *
 from .models import *
 from account.models import *
@@ -15,7 +15,7 @@ def instructorView(request):
 	if request.user.is_instructor:
 		student_list = Applcation.objects.all()
 		instructor = Instructor.objects.get(user=request.user)
-		if instructor.warning == 3:
+		if instructor.warning >= 3:
 			instructor.is_suspended = True
 			instructor.save()
 		return render(request, "instructor/instructorView.html", {'student_list': student_list, 'i':instructor})
