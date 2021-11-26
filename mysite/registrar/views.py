@@ -13,8 +13,7 @@ import datetime
 from bs4 import BeautifulSoup
 import requests
 
-def yearcheck():
-    return int(date.today().year)
+
 def registrarView(request):
 	url="https://www1.cuny.edu/mu/forum/"
 	r = requests.get(url)
@@ -310,7 +309,7 @@ def processClass(request, pk=None):
 			c.instructor=Instructor.objects.get(email=User.objects.get(id=instructor1).email)
 			c.save()
 			for i in cr:
-				cr.Instructor_email=c.instructor
+				cr.Instructor_email=User.objects.get(email=c.instructor)
 				i.save()
 			pass
 			c = Course.objects.all()
