@@ -156,7 +156,9 @@ def dropClass(request):
 
 			if form.is_valid():
 				messages.success(request, 'Success: class dropped and you will receive a "w" grade.')
+				selected_class.grade = 'w'
 				form.save()
+
 
 		form = DropClassForm()
 		return render(request, "student/dropClass.html", {"form":form})
