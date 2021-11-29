@@ -9,6 +9,7 @@ urlpatterns = [
 	path('viewNewUser/', views.viewNewUser, name='viewNewUser'),
 	path('viewGrad/', views.viewGrad, name='viewGrad'),
 	path('viewRating/', views.viewRating, name='viewRating'),
+	path('setTimePeriod/', views.setTimePeriod, name='setTimePeriod'),
 	path('setClass/', views.setClass, name='setClass'),
 	path('manageComplaint/', views.manageComplaint, name='manageComplaint'),
 	path('processStudentComplaint/<int:pk>', views.processStudentComplaint, name='processStudentComplaint'),

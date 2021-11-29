@@ -32,6 +32,9 @@ def viewRating(request):
 def setClass(request):
 	return render(request, "registrar/setClass.html", {})
 
+def setTimePeriod(request):
+	return render(request, "registrar/setTimePeriod.html", {})
+
 def processStudentComplaint(request, pk=None):
 	if request.method == "POST":
 		# get the corresponding complaint
