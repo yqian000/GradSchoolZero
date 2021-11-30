@@ -1,7 +1,37 @@
 {% extends 'registrar/registrarBase.html' %}
-
+{% load crispy_forms_tags %}
 {% block usercontent %}
 
-<p>set up classes...</p>
+<h4>All classes</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Course</th>
+      <th>meeting Date</th>
+      <th>Time</th>
+      <th>Size</th>
+      <th>Instructor</th>
+      <th>Open</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in c %}
+      <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.meeting_date}}</td>
+        <td>{{i.start_time}} - {{i.end_time}}</td>
+        <td>{{i.max_size}}</td>
+        <td>{{i.instructor}}</td>
+        <td>{{i.is_open}}</td>
+        
+        <td><a href="/processClass/{{i.id}}">set up</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

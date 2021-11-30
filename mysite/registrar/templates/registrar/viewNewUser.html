@@ -3,7 +3,8 @@
 {% block usercontent %}
 
 <div class="container">
-    {% if not homework_done %}
+    
+    <h3>Student Applications:</h3>
     <table class="table table-striped table-bordered table-hover table-dark">
         <thead>
             <tr>
@@ -35,10 +36,49 @@
             </tr>
             {% endfor %}
         </tbody>
+
+        </table>
+
+        
+        <h3>Instructors Applications:</h3>
+        <table class="table table-striped table-bordered table-hover table-dark">
+            <thead>
+                <tr>
+            
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Departments</th>
+                <th scope="col">Start  Date</th>
+                <th scope="col">Last Company</th>
+                <th scope="col">Reject</th>
+                <th scope="col">Approve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for job in jobs %}
+                <th scope="row">{{forloop.counter}}</th>
+               
+                    <td>{{job.firstname}}</td>
+                    <td>{{job.lastname}}</td>
+                    <td>{{job.departments}}</td>
+                    <td>{{job.startdate}}</td>
+                    <td>{{job.work_experiences}}</td>
+                    
+                
+                    <td><a href="{% url 'rejectjobapplications' job.id %}"><i class="fa fa-trash fa-2x"></i></a></td>
+                    <td><a href="{% url 'acceptjobapplications' job.id %}" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-ok"></span> Ok 
+                      </a></td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+        
     </table>
-    {% else %}
-    <h4>All homeworks are completed!! Create to have more!!</h4>
-    {% endif %}
+   
+   
 </div>
 
 

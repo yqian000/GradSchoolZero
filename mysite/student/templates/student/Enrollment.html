@@ -1,0 +1,59 @@
+{% extends 'student/studentBase.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block usercontent %}
+
+<div class="container">
+    
+    <h3>Available Classes</h3>
+    <table class="table table-striped table-bordered table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Course Name</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Enrolled Numbers</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">Endtime</th>
+                <th scope="col">Meeting Date</th>
+                <th scope="col">Instructor</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for course in courses %}
+                <th scope="row">{{forloop.counter}}</th>
+               
+                    <td>{{course.name}}</td>
+                    <td>{{course.semester}}</td>
+                    <td>{{course.max_size}}</td>
+                    <td>{{course.curr_size}}</td>
+                   
+                    <td>{{course.start_time}}</td>
+                    <td>{{course.end_time}}</td>
+                    <td>{{course.meeting_date}}</td>
+                    <td>{{course.instructor}}</td>
+        
+                <td><a onclick="myFunction()" href="{% url 'addclass' course.id %}" class="btn btn-info btn-sm">
+                    <dive  class="glyphicon glyphicon-ok"></span> Add
+                  </a></td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        </table>
+
+</div>
+
+<script>
+  function myFunction() {
+    alert("Successfully add the classes to enrollements");
+  }
+  </script>
+</form>
+ 
+{% endblock %}

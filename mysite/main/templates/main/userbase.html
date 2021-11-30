@@ -16,11 +16,11 @@
     * {box-sizing: border-box;}
 
     body { 
-      margin: 0;
+      margin: 0px;
       font-family: Arial, Helvetica, sans-serif;
       overflow-y:scroll;
     }
-
+   
     .header {
       overflow: hidden;
       background-color: #f1f1f1;
@@ -72,9 +72,31 @@
         float: none;
       }
     }
+
+    .alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
     </style>
-    <title>GradSchoolZero</title>
-  </head>
+  <title>GradSchoolZero</title>
+</head>
 
   <body data-spy="scroll" data-target=".navbar" data-offset="50">
 
@@ -82,24 +104,23 @@
       <a href="/" class="logo">GradSchoolZero</a>
     
       <div class="header-right">
-       
-        <a href="/">Home</a>
-        <a href="/login">Log in</a>
-        <a href="/signup">Sign up</a>
-        <a href="/admission">Admission</a>
+    
+        <a href="/logout">Logout</a>
       </div>
     </div>
+    
     <img class="sticky-sm-top" src="{% static 'images/cunylogo.png' %}" alt="Notes image">
+    
 
-    <div id="sidenav", name="sidenav", class="sidenav">
-      {% block sidenav %}
-      {% endblock %}
-    </div>
+      <div id="sidenav", name="sidenav", class="sidenav">
+        {% block sidenav %}
+        {% endblock %}
+      </div>
 
-    <div id="usercontent", name="usercontent", style="padding-left:280px">
-      {% block usercontent %}
-      {% endblock %}
-    </div>
+      <div id="usercontent", name="usercontent", style="padding-left:280px;padding-right:20px;">
+        {% block usercontent %}
+        {% endblock %}
+      </div>
     
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -109,5 +130,5 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
-</body>
+<!-- </body> -->
 </html>
