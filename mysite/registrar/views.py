@@ -89,6 +89,9 @@ def tabooList(request):
 	else:
 		return render(request, "main/forbidden.html",{})
 
+def setTimePeriod(request):
+	return render(request, "registrar/setTimePeriod.html", {})
+
 def processStudentComplaint(request, pk=None):
 	if request.user.is_admin:
 		if request.method == "POST":

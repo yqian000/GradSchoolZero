@@ -1,0 +1,109 @@
+{% extends 'registrar/registrarBase.html' %}
+
+{% block usercontent %}
+<h4>set up time period for the semster</h4>
+<label for="start">Start date:</label>
+
+<input type="date" id="start" name="trip-start"
+       value="2021-08-25"
+       min="2021-01-01" max="2021-12-31">
+
+<label for="end">End date:</label>
+
+<input type="date" id="start" name="trip-start"
+       value="2021-12-13"
+       min="2021-01-01" max="2021-12-31">
+
+<h4>class running period
+	<br>
+	<small>* courses with less than 5 students will be cancelled</small>
+</h4>
+
+
+<h4>Manage Students</h4> <small>* Students who have less than 2 courses will be warned; those students of the cancelled courses will be given one more chance to choose other courses</small><br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>Select Action</th>
+      <th>Submit</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in sc %}
+      {% if i.is_completed == False%}
+  	  	<tr>
+          <td>{{i.id}}</td>
+  	      <td>{{i.user_id}}</td>
+  	      <td>{{i.complainee}}</td>
+  	      <td>{{i.text}}</td>
+
+  	      <!-- Select Action button:select warnedStu/specialRegi <-->
+  	      <!-- Submit button:if select warned send to manage complaints if select  specialRegi approvel register in class running period <-->
+
+          <td><a href="/processStudentComplaint/{{i.id}}">Submit</a></td>
+  	    </tr>
+      {% endif%}
+  	{% endfor %}
+  </tbody>
+</table>
+
+</br>
+
+	<!-- manage Instructors view -->
+<h4>Manage Instructors</h4><small>* The instructors whose course were cancelled will be warned. Instructors whose courses were all cancelled will be suspended, all suspended instructors cannot teach in the next semester</small><br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>Select Action</th>
+      <th>Submit</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in sc %}
+      {% if i.is_completed == False%}
+  	  	<tr>
+          <td>{{i.id}}</td>
+  	      <td>{{i.user_id}}</td>
+  	      <td>{{i.complainee}}</td>
+  	      <td>{{i.text}}</td>
+
+  	      <!--> Select Action button:select warnedStu/specialRegi <-->
+  	      <!--> Submit button:if select warned send to manage complaints if select  specialRegi approvel register in class running period <-->
+  	      <td><a href="/processStudentComplaint/{{i.id}}">select</a></td>		
+          <td><a href="/processStudentComplaint/{{i.id}}">Submit</a></td>
+  	    </tr>
+      {% endif%}
+  	{% endfor %}
+  </tbody>
+</table>
+
+</br>
+
+
+
+
+<h4>Manage Students</h4><small>courses with less than 5 students will be cancelled</small><br>
+
+      <select>
+  <option value="warnedStu">warn the student</option>
+  <option value="specialRegi">special registration approval</option>
+	  </select>
+	  <button type="Submit">Submit</button>
+
+<h4>Manage Instructors</h4>
+<small>* The instructors whose course were cancelled will be warned. Instructors whose courses were all cancelled will be suspended, all suspended instructors cannot teach in the next semester</small><br>
+  <select>
+  <option value="warnedIns">warn the Instructor</option>
+  <option value="suspendedIns">suspended </option>
+  <option value="banIns">banned the Instructor next semester</option>
+	  </select>
+	  <button type="Submit">Submit</button>
+{% endblock %}
