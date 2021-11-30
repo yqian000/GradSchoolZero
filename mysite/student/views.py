@@ -137,6 +137,34 @@ def Application(request):
 	context={'form':form}
 	return render(request,'main/admission.html',context)
 
+def dropClass(request):
+	if request.user.is_student:
+		if request.method == "POST":
+			s = Student.objects.get(email=request.user.email)
+			selected_class = request.POST['course']
+			cr = course_record.objects.filter(student_email=request.user.email, grade='', waiting_list=False)
+			courses = [c.course_name for c in cr]
+
+			# validate if the student is currently enrolled in the course
+			if selected_class not in courses:
+				messages.warning(request, "Failure: You are not in the class or not within the grading period")
+				form = DropClassForm()
+				return render(request, "student/dropClass.html", {"form":form})
+
+			request.POST = post
+			form = DropClassForm(request.POST, instance=c)
+
+			if form.is_valid():
+				messages.success(request, 'Success: class dropped and you will receive a "w" grade.')
+				selected_class.grade = 'w'
+				form.save()
+
+
+		form = DropClassForm()
+		return render(request, "student/dropClass.html", {"form":form})
+	else:
+		return render(request, "main/forbidden.html",{})
+
 def tutorial(request):
 	if request.user.is_student:
 		return render(request, "student/tutorial.html", {})

@@ -69,6 +69,10 @@ class RateClass(models.Model):
     star = models.CharField(max_length=50, choices=STAR_CHOICES)
     review = models.CharField(max_length=800)
 
+class DropClass(models.Model):
+    email = models.EmailField()
+    course = models.CharField(max_length=50, choices=COURSE_CHOICES)
+
     
 class Cart(models.Model):
         CourseID=models.IntegerField(blank=True)
