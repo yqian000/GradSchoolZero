@@ -119,7 +119,7 @@ class Student(models.Model):
     ID=models.PositiveIntegerField(default=0)
     warning = models.PositiveSmallIntegerField(default=0) #[0, 32767]
     is_warned=models.BooleanField(default=False)
-    GPA=models.IntegerField(default=0)
+    GPA=models.DecimalField(decimal_places=2,default=0,max_digits=5)
     is_suspanded=models.BooleanField(default=False)
     is_graduate=models.BooleanField(default=False)
     credit=models.PositiveSmallIntegerField(default=0) #[0, 32767]

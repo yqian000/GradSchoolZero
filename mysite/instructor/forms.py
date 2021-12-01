@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import models
 from django.forms import fields, ModelForm
+
+from  account.models import  *
 from .models import *
 from django import forms
 from django.contrib.auth import models
@@ -8,7 +10,7 @@ from django.forms import fields, ModelForm
 from django.forms.fields import EmailField,DateField
 import datetime
 from django.core.exceptions import ValidationError
-from .models import *
+
 
 class FileComplaintForm(ModelForm):
     complainee=forms.CharField(
@@ -114,3 +116,18 @@ class jobForm(forms.Form):
     class Meta:
         model=career
         fields=['email',"firstname","lastname"," salary_requirement"," Portfolio_website","Department","resume","start_date","phone","work_experience"]
+
+
+GRADE_CHOICES =(
+    ("A", "A"),
+    ("B", "B"),
+    ("C", "C"),
+    ("D", "D"),
+    ("F", "F"),
+    ("W", "W"),
+)
+class gradeform(ModelForm):
+    grade= forms.ChoiceField(choices = GRADE_CHOICES,label="input the grade for the student:")
+    class Meta:
+        model=course_record
+        fields=['grade']

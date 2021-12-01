@@ -1,7 +1,51 @@
 {% extends 'instructor/instructorBase.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block usercontent %}
 
-<p>assign grades...</p>
+<h4>Pending gradig list for students</h4>
+            {% if messages %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                
+              
+                {% for message in messages %}
+                  <strong> <i>{{ message }}</i> </strong>
+                  <br>
+                {% endfor %}
+                
+               
+              </div>
+              {% endif %}
+<table class="table">
+  <thead>
+    <tr>
+     
+      <th>course name</th>
+      <th>student_email</th>
+      <th>semster</th>
+      <th>grade</th>
+      <th>grade page</th>
+        
+      
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in WL %}
+  	  	<tr>
+          <td>{{i.course_name}}</td>
+  	      <td>{{i.student_email}}</td>
+  	      <td>{{i.semester}}</td>
+          <td>{{i.grade}}</td>
+        
+          <td><a href="/grade/{{i.id}}">adjust grade</a></td>
+  	    </tr>
+    
+  	{% endfor %}
+  </tbody>
+</table>
+
+</br>
 
 {% endblock %}
