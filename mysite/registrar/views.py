@@ -38,7 +38,7 @@ def registrarView(request):
 			greeting="Good Evening "
 
 		return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
-		
+
 
 
 	else:
@@ -307,46 +307,7 @@ def PeriodSetup(request):
 				period.is_course_registration=False
 			period.save()
 
-			curr_period = Period.objects.last()
-			# features in class running period
-			if curr_period.is_class_running_period == True:
-				# warn students with < 2 courses
-				students = Student.objects.filter(is_suspanded=False)
-				for student in students:
-					if len(course_record.objects.filter(student_email=student.email, grade='', waiting_list=False)) < 2:
-						student.warning += 1
-						student.save()
 
-				# cancel courses with < 5 students & mark those students as special & warn instructor
-				courses = Course.objects.filter(is_open=True)
-				for course in courses:
-					cancelled_courses = course_record.objects.filter(course_name=course.name, grade='', waiting_list=False)
-					if len(cancelled_courses) < 5:
-						for cancelled_course in cancelled_courses:
-							# mark those students as special
-							special_student = Student.objects.get(email=cancelled_course.student_email)
-							special_student.is_special_assigned = True
-							special_student.save()
-							# delete this course record
-							cancelled_course.delete()
-						# set course to closed
-						course.is_open = False
-						course.save()
-						# warn instructor
-						instructor_warned = course.instructor
-						instructor_warned.warning += 1
-						instructor_warned.save()
-
-				# suspend instructor whose course are all cancelled
-				open_courses = Course.objects.filter(is_open=True)
-				instructors = Instructor.objects.filter(is_suspanded=False)
-				for instructor in instructors:
-					if not Course.objects.filter(instructor=instructor, is_open=True).exists():
-						instructor.is_suspanded = True
-						instructor.save()
-						# TODO: the suspanded instructor cannot teach next semester 
-
-			messages.success(request, 'Period set up successful')
 			return render(request, "registrar/periodsetup.html", {"form":form,"period":period})
 		else :
 			period=Period.objects.last()
@@ -360,18 +321,18 @@ def processClass(request, pk=None):
 		if request.method == "POST":
 			c = Course.objects.get(id=pk)
 			form = SetClassForm(request.POST, instance=c)
-			start_time1=c.start_time if not request.POST['start_time'] else request.POST['start_time'] 
-			end_time1=c.end_time		if not request.POST['end_time'] else request.POST['end_time'] 
-			meeting_date1=c.meeting_date if not request.POST['meeting_date'] else request.POST['meeting_date'] 
-			max_size1=c.maxt_size  if not request.POST['max_size'] else request.POST['max_size'] 
+			start_time1=c.start_time if not request.POST['start_time'] else request.POST['start_time']
+			end_time1=c.end_time		if not request.POST['end_time'] else request.POST['end_time']
+			meeting_date1=c.meeting_date if not request.POST['meeting_date'] else request.POST['meeting_date']
+			max_size1=c.maxt_size  if not request.POST['max_size'] else request.POST['max_size']
 			instructor1=User.objects.get(email=c.instructor).id  if not request.POST['instructor'] else request.POST['instructor']
-			is_open1=True if  request.POST.get('is_open')=='on' else False 
-			
+			is_open1=True if  request.POST.get('is_open')=='on' else False
+
 			if form.is_valid():
 				form.save()
-			
-				
-				
+
+
+
 				c.start_time=start_time1
 				c.end_time=end_time1
 				c.meeting_date=meeting_date1
@@ -381,7 +342,7 @@ def processClass(request, pk=None):
 				c.save()
 				try:
 					cr=course_record.objects.filter(course_name=c.name,semester=Period.objects.last().term_info+ str(Period.objects.last().year),Instructor_email="TBD")
-					
+
 					for i in cr:
 						cr.Instructor_email=c.instructor
 						i.save()
@@ -389,7 +350,7 @@ def processClass(request, pk=None):
 					pass
 				c = Course.objects.all()
 				return render(request, "registrar/setClass.html", {"c": c})
-	
+
 
 		form = SetClassForm()
 		return render(request, "registrar/processClass.html", {"form":form})

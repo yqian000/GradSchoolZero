@@ -33,10 +33,63 @@ def accessCourse(request):
 		return render(request, "main/forbidden.html",{})
 
 def assignGrade(request):
-	if request.user.is_instructor:
-		return render(request, "instructor/assignGrade.html", {})
+	if request.user.is_instructor :
+		if   Period.is_grading_period:
+			
+				
+				
+				WL=course_record.objects.filter(Instructor_email=request.user,grade="").order_by('course_name')
+		
+				
+				return render(request, "instructor/assignGrade.html", {"WL":WL})
+			
+		else:
+
+
+				messages.success(request,"visit the grading page during grading period")
+				return render(request, "instructor/assignGrade.html")
+				
+			
 	else:
 		return render(request, "main/forbidden.html",{})
+def grade(request,pk=None):
+		if request.user.is_instructor :
+			if request.method == "POST" and Period.is_grading_period:
+
+				c=course_record.objects.get(id=pk)
+				form=gradeform(request.POST,instance=c)
+				student=Student.objects.get(email=c.student_email)
+
+				form.save()
+
+				
+				GPA=course_record.objects.filter(student_email=student.email).all().exclude(grade="")
+					
+				print(GPA)
+					
+				if c.grade=="A":
+						student.GPA=(student.GPA+4)/len(GPA)
+				elif c.grade=="B":
+						student.GPA=(student.GPA+3.5)/len(GPA)
+				elif c.grade=='C':
+						student.GPA=(student.GPA+3)/len(GPA)
+				elif c.grade=='D':
+						student.GPA=(student.GPA+2.5)/len(GPA)
+				elif c.grade=='C':
+						student.GPA=(student.GPA+0)/len(GPA)
+				student.save()
+				
+				return redirect("assignGrade")
+			else:
+				c=course_record.objects.get(id=pk)
+				student=Student.objects.get(email=c.student_email)
+				form=gradeform()
+				return render(request, "instructor/processgrade.html", {"form":form,"c":c,"s":student})
+			
+		
+		else:
+			return render(request, "main/forbidden.html",{})
+	
 
 def complaintStudent(request):
 	if request.user.is_instructor:
@@ -109,3 +162,4 @@ def reject_waiting_list(request,pk=None):
 			return redirect("viewWaitlist")
 	else:
 		return render(request, "main/forbidden.html",{})
+
