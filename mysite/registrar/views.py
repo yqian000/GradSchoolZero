@@ -213,7 +213,7 @@ def acceptapplications(request,pk=None):
 					recipent_list=[Applcation.objects.get(id=pk).email]
 					send_mail(subject,message,email_from,recipent_list)
 				except:
-					print("hello")
+					pass
 
 				Applcation.objects.get(id=pk).delete()
 				return redirect("viewNewUser")
@@ -361,5 +361,79 @@ def setClass(request):
 	if request.user.is_admin:
 		c = Course.objects.all()
 		return render(request, "registrar/setClass.html", {"c": c})
+	else:
+		return render(request, "main/forbidden.html",{})
+def honor(request):
+	if request.user.is_admin:
+		if not Period.objects.last().is_grading_period:
+		
+			list1=Student.objects.filter(yearinschool__gte=2,GPA__gte=3.5)
+			
+
+			semester=Period.objects.last().term_info+ str(Period.objects.last().year)
+			courserecord=course_record.objects.filter(semester=semester).all().exclude(grade="").order_by("student_email")
+			
+			studentlist={n.student_email:[0,0]  for n in courserecord}
+			g={"A":4,"B":3.5,"C":3,"D":2.5,"F":0,"W":0}
+			for i in courserecord:
+				studentlist[i.student_email][0]+=g[i.grade]
+				studentlist[i.student_email][1]+=1
+			list2=[]
+			gpa=[]
+			for i in studentlist:
+				if studentlist[i][0]/studentlist[i][1]>=3.75:
+					
+					list2.append(Student.objects.get(email=i))
+				
+					gpa.append(studentlist[i][0]/studentlist[i][1])
+			
+
+			
+			return render(request, "registrar/honorstudents.html",{"list1":list1,"list2":zip(list2,gpa),"semester":semester})
+		else:
+			return render(request, "registrar/honorstudents.html")
+	else:
+		return render(request, "main/forbidden.html",{})
+def assignhonor(request):
+	if request.user.is_admin:
+		if not Period.objects.last().is_grading_period:
+			
+				list1=Student.objects.filter(yearinschool__gte=2,GPA__gte=3.5)
+				for i in list1:
+					if i.warning>0:
+						i.wanrning-=1
+						i.save()
+					else:
+						i.Honors+=1
+						i.save()
+
+				semester=Period.objects.last().term_info+ str(Period.objects.last().year)
+				courserecord=course_record.objects.filter(semester=semester).all().exclude(grade="").order_by("student_email")
+				
+				studentlist={n.student_email:[0,0]  for n in courserecord}
+				g={"A":4,"B":3.5,"C":3,"D":2.5,"F":0,"W":0}
+				for i in courserecord:
+					studentlist[i.student_email][0]+=g[i.grade]
+					studentlist[i.student_email][1]+=1
+				list2=[]
+				gpa=[]
+				for i in studentlist:
+					if studentlist[i][0]/studentlist[i][1]>=3.75:
+						
+						list2.append(Student.objects.get(email=i))
+					
+						gpa.append(studentlist[i][0]/studentlist[i][1])
+				for i in list2:
+					if i.warning>0:
+						i.wanrning-=1
+						i.save()
+					else:
+						i.Honors+=1
+						i.save()
+
+				
+				return redirect("honorlist")
+		else:
+				return redirect("honorlist")
 	else:
 		return render(request, "main/forbidden.html",{})

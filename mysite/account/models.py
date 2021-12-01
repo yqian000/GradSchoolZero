@@ -126,6 +126,8 @@ class Student(models.Model):
     fine=models.PositiveSmallIntegerField(default=0) # 0->no fine; 1->has fine; 2->fine received
     is_special_assigned=models.BooleanField(default=False,null=True,blank=True)
     course=models.ManyToManyField(Course,blank=True)
+    yearinschool=models.IntegerField(default=0,blank=True)
+    Honors=models.IntegerField(default=0,blank=True)
 
     def __str__(self):
         return self.email
