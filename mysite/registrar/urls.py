@@ -22,4 +22,6 @@ urlpatterns = [
 	path('acceptjobapplications/<int:pk>', views.accept_job_applications, name='acceptjobapplications'),
 	path('periodsetup/', views.PeriodSetup, name='periodsetup'),
 	path('setClass/', views.setClass, name='setClass'),
+	path('honorlist/', views.honor, name='honorlist'),
+	path('assignhonor/', views.assignhonor, name='assignhonor'),
 ]

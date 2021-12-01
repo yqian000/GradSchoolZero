@@ -54,7 +54,7 @@ def assignGrade(request):
 		return render(request, "main/forbidden.html",{})
 def grade(request,pk=None):
 		if request.user.is_instructor :
-			if request.method == "POST" and Period.is_grading_period:
+			if request.method == "POST" and Period.objects.last().is_grading_period:
 
 				c=course_record.objects.get(id=pk)
 				form=gradeform(request.POST,instance=c)
@@ -84,6 +84,7 @@ def grade(request,pk=None):
 				c=course_record.objects.get(id=pk)
 				student=Student.objects.get(email=c.student_email)
 				form=gradeform()
+				messages.success(request,"Visit grading page during the grading period")
 				return render(request, "instructor/processgrade.html", {"form":form,"c":c,"s":student})
 			
 		
@@ -143,6 +144,14 @@ def accept_waiting_list(request,pk=None):
 			st.course.add(CR)
 			st.save()
 			messages.success(request,"Successfully add students to the class")
+			try:
+					subject="Regarding"+ c.course_name+" waiting list"
+					message="you're granted the permission for enrollment for"+c.course_name
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[c.student_email]
+					send_mail(subject,message,email_from,recipent_list)
+			except:
+					pass
 			return redirect("viewWaitlist")
 		except:
 			messages.success(request,"Something seems wrong")
@@ -157,6 +166,14 @@ def reject_waiting_list(request,pk=None):
 			c=course_record.objects.get(id=pk)
 			c.delete()
 			messages.success(request,"Reject the enrollment for students in "+ c.course_name)
+			try:
+					subject="sorry"
+					message=c.course_name+"is closed,you are not granted the permission for the classes"
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[c.student_email]
+					send_mail(subject,message,email_from,recipent_list)
+			except:
+					pass
 			return redirect("viewWaitlist")
 		except:
 			return redirect("viewWaitlist")
