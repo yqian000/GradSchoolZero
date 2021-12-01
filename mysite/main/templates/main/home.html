@@ -1,7 +1,76 @@
 {% extends 'main/base.html' %}
-
 {% block content %}
-<p> 
-  Welcome
-</p>
+<div class="col">
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Welcome</h4>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">About</h5>
+        <p class="card-text">
+          <p>
+            Welcome to GradschoolZero
+          </p>
+
+          <p>
+            GradSchoolZero is a student management system. GradSchoolZero provides student
+            
+          </p>
+            <p> 
+              Degree we offer: Computer Science 
+            </p>
+          </p>
+          <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Courses</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- read more modal -->
+    <div class="row">
+      <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+          <div class="card card-body">
+            <div>
+               <p>   
+               To graduate, students need to complete 24 credits or more 
+               </p>
+               <p> 
+               Courses need to be completed:
+               </p>
+               <p> 
+               o	Programming Languages
+               </p>
+               <p> 
+               o	Advanced Data Structures
+               </p>
+               
+               <p> 
+               o	Advanced Algorithms
+               </p>
+               
+               <p>
+               o	Software Engineering
+               </p>
+               <p>
+               o	Operating Systems
+               </p>
+               <p>
+               o	Computer Systems
+               </p>
+               <p>
+               o	Computer Security
+               </p>
+               <p>
+               o	Machine Learning
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+  
+</div>
+
 {% endblock %}
