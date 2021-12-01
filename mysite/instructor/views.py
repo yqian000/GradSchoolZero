@@ -61,11 +61,23 @@ def grade(request,pk=None):
 				student=Student.objects.get(email=c.student_email)
 
 				form.save()
-
-				
+				course=Course.objects.get(name=c.course_name,semester=c.semester,instructor=User.objects.get(email=request.user).id)
+				overal_gpa=course_record.objects.filter(course_name=course.name,semester=course.semester,Instructor_email=request.user)
+				Gpa=0
+				for i in overal_gpa:
+					if i.grade=="A":
+						Gpa+=4
+					elif i.grade=="B":
+						Gpa+=3.5
+					elif i.grade=='C':
+						Gpa+=3
+					elif i.grade=='D':
+						Gpa+=2.5
+					elif i.grade=='F' or i.grade=="W":
+						Gpa+=0
+				course.gpa=Gpa/len(overal_gpa)
+				course.save()
 				GPA=course_record.objects.filter(student_email=student.email).all().exclude(grade="")
-					
-				print(GPA)
 					
 				if c.grade=="A":
 						student.GPA=(student.GPA+4)/len(GPA)
@@ -75,7 +87,7 @@ def grade(request,pk=None):
 						student.GPA=(student.GPA+3)/len(GPA)
 				elif c.grade=='D':
 						student.GPA=(student.GPA+2.5)/len(GPA)
-				elif c.grade=='C':
+				elif c.grade=='F' or c.grade=="W":
 						student.GPA=(student.GPA+0)/len(GPA)
 				student.save()
 				
@@ -84,10 +96,9 @@ def grade(request,pk=None):
 				c=course_record.objects.get(id=pk)
 				student=Student.objects.get(email=c.student_email)
 				form=gradeform()
-				messages.success(request,"Visit grading page during the grading period")
-				return render(request, "instructor/processgrade.html", {"form":form,"c":c,"s":student})
+				
+				return render(request, "instructor/processgrade.html",{"s":student,"form":form,"c":c})
 			
-		
 		else:
 			return render(request, "main/forbidden.html",{})
 	

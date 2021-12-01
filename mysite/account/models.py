@@ -78,9 +78,6 @@ class Instructor(models.Model):
     is_warned=models.BooleanField(default=False)
     is_suspanded=models.BooleanField(default=False)
     is_working=models.BooleanField(default=True)
-    is_suspanded=models.BooleanField(default=False)
-    is_working=models.BooleanField(default=False)
-
     def __str__(self):
         return self.email
 class Course(models.Model):
@@ -91,10 +88,11 @@ class Course(models.Model):
     max_size=models.PositiveSmallIntegerField(default=8) # upper limit
     is_open=models.BooleanField(default=False,help_text="always check the box if you want to keep the classes open") # closed or cancelled class will be False
     is_dropped=models.BooleanField(default=False)
+    is_cancled=models.BooleanField(default=False)
     start_time=models.CharField(max_length=5,null=True,blank=True)
     end_time=models.CharField(max_length=5,null=True,blank=True)
     rate=models.DecimalField(max_digits=3,decimal_places=2,null=True,blank=True)
-    grade=models.CharField(max_length=1,blank=True,null=True)
+    gpa=models.DecimalField(decimal_places=2,default=0,max_digits=5,blank=True)
     semester=models.CharField(max_length=200,blank=True,null=True,validators=[acdemic_check],default=Period.objects.last().term_info+ str(Period.objects.last().year),help_text=Period.objects.last().term_info+ str(Period.objects.last().year))
 
     def __str__(self):
@@ -133,4 +131,11 @@ class Student(models.Model):
         return self.email
 
 
-    
+now=Period.objects.last().year +  0.5 if Period.objects.last().term_info=="Spring" else  1 
+class suspension(models.Model):
+    first_name=models.CharField(max_length=150,blank="True")
+    last_name=models.CharField(max_length=150,blank="True")
+    email=models.EmailField(gettext_lazy('CUNY Email'))
+    ID=models.PositiveIntegerField(default=0)
+    suppension_start_year=models.DecimalField(decimal_places=2,default=0,max_digits=5,blank=True)
+    suspension_length=models.DecimalField(decimal_places=2,default=0,max_digits=5,blank=True)
