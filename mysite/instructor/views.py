@@ -16,7 +16,7 @@ def instructorView(request):
 		student_list = Applcation.objects.all()
 		instructor = Instructor.objects.get(user=request.user)
 		if instructor.warning >= 3:
-			instructor.is_suspended = True
+			instructor.is_suspanded = True
 			instructor.save()
 		return render(request, "instructor/instructorView.html", {'student_list': student_list, 'i':instructor})
 	else:

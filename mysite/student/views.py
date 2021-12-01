@@ -16,7 +16,7 @@ def studentView(request):
 			student = Student.objects.get(user=request.user)
 			if student.warning >= 3:
 				student.fine = 1 # set to has fine
-				student.is_suspended = True
+				student.is_suspanded = True
 				student.save()
 		if request. user. is_authenticated:
 			log=True
@@ -190,18 +190,23 @@ def add_sucessfully(request,pk):
 def enrollmentcart(request):
 
 	if request.user.is_student:
-		try:
-			CD=Cart.objects.filter(Email=request.user)
-			row=[]
-			for ID in range(len(CD)):
-					if CD[ID].CourseID not in row:
-						row.append(CD[ID].CourseID)
-			course=[Course.objects.get(id=x) for x in row]
+		student = Student.objects.get(user=request.user)
+		curr_period = Period.objects.last()
+		if curr_period.is_course_registration == False and student.is_special_assigned == False:
+			return render(request, "student/wrongPeriod.html",{})
+		else:
+			try:
+				CD=Cart.objects.filter(Email=request.user)
+				row=[]
+				for ID in range(len(CD)):
+						if CD[ID].CourseID not in row:
+							row.append(CD[ID].CourseID)
+				course=[Course.objects.get(id=x) for x in row]
 
-			cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
-			return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
-		except:
-			return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
+				cd=[Cart.objects.get(id=CD[ID].id) for ID in range(len(CD))]
+				return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
+			except:
+				return render(request,'student/Enrollmentcart.html',{'all_data': zip(course, cd)})
 	else:
 		return render(request, "main/forbidden.html",{})
 
