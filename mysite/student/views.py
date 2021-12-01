@@ -385,3 +385,30 @@ def clearall(request):
 			print("Hello")
 			messages.error(request, 'Something seems wrong, please try it one more time, refresh pages or contact CUNY technology center.')
 			return redirect("enrollmentcart")
+
+	
+#Apply for graduation
+def applyGrad(request):
+	if request.user.is_student:
+		if request.method == "POST":
+			name = request.POST['applyGrad'].split()
+			users = User.objects.filter(first_name=name[0], last_name=name[1])
+
+			# validate the complainee name
+			if users.exists():
+				# create a new StudentComplaint model and set the ID and is_completed
+				c = StudentComplaint(user_id=Student.objects.get(email=request.user.email).ID, is_completed=False)
+				form = FileComplaintForm(request.POST, instance=c)
+
+				if form.is_valid():
+					messages.success(request, 'Success: complaint submitted.')
+					form.save()
+			else:
+				messages.warning(request, "Failure: This person does not exist.")
+				form = FileComplaintForm()
+				return render(request, "student/applyGrad.html", {"form":form})
+
+		form = FileComplaintForm()
+		return render(request, "student/applyGrad.html", {"form":form})
+	else:
+		return render(request, "main/forbidden.html",{})

@@ -2,6 +2,44 @@
 
 {% block usercontent %}
 
-<p>show grad application...</p>
+<div class="container">
+    
+    <h3>Graduation Applications:</h3>
+    <table class="table table-striped table-bordered table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">GPA</th>
+                <th scope="col">Major</th>
+                <th scope="col">Reject</th>
+                <th scope="col">Approve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for applications in application %}
+                <th scope="row">{{forloop.counter}}</th>
+               
+                    <td>{{applications.firstname}}</td>
+                    <td>{{applications.lastname}}</td>
+                    <td>{{applications.Gpa}}</td>
+                    <td>{{applications.major}}</td>
+                    
+                
+                <td><a href="{% url 'rejectapplications' applications.id %}"><i class="fa fa-trash fa-2x"></i></a></td>
+                <td><a href="{% url 'acceptapplications' applications.id %}" class="btn btn-info btn-sm">
+                    <span class="glyphicon glyphicon-ok"></span> Ok 
+                  </a></td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
 
+        </table>
+
+   
+   
+</div>
 {% endblock %}

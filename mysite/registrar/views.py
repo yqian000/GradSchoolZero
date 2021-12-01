@@ -58,6 +58,14 @@ def viewNewUser(request):
 		return render(request, "main/forbidden.html",{})
 
 def viewGrad(request):
+	try:
+		user=User.objects.filter(email=request.user)
+	except:
+		return render(request, "main/forbidden.html",{})
+	if  user[0].is_admin==True:
+		application=Applcation.objects.all()
+		jobs=career.objects.all()
+		context={'application':application,'jobs':jobs}
 	if request.user.is_admin:
 		return render(request, "registrar/viewGrad.html", {})
 	else:
