@@ -1,76 +1,40 @@
 {% extends 'main/base.html' %}
 {% block content %}
-<div class="col">
-  <div class="container">
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title">Welcome</h4>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">About</h5>
-        <p class="card-text">
-          <p>
-            Welcome to GradschoolZero
-          </p>
 
-          <p>
-            GradSchoolZero is a student management system. GradSchoolZero provides student
-            
-          </p>
-            <p> 
-              Degree we offer: Computer Science 
-            </p>
-          </p>
-          <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Courses</a>
-        </p>
-      </div>
-    </div>
-
-    <!-- read more modal -->
-    <div class="row">
-      <div class="col">
-        <div class="collapse multi-collapse" id="multiCollapseExample1">
-          <div class="card card-body">
-            <div>
-               <p>   
-               To graduate, students need to complete 24 credits or more 
-               </p>
-               <p> 
-               Courses need to be completed:
-               </p>
-               <p> 
-               o	Programming Languages
-               </p>
-               <p> 
-               o	Advanced Data Structures
-               </p>
-               
-               <p> 
-               o	Advanced Algorithms
-               </p>
-               
-               <p>
-               o	Software Engineering
-               </p>
-               <p>
-               o	Operating Systems
-               </p>
-               <p>
-               o	Computer Systems
-               </p>
-               <p>
-               o	Computer Security
-               </p>
-               <p>
-               o	Machine Learning
-               </p>
-            </div>
-          </div>
-        </div>
-      </div>  
-    </div>
-  </div>
-  
+<div class="jumbotron">
+  <h1 class="display-4">Welcome!</h1>
+  <p class="lead">
+  GradSchoolZero is a student management system. GradSchoolZero provides student...
+  Login to use the graduate system or apply to be a student of an instructor of the school! 
+  </p>
+  <hr class="my-4">
+  <h4>Graduate Degrees that we offer:</h4>
+  <ul>
+    <li>Computer Science</li>
+  </ul>
+  <hr class="my-4">
+  <h4>Complete List of Courses:</h4>
+  <ul>
+    {% for i in c %}
+      <li>{{i.name}}</li>
+    {% endfor %}
+  </ul>
+  <hr class="my-4">
+  <h4>Top Rated Classes: </h4>
+  <ul>
+    {% for i in tc %}
+      <li>{{i.name}}  (rate: {{i.rate}})</li>
+    {% endfor %}
+  </ul>
+  <hr class="my-4">
+  <h4>Top Students: </h4>
+  <ul>
+    {% for i in ts %}
+      <li>{{i.first_name}} {{i.last_name}}  (gpa: {{i.GPA}})</li>
+    {% endfor %}
+  </ul>
+  <hr class="my-4">
 </div>
+
 
 {% endblock %}
