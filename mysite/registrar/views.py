@@ -172,9 +172,21 @@ def manageComplaint(request):
 	else:
 		return render(request, "main/forbidden.html",{})
 
+def processSuspension(request, pk=None):
+	if request.user.is_admin:
+		s = Student.objects.get(ID=pk)
+		s.is_suspanded = False
+		s.save()
+		students = Student.objects.filter(is_suspanded=True)
+		return render(request, "registrar/manageSuspension.html", {'s':students})
+	else:
+		return render(request, "main/forbidden.html",{})
+
+
 def manageSuspension(request):
 	if request.user.is_admin:
-		return render(request, "registrar/manageSuspension.html", {})
+		students = Student.objects.filter(is_suspanded=True)
+		return render(request, "registrar/manageSuspension.html", {'s':students})
 	else:
 		return render(request, "main/forbidden.html",{})
 
@@ -306,6 +318,45 @@ def PeriodSetup(request):
 				period.is_class_running_period=False
 				period.is_course_registration=False
 			period.save()
+
+			curr_period = Period.objects.last()
+			# features in class running period
+			if curr_period.is_class_running_period == True:
+				# warn students with < 2 courses
+				students = Student.objects.filter(is_suspanded=False)
+				for student in students:
+					if len(course_record.objects.filter(student_email=student.email, grade='', waiting_list=False)) < 2:
+						student.warning += 1
+						student.save()
+
+				# cancel courses with < 5 students & mark those students as special & warn instructor
+				courses = Course.objects.filter(is_open=True)
+				for course in courses:
+					cancelled_courses = course_record.objects.filter(course_name=course.name, grade='', waiting_list=False)
+					if len(cancelled_courses) < 5:
+						for cancelled_course in cancelled_courses:
+							# mark those students as special
+							special_student = Student.objects.get(email=cancelled_course.student_email)
+							special_student.is_special_assigned = True
+							special_student.save()
+							# delete this course record
+							cancelled_course.delete()
+						# set course to closed
+						course.is_open = False
+						course.save()
+						# warn instructor
+						instructor_warned = course.instructor
+						instructor_warned.warning += 1
+						instructor_warned.save()
+
+				# suspend instructor whose course are all cancelled
+				open_courses = Course.objects.filter(is_open=True)
+				instructors = Instructor.objects.filter(is_suspanded=False)
+				for instructor in instructors:
+					if not Course.objects.filter(instructor=instructor, is_open=True).exists():
+						instructor.is_suspanded = True
+						instructor.save()
+						# TODO: the suspended instructor cannot teach next semester 
 
 
 			return render(request, "registrar/periodsetup.html", {"form":form,"period":period})

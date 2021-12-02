@@ -14,42 +14,53 @@
 </div>
 {% endif %}
 
-<div class="row justify-content-center">
-  <form method="POST">
-    {% csrf_token %}
-    <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Drop a class</legend>
-      {{form|crispy}}
-    </fieldset>
 
-    <div class="form-group">
-      <button href="" class="btn btn-outline-info" class="row justify-content-center" type="submit">
-        Click to Drop
-      </button>
-    </div>
-  </form>
+<div class="container">
+<h3>Enrolled classes</h3>
 
-  <script>
-    // Get all elements with class="closebtn"
-    var close = document.getElementsByClassName("closebtn");
-    var i;
-    
-    // Loop through all close buttons
-    for (i = 0; i < close.length; i++) {
-      // When someone clicks on a close button
-      close[i].onclick = function(){
-    
-        // Get the parent of <span class="closebtn"> (<div class="alert">)
-        var div = this.parentElement;
-    
-        // Set the opacity of div to 0 (transparent)
-        div.style.opacity = "0";
-    
-        // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
-        setTimeout(function(){ div.style.display = "none"; }, 600);
-      }
-    }
-  </script>
+<table class="table table-striped table-bordered table-hover table-dark">
+  <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Course Name</th>
+        <th scope="col">Instructor</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for course in cr %}
+    <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{course.course_name}}</td>
+        <td>{{course.Instructor_email}}</td>
+        <td><a href="/processDropClass/{{course.id}}"><i class="fa fa-trash fa-2x"></i></a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+        <script>
+            // Get all elements with class="closebtn"
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+            
+            // Loop through all close buttons
+            for (i = 0; i < close.length; i++) {
+              // When someone clicks on a close button
+              close[i].onclick = function(){
+            
+                // Get the parent of <span class="closebtn"> (<div class="alert">)
+                var div = this.parentElement;
+            
+                // Set the opacity of div to 0 (transparent)
+                div.style.opacity = "0";
+            
+                // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+              }
+            }
+            </script>
+   
 </div>
+
  
 {% endblock %}

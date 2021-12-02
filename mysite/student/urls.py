@@ -6,6 +6,7 @@ urlpatterns = [
     path('studentView/', views.studentView, name='studentView'),
     path('rateClass/', views.rateClass, name='rateClass'),
     path('dropClass/', views.dropClass, name='dropClass'),
+    path('processDropClass/<int:pk>', views.processDropClass, name='processDropClass'),
     path('fileComplaint/', views.fileComplaint, name='fileComplaint'),
     path('admission/', views.Application, name='admission'),
     path('tutorial/', views.tutorial, name='tutorial'),

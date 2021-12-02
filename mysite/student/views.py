@@ -28,8 +28,11 @@ def studentView(request):
 
 def rateClass(request):
 	if request.user.is_student:
+		s = Student.objects.get(email=request.user.email)
+		if s.is_suspanded:
+				return render(request, "student/studentView.html", {"s":s})
+
 		if request.method == "POST":
-			s = Student.objects.get(email=request.user.email)
 			selected_class = request.POST['course']
 			cr = course_record.objects.filter(student_email=request.user.email, grade='', waiting_list=False)
 			courses = [c.course_name for c in cr]
@@ -101,6 +104,10 @@ def rateClass(request):
 
 def fileComplaint(request):
 	if request.user.is_student:
+		s = Student.objects.get(email=request.user.email)
+		if s.is_suspanded:
+			return render(request, "student/studentView.html", {"s":s})
+
 		if request.method == "POST":
 			name = request.POST['complainee'].split()
 			users = User.objects.filter(first_name=name[0], last_name=name[1])
@@ -139,30 +146,36 @@ def Application(request):
 
 def dropClass(request):
 	if request.user.is_student:
-		if request.method == "POST":
-			s = Student.objects.get(email=request.user.email)
-			selected_class = request.POST['course']
+		s = Student.objects.get(email=request.user.email)
+		if s.is_suspanded:
+			return render(request, "student/studentView.html", {"s":s})
+
+		curr_period = Period.objects.last()
+		if curr_period.is_class_running_period:
 			cr = course_record.objects.filter(student_email=request.user.email, grade='', waiting_list=False)
-			courses = [c.course_name for c in cr]
-
-			# validate if the student is currently enrolled in the course
-			if selected_class not in courses:
-				messages.warning(request, "Failure: You are not in the class or not within the grading period")
-				form = DropClassForm()
-				return render(request, "student/dropClass.html", {"form":form})
-
-			request.POST = post
-			form = DropClassForm(request.POST, instance=c)
-
-			if form.is_valid():
-				messages.success(request, 'Success: class dropped and you will receive a "w" grade.')
-				selected_class.grade = 'w'
-				form.save()
-
-
-		form = DropClassForm()
-		return render(request, "student/dropClass.html", {"form":form})
+			return render(request, "student/dropClass.html", {"cr":cr})
+		else:
+			return render(request, "student/wrongPeriod.html",{})
 	else:
+		return render(request, "main/forbidden.html",{})
+
+def processDropClass(request,pk=None):
+	if request.user.is_student:
+		c = course_record.objects.get(id=pk)
+		c.is_dropped = True
+		c.grade = 'W'
+		c.save()
+
+		# check if the student dropped all classes
+		s = Student.objects.get(email=request.user.email)
+		if not course_record.objects.filter(student_email=s.email, grade='', waiting_list=False).exists():
+			s.is_suspanded = True
+			s.save()
+
+		cr = course_record.objects.filter(student_email=request.user.email, grade='', waiting_list=False)
+		return render(request, "student/dropClass.html", {"cr":cr})
+
+	else :
 		return render(request, "main/forbidden.html",{})
 
 def tutorial(request):
@@ -191,6 +204,10 @@ def enrollmentcart(request):
 
 	if request.user.is_student:
 		student = Student.objects.get(user=request.user)
+
+		if student.is_suspanded:
+			return render(request, "student/studentView.html", {"s":student})
+
 		curr_period = Period.objects.last()
 		if curr_period.is_course_registration == False and student.is_special_assigned == False:
 			return render(request, "student/wrongPeriod.html",{})

@@ -2,6 +2,23 @@
 
 {% block usercontent %}
 
-<p>manage suspension</p>
+<h4>Suspended students:</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Student email</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in s %}
+  	  	<tr>
+          <td>{{i.email}}</td>
+          <td><a href="/processSuspension/{{i.ID}}">set active</a></td>
+  	    </tr>
+  	{% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

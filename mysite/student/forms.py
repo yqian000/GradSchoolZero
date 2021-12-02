@@ -23,13 +23,6 @@ class RateClassForm(ModelForm):
         }
         fields = ['course', 'star', 'review']
 
-class DropClassForm(ModelForm):
-
-
-    class Meta:
-        model = DropClass
-        fields = ['course']
-
 class FileComplaintForm(ModelForm):
     complainee=forms.CharField(
         widget=forms.TextInput(

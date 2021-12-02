@@ -15,6 +15,7 @@ urlpatterns = [
 	path('processStudentComplaint/<int:pk>', views.processStudentComplaint, name='processStudentComplaint'),
 	path('processInstructorComplaint/<int:pk>', views.processInstructorComplaint, name='processInstructorComplaint'),
 	path('manageSuspension/', views.manageSuspension, name='manageSuspension'),
+	path('processSuspension/<int:pk>', views.processSuspension, name='processSuspension'),
 	path('rejectapplications/<int:pk>', views.rejectapplications, name='rejectapplications'),
 	path('acceptapplications/<int:pk>', views.acceptapplications, name='acceptapplications'),
 	path('tabooList/', views.tabooList, name='tabooList'),
