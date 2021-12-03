@@ -15,17 +15,57 @@
     <style>
     * {box-sizing: border-box;}
 
+    body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  color: #000;
+}
+
+.student-profile .card {
+  border-radius: 10px;
+}
+
+.student-profile .card .card-header .profile_img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin: 10px auto;
+  border: 10px solid #ccc;
+  border-radius: 50%;
+}
+
+.student-profile .card h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.student-profile .card p {
+  font-size: 16px;
+  color: #000;
+}
+
+.student-profile .table th,
+.student-profile .table td {
+  font-size: 14px;
+  padding: 5px 10px;
+  color: #000;
+}
+
     body { 
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
     }
-
+  
     .header {
       overflow: hidden;
       background-color: #f1f1f1;
       padding: 20px 10px;
     }
-
+    .alert {
+  opacity: 1;
+  transition: opacity 0.6s; /* 600ms to fade out */
+  }
     .header a {
       float: left;
       color: black;
@@ -47,6 +87,10 @@
       color: black;
     }
 
+    body{
+    overflow-y: scroll;
+}
+
     .header-right {
       float: right;
     }
@@ -57,6 +101,30 @@
         display: block;
         text-align: left;
       }
+
+      alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
       
       .header-right {
         float: none;
@@ -74,13 +142,13 @@
        
         <a href="/">Home</a>
         <a href="/login">Log in</a>
-        <a href="/signup">Sign up</a>
         <a href="/admission">Admission</a>
+        <a href="/career">Career</a>
       </div>
     </div>
     <img class="sticky-sm-top" src="{% static 'images/cunylogo.png' %}" alt="Notes image">
 
-    <div id="content", name="content", style="padding-left:20px">
+    <div id="content", name="content", style="padding-left:20px; padding-right:20px">
       {% block content %}
       {% endblock %}
     </div>

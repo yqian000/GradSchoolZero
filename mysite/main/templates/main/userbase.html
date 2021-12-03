@@ -6,7 +6,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Student-dashboard</title>
+  <title>Dashboard</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
@@ -14,12 +14,48 @@
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
     <style>
     * {box-sizing: border-box;}
+    body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  color: #000;
+}
 
+.student-profile .card {
+  border-radius: 10px;
+}
+
+.student-profile .card .card-header .profile_img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin: 10px auto;
+  border: 10px solid #ccc;
+  border-radius: 50%;
+}
+
+.student-profile .card h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.student-profile .card p {
+  font-size: 16px;
+  color: #000;
+}
+
+.student-profile .table th,
+.student-profile .table td {
+  font-size: 14px;
+  padding: 5px 10px;
+  color: #000;
+}
     body { 
-      margin: 0;
+      margin: 0px;
       font-family: Arial, Helvetica, sans-serif;
+      overflow-y:scroll;
     }
-
+   
     .header {
       overflow: hidden;
       background-color: #f1f1f1;
@@ -71,33 +107,55 @@
         float: none;
       }
     }
-    </style>
-    <title>GradSchoolZero</title>
-  </head>
 
-  <body>
+    .alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+    </style>
+  <title>GradSchoolZero</title>
+</head>
+
+  <body data-spy="scroll" data-target=".navbar" data-offset="50">
+
     <div class="header">
       <a href="/" class="logo">GradSchoolZero</a>
     
       <div class="header-right">
-       
-        <a href="/">Home</a>
-        <a href="/login">Log in</a>
-        <a href="/signup">Sign up</a>
-        <a href="/admission">Admission</a>
+    
+        <a href="/logout">Logout</a>
       </div>
     </div>
+    
     <img class="sticky-sm-top" src="{% static 'images/cunylogo.png' %}" alt="Notes image">
+    
 
-    <div id="sidenav", name="sidenav", class="sidenav">
-      {% block sidenav %}
-      {% endblock %}
-    </div>
+      <div id="sidenav", name="sidenav", class="sidenav">
+        {% block sidenav %}
+        {% endblock %}
+      </div>
 
-    <div id="usercontent", name="usercontent", style="padding-left:280px">
-      {% block usercontent %}
-      {% endblock %}
-    </div>
+      <div id="usercontent", name="usercontent", style="padding-left:280px;padding-right:20px;">
+        {% block usercontent %}
+        {% endblock %}
+      </div>
     
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -107,5 +165,5 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
-</body>
+<!-- </body> -->
 </html>

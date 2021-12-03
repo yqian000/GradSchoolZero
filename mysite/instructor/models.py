@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.regex_helper import flatten_result
 
 # Create your models here.
 
@@ -22,3 +23,18 @@ class InstructorComplaint(models.Model):
 
     def __str__(self):
         return self.complainee + ": " + self.text
+
+class career(models.Model):
+    email=models.EmailField()
+    firstname=models.CharField(max_length=150,blank="True")
+    lastname=models.CharField(max_length=150,blank="True")
+    startdate=models.DateField(default="0000-00-00")
+    Portfolio_website=models.CharField(max_length=250)
+    Birthday=models.DateField(default="0000-00-00")
+    salary_requirement=models.CharField(max_length=250)
+    phone= models.CharField(max_length=60, default="")
+    resume= models.FileField(upload_to='instructor/documents/')
+    departments=models.CharField(max_length=150,blank="True")
+    work_experiences=models.CharField(max_length=200,blank="True")
+    def __str__(self):
+        return self.firstname + ' ' + self.lastname

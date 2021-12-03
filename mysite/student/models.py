@@ -1,5 +1,9 @@
 from django.db import models
+from django.db.models.fields.related import OneToOneField
 from django.forms.fields import EmailField
+from account.models import *
+
+
 
 class Applcation(models.Model):
     email=models.EmailField()
@@ -39,3 +43,37 @@ class StudentComplaint(models.Model):
 
     def __str__(self):
         return self.complainee + ": " + self.text
+
+STAR_CHOICES = (
+    ('1', '1 star'),
+    ('2', '2 stars'),
+    ('3', '3 stars'),
+    ('4', '4 stars'),
+    ('5', '5 stars'),
+)
+
+COURSE_CHOICES = (
+    ('Programming Languages', 'Programming Languages'),
+    ('Advanced Data Structures', 'Advanced Data Structures'),
+    ('Advanced Algorithms', 'Advanced Algorithms'),
+    ('Software Engineering', 'Software Engineering'),
+    ('Operating Systems', 'Operating Systems'),
+    ('Computer Systems', 'Computer Systems'),
+    ('Computer Security', 'Computer Security'),
+    ('Machine Learning', 'Machine Learning'),
+)
+
+class RateClass(models.Model):
+    email = models.EmailField()
+    course = models.CharField(max_length=50, choices=COURSE_CHOICES)
+    star = models.CharField(max_length=50, choices=STAR_CHOICES)
+    review = models.CharField(max_length=800)
+
+class DropClass(models.Model):
+    email = models.EmailField()
+    course = models.CharField(max_length=50, choices=COURSE_CHOICES)
+
+    
+class Cart(models.Model):
+        CourseID=models.IntegerField(blank=True)
+        Email=models.EmailField(blank=True)

@@ -1,0 +1,73 @@
+{% extends 'registrar/registrarBase.html' %}
+
+{% block usercontent %}
+
+
+<h4>Honor students list (overall gpa > 3.5)</h4>
+           
+<table class="table">
+  <thead>
+    <tr>
+     
+      <th>Name</th>
+      <th>Student email</th>
+      <th>Semester at school</th>
+      <th>GPA</th>
+      <th>Honor earned</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in list1 %}
+  	  	<tr>
+          <td>{{i.first_name}}{{i.last_name }}</td>
+  	      <td>{{i.email}}</td>
+  	      <td>{{i.yearinschool}}</td>
+  	      <td>{{i.GPA}}</td>
+          <td>{{i.Honors}}</td></td>
+  	    </tr>
+    
+  	{% endfor %}
+  </tbody>
+<br>
+ 
+           
+<table class="table">
+    <h4>Honor students list II (semester gpa > 3.75)</h4>
+  <thead>
+    <tr>
+     
+      <th>Name</th>
+      <th>Student email</th>
+      <th>Semester</th>
+      <th>GPA</th>
+      <th>Honor earned</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i,g in list2 %}
+  	  	<tr>
+          <td>{{i.first_name}}{{i.last_name }}</td>
+  	      <td>{{i.email}}</td>
+  	      <td>{{semester}}</td>
+  	      <td>{{g}}</td>
+          <td>{{i.Honors}}</td>
+          
+  	    </tr>
+    
+  	{% endfor %}
+  </tbody>
+  
+</table>
+
+
+</br>
+<p><strong>click on the button you add one honor to students on the list</strong><form method="POST">
+    <div class="form-group" method="POST" >
+      {% csrf_token %}
+      <a href="{% url 'assignhonor' %}" class="btn btn-outline-info" class="row justify-content-center" type="submit">Assign honors</a>
+    </div>
+  </form></p>
+
+{% endblock %}
