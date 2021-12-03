@@ -1,5 +1,6 @@
 
 # Create your models here.
+
 from django.contrib.messages.api import MessageFailure
 from django.db import models
 from django.contrib.auth.models import AbstractUser,PermissionsMixin
@@ -131,11 +132,10 @@ class Student(models.Model):
         return self.email
 
 
-now=Period.objects.last().year +  0.5 if Period.objects.last().term_info=="Spring" else  1 
-class suspension(models.Model):
-    first_name=models.CharField(max_length=150,blank="True")
-    last_name=models.CharField(max_length=150,blank="True")
-    email=models.EmailField(gettext_lazy('CUNY Email'))
-    ID=models.PositiveIntegerField(default=0)
-    suppension_start_year=models.DecimalField(decimal_places=2,default=0,max_digits=5,blank=True)
-    suspension_length=models.DecimalField(decimal_places=2,default=0,max_digits=5,blank=True)
+class inormal(models.Model):
+    first_name=models.CharField(max_length=150,blank="True",null=True,default="")
+    last_name=models.CharField(max_length=150,blank="True",null=True,default="")
+    email=models.EmailField(gettext_lazy('CUNY Email'),null=True,blank=True,default="")
+    ID=models.PositiveIntegerField(null=True,blank=True,default="")
+    reason=models.TextField(null=True,blank=True,default="")
+    

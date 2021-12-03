@@ -295,28 +295,40 @@ def PeriodSetup(request):
 			course_registration=request.POST.get('is_course_registration')
 			class_running_period=request.POST.get('is_class_running_period')
 			grading_period=request.POST.get('is_grading_period')
+			break_period=request.POST.get('is_break_period')
 			if class_setup=='on':
 				period.is_class_setup=True
 				period.is_course_registration=False
 				period.is_class_running_period=False
 				period.is_grading_period=False
+				period.is_break_period=False
 			if course_registration =='on':
 				period.is_course_registration=True
 				period.is_class_setup=False
 				period.is_class_running_period=False
 				period.is_grading_period=False
+				period.is_break_period=False
 
 			if class_running_period=='on':
 				period.is_class_running_period=True
 				period.is_class_setup=False
 				period.is_course_registration=False
 				period.is_grading_period=False
+				period.is_break_period=False
 
 			if 	grading_period=='on':
 				period.is_grading_period=True
 				period.is_class_setup=False
 				period.is_class_running_period=False
 				period.is_course_registration=False
+				period.is_break_period=False
+
+			if 	break_period=='on':
+				period.is_grading_period=False
+				period.is_class_setup=False
+				period.is_class_running_period=False
+				period.is_course_registration=False
+				period.is_break_period=True
 			period.save()
 
 			curr_period = Period.objects.last()
@@ -486,5 +498,89 @@ def assignhonor(request):
 				return redirect("honorlist")
 		else:
 				return redirect("honorlist")
+	else:
+		return render(request, "main/forbidden.html",{})
+
+
+def suspecious(request):
+	if request.user.is_admin:
+		try:
+			high_gpa=Course.objects.filter(gpa__gte=3.5,gpa__lte=2.5)
+			Reason=[]
+			instructorlist=[]
+			for i in high_gpa:
+				if i.gpa>=3.5:
+					reason="The gpa for "+ i.name+"is way higher than average"
+				else:
+					reason="The gpa for "+ i.name+"is way lower than average"
+				Reason.append[reason]
+				instructor=Instructor.objects.get(User.objects.get(id=i.instructor))
+				instructorlist.append[instructor]
+				inormallist=inormal(first_name=instructor.first_name,last_name=instructor.last_name,ID=instructor.ID,email=instructor.email,reason=reason)
+				inormallist.save()
+		except:
+			pass
+		try:
+			if Period.objects.last().is_break_period():
+				course=course_record.objects.filter(grade="")
+				reason="Didn't grade for"+course.name+"for"+Student.objects.get(eamil=course.student_email).first_name+" "+Student.objects.get(eamil=course.student_email).last_name+"on time"
+				inormallist=inormal(first_name=Instructor.objects.get(email=course.Instructor_eamil).first_name,last_name=Instructor.objects.get(email=course.Instructor_eamil).last_name,ID=Instructor.objects.get(email=course.Instructor_eamil).ID,email=Instructor.objects.get(email=course.Instructor_eamil).email,reason=reason)
+				inormallist.save()
+		except:
+			pass
+		inormallist=inormal.objects.all()
+				
+		return render(request, "registrar/innormalactivity.html", {"l":inormallist})
+	else:
+		return render(request, "main/forbidden.html",{})
+def sendemail(request,pk=None):
+	if request.user.is_admin:
+		inormallist=inormal.objects.get(id=pk)
+		email=inormallist.email
+		try:
+					subject="Warning"
+					message=" You are required to provide justfication for the following behavior:"+" "+inormallist.reason
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[email]
+					send_mail(subject,message,email_from,recipent_list)
+		except:
+			pass
+		return redirect("suspeciousactivity")
+
+	else:
+		return render(request, "main/forbidden.html",{})
+
+def Fire(request,pk=None):
+	if request.user.is_admin:
+	
+		inormallist=inormal.objects.get(id=pk)
+		email=inormallist.email
+		i=Instructor.objects.get(email=email)
+		try:
+					subject="Sorry"
+					message="You are fired"
+					email_from=settings.EMAIL_HOST_USER
+					recipent_list=[email]
+					send_mail(subject,message,email_from,recipent_list)
+					i.delete()
+					inormallist.delete()
+		except:
+			pass
+		return redirect("suspeciousactivity")
+
+	else:
+		return render(request, "main/forbidden.html",{})
+
+def ignore(request,pk=None):
+	if request.user.is_admin:
+	
+		try:
+			inormallist=inormal.objects.get(id=pk)
+			
+			inormallist.delete()
+		except:
+			pass
+		return redirect("suspeciousactivity")
+
 	else:
 		return render(request, "main/forbidden.html",{})
