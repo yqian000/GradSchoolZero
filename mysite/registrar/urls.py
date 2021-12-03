@@ -25,4 +25,8 @@ urlpatterns = [
 	path('setClass/', views.setClass, name='setClass'),
 	path('honorlist/', views.honor, name='honorlist'),
 	path('assignhonor/', views.assignhonor, name='assignhonor'),
+	path('suspeciousactivity/', views.suspecious, name='suspeciousactivity'),
+	path('sendnotification<int:pk>/', views.sendemail, name='sendnotification'),
+	path('Fire<int:pk>/', views.Fire, name='fire'),
+	path('ignore<int:pk>/', views.ignore, name='ignore'),
 ]
