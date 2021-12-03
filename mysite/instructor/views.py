@@ -104,6 +104,16 @@ def grade(request,pk=None):
 					student.is_suspanded=True
 				student.save()
 
+				if student.GPA<=2.5 and len(course_record.objects.get(grade="",student_email=student.email))==0:
+					try:
+						subject="Warning"
+						message="You need to make an appointment with registrar about your gpa" 
+						email_from=settings.EMAIL_HOST_USER
+						recipent_list=[student.email]
+						send_mail(subject,message,email_from,recipent_list)
+					except:
+						pass
+
 				return redirect("assignGrade")
 			else:
 				c=course_record.objects.get(id=pk)
