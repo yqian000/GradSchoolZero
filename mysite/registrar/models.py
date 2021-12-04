@@ -29,3 +29,4 @@ class Period(models.Model):
     is_break_period=models.BooleanField(default=False,null=True)
     term_info = models.CharField(max_length=50, choices=TERM_CHOICES,null=True)
     year=models.IntegerField(validators=[yearcheck],null=True)
+    
