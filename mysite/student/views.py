@@ -1,3 +1,4 @@
+from django.contrib.messages.api import info
 from django.shortcuts import render,redirect
 from .forms import *
 from .models import *
@@ -369,7 +370,7 @@ def enroll(request):
 			return redirect("enrollmentcart")
 	except:
 				messages.error(request, "Oops! Something went wrong...")
-				return redirect("enrollmentcart")
+				return redirect("enrollmentcart")  
 	else:
 			messages.warning(request, "Currently not allowed to enroll any classes.")
 			return redirect("enrollmentcart")
@@ -388,27 +389,21 @@ def clearall(request):
 
 	
 #Apply for graduation
-def applyGrad(request):
+def applyGraduation(request):
 	if request.user.is_student:
-		if request.method == "POST":
-			name = request.POST['applyGrad'].split()
-			users = User.objects.filter(first_name=name[0], last_name=name[1])
+		id = request.session['studentuser']['sid']
+		uinfo = stuCourse.objects.get(sid = id)
 
-			# validate the complainee name
-			if users.exists():
-				# create a new StudentComplaint model and set the ID and is_completed
-				c = StudentComplaint(user_id=Student.objects.get(email=request.user.email).ID, is_completed=False)
-				form = FileComplaintForm(request.POST, instance=c)
+		classList = stuCourse.object.all().filter(sid = id, course_record = 2).cout()
+		passd = stusCourse.object.all().filter(sid=id,course_record = 1).count()
 
-				if form.is_valid():
-					messages.success(request, 'Success: complaint submitted.')
-					form.save()
-			else:
-				messages.warning(request, "Failure: This person does not exist.")
-				form = FileComplaintForm()
-				return render(request, "student/applyGrad.html", {"form":form})
+		gradOjb = applyGrad.objects.filter(sid = id, course_record = 0)
 
-		form = FileComplaintForm()
-		return render(request, "student/applyGrad.html", {"form":form})
-	else:
-		return render(request, "main/forbidden.html",{})
+		grad = applyGrad()
+		grad.id = id
+		grad.classTaking = currentTaking
+		grad.classPass = passd
+		grad.save()
+
+		context = {"info":"Gradute appplication Submiited. Registar will review your application","userinfo": uinfo}
+		return render(request,'student/applyGrad.html',context)
