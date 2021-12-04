@@ -110,7 +110,7 @@ class course_record(models.Model):
 
 class Student(models.Model):
    
-    user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,default=123456789)
     cr=models.OneToOneField(course_record,on_delete=models.SET_NULL,blank=True,null=True)
     first_name=models.CharField(max_length=150,blank="True")
     last_name=models.CharField(max_length=150,blank="True")
@@ -132,10 +132,9 @@ class Student(models.Model):
         return self.email
 
 
-class inormal(models.Model):
+class innormal(models.Model):
     first_name=models.CharField(max_length=150,blank="True",null=True,default="")
     last_name=models.CharField(max_length=150,blank="True",null=True,default="")
     email=models.EmailField(gettext_lazy('CUNY Email'),null=True,blank=True,default="")
     ID=models.PositiveIntegerField(null=True,blank=True,default="")
     reason=models.TextField(null=True,blank=True,default="")
-    

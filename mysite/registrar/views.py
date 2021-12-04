@@ -516,7 +516,7 @@ def suspecious(request):
 				Reason.append[reason]
 				instructor=Instructor.objects.get(User.objects.get(id=i.instructor))
 				instructorlist.append[instructor]
-				inormallist=inormal(first_name=instructor.first_name,last_name=instructor.last_name,ID=instructor.ID,email=instructor.email,reason=reason)
+				inormallist=innormal(first_name=instructor.first_name,last_name=instructor.last_name,ID=instructor.ID,email=instructor.email,reason=reason)
 				inormallist.save()
 		except:
 			pass
@@ -524,22 +524,22 @@ def suspecious(request):
 			if Period.objects.last().is_break_period():
 				course=course_record.objects.filter(grade="")
 				reason="Didn't grade for"+course.name+"for"+Student.objects.get(eamil=course.student_email).first_name+" "+Student.objects.get(eamil=course.student_email).last_name+"on time"
-				inormallist=inormal(first_name=Instructor.objects.get(email=course.Instructor_eamil).first_name,last_name=Instructor.objects.get(email=course.Instructor_eamil).last_name,ID=Instructor.objects.get(email=course.Instructor_eamil).ID,email=Instructor.objects.get(email=course.Instructor_eamil).email,reason=reason)
+				inormallist=innormal(first_name=Instructor.objects.get(email=course.Instructor_eamil).first_name,last_name=Instructor.objects.get(email=course.Instructor_eamil).last_name,ID=Instructor.objects.get(email=course.Instructor_eamil).ID,email=Instructor.objects.get(email=course.Instructor_eamil).email,reason=reason)
 				inormallist.save()
 		except:
 			pass
-		inormallist=inormal.objects.all()
+		inormallist=innormal.objects.all()
 				
 		return render(request, "registrar/innormalactivity.html", {"l":inormallist})
 	else:
 		return render(request, "main/forbidden.html",{})
 def sendemail(request,pk=None):
 	if request.user.is_admin:
-		inormallist=inormal.objects.get(id=pk)
+		inormallist=innormal.objects.get(id=pk)
 		email=inormallist.email
 		try:
 					subject="Warning"
-					message=" You are required to provide justfication for the following behavior:"+" "+inormallist.reason
+					message=" You are required to provide justification for the following behavior:"+" "+inormallist.reason
 					email_from=settings.EMAIL_HOST_USER
 					recipent_list=[email]
 					send_mail(subject,message,email_from,recipent_list)
@@ -553,7 +553,7 @@ def sendemail(request,pk=None):
 def Fire(request,pk=None):
 	if request.user.is_admin:
 	
-		inormallist=inormal.objects.get(id=pk)
+		inormallist=innormal.objects.get(id=pk)
 		email=inormallist.email
 		i=Instructor.objects.get(email=email)
 		try:
@@ -575,7 +575,7 @@ def ignore(request,pk=None):
 	if request.user.is_admin:
 	
 		try:
-			inormallist=inormal.objects.get(id=pk)
+			inormallist=innormal.objects.get(id=pk)
 			
 			inormallist.delete()
 		except:
