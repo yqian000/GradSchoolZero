@@ -391,19 +391,19 @@ def clearall(request):
 #Apply for graduation
 def applyGraduation(request):
 	if request.user.is_student:
-		id = request.session['studentuser']['sid']
-		uinfo = stuCourse.objects.get(sid = id)
+		# id = request.session['studentuser']['sid']
+		# uinfo = stuCourse.objects.get(sid = id)
 
-		classList = stuCourse.object.all().filter(sid = id, course_record = 2).cout()
-		passd = stusCourse.object.all().filter(sid=id,course_record = 1).count()
+		# classList = stuCourse.object.all().filter(sid = id, course_record = 2).cout()
+		# passd = stusCourse.object.all().filter(sid=id,course_record = 1).count()
 
-		gradOjb = applyGrad.objects.filter(sid = id, course_record = 0)
+		# gradOjb = applyGrad.objects.filter(sid = id, course_record = 0)
 
-		grad = applyGrad()
-		grad.id = id
-		grad.classTaking = currentTaking
-		grad.classPass = passd
-		grad.save()
+		# grad = applyGrad()
+		# grad.id = id
+		# grad.classTaking = currentTaking
+		# grad.classPass = passd
+		# grad.save()
 
 		context = {"info":"Gradute appplication Submiited. Registar will review your application","userinfo": uinfo}
-		return render(request,'student/applyGrad.html',context)
+		return render(request,'student/applyGraduation.html',context)
