@@ -94,7 +94,7 @@ class Course(models.Model):
     end_time=models.CharField(max_length=5,null=True,blank=True)
     rate=models.DecimalField(max_digits=3,decimal_places=2,null=True,blank=True)
     gpa=models.DecimalField(decimal_places=2,default=0,max_digits=5,blank=True)
-    semester=models.CharField(max_length=200,blank=True,null=True,validators=[acdemic_check],default=Period.objects.last().term_info+ str(Period.objects.last().year),help_text=Period.objects.last().term_info+ str(Period.objects.last().year))
+    #semester=models.CharField(max_length=200,blank=True,null=True,validators=[acdemic_check],default=Period.objects.last().term_info+ str(Period.objects.last().year),help_text=Period.objects.last().term_info+ str(Period.objects.last().year))
 
     def __str__(self):
         return self.name
@@ -102,7 +102,7 @@ class course_record(models.Model):
     course_name=models.CharField(blank=True,max_length=200)
     student_email=models.EmailField(blank=True)
     Instructor_email=models.EmailField(blank=True)
-    semester=models.CharField(blank=True,max_length=20,default=Period.objects.last().term_info+ str(Period.objects.last().year))
+    #semester=models.CharField(blank=True,max_length=20,default=Period.objects.last().term_info+ str(Period.objects.last().year))
     grade=models.CharField(blank=True,max_length=3)
     waiting_list=models.BooleanField(default=False)
     is_dropped=models.BooleanField(default=False)
