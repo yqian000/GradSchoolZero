@@ -59,7 +59,34 @@ def viewNewUser(request):
 
 def viewGrad(request):
 	if request.user.is_admin:
-		return render(request, "registrar/viewGrad.html", {})
+		s = Student.objects.filter(apply_grad=True, is_graduate=False, is_suspanded=False)
+		return render(request, "registrar/viewGrad.html", {'s':s})
+	else:
+		return render(request, "main/forbidden.html",{})
+
+def processGrad(request, pk=None):
+	if request.user.is_admin:
+		if request.method == "POST":
+			# get the corresponding complaint
+			s = Student.objects.get(ID=pk)
+
+			form = ProcessGradForm(request.POST, instance=s)
+
+			if form.is_valid():
+				form.save()
+				s.apply_grad = False
+				s.save()
+
+				# Generate a warning for reckless graduation application
+				if not s.is_graduate:
+					s.warning += 1
+					s.save()
+
+				students = Student.objects.filter(apply_grad=True, is_graduate=False, is_suspanded=False)
+				return render(request, "registrar/viewGrad.html", {'s':students})
+
+		form = ProcessGradForm()
+		return render(request, "registrar/processGrad.html", {"form":form})
 	else:
 		return render(request, "main/forbidden.html",{})
 

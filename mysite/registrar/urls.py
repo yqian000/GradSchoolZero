@@ -8,6 +8,7 @@ urlpatterns = [
 	path('registrarView/', views.registrarView, name='registrarView'),
 	path('viewNewUser/', views.viewNewUser, name='viewNewUser'),
 	path('viewGrad/', views.viewGrad, name='viewGrad'),
+	path('processGrad/<int:pk>', views.processGrad, name='processGrad'),
 	path('viewRating/', views.viewRating, name='viewRating'),
 	path('setClass/', views.setClass, name='setClass'),
 	path('processClass/<int:pk>', views.processClass, name='processClass'),

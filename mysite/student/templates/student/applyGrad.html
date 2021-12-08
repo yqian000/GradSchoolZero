@@ -1,0 +1,29 @@
+{% extends 'student/studentBase.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block usercontent %}
+
+{% if n >= 8 %}
+<div class="row justify-content-center">
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Apply for Graduation</legend>
+      {{form|crispy}}
+    </fieldset>
+
+    <div class="form-group">
+      <button href="" class="btn btn-outline-info" class="row justify-content-center" type="submit">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+
+{% else %}
+<p> You must complete 8 classes in order to apply for graduation </p>
+
+{% endif %}
+ 
+{% endblock %}

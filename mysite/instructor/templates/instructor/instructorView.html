@@ -3,8 +3,9 @@
 {% block usercontent %}
 
 <h4>Welcome {{i.first_name}} {{i.last_name}}!</h4>
-<br/>
-
+<p>Current Period: {{p}}</p>
+<p>ID: {{i.ID}}</p>
+<p>Email: {{i.email}}</p>
 <p>Warning Total: {{i.warning}}</p>
 
 <p>
@@ -24,23 +25,16 @@
 <div class="card">
 
   <div class="card-header">
-  <h4><strong> {{ student }} </strong></h4>
+  <h4>{{ student.first_name }} {{ student.last_name }}</h4>
   </div>
 
   <div class="card-body">
-    <h5 class="card-title">	<strong>Major:</strong> {{ student.major }}</h5>
   
   <p class="card-text">	
 		<ul>
-			<li><strong>Birthday:</strong> {{ student.Birthday }}</li>
+			<li><strong>Studenr ID:</strong> {{ student.id }}</li>
 			<li><strong>Email:</strong> {{ student.email }}</li>
 			<li><strong>GPA:</strong> {{ student.Gpa }}</li>
-			<li><strong>Semester:</strong> {{ student.semester }}</li>
-			<li><strong>Address:</strong> {{ student.address }}</li>
-			<li><strong>City:</strong> {{ student.city  }}</li>
-			<li><strong>State:</strong> {{ student.state  }}</li>
-			<li><strong>Country:</strong> {{ student.country }}</li>
-			<li><strong>Zip Code:</strong> {{ student.zip  }}</li>
 		</ul>
   </p>
 

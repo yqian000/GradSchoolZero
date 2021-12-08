@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.core import exceptions
 from django.shortcuts import render,redirect
 
-# from mysite import instructor
+from decimal import Decimal
 from .forms import *
 from .models import *
 from account.models import *
@@ -13,12 +13,27 @@ from django.conf import settings
 # Create your views here.
 def instructorView(request):
 	if request.user.is_instructor:
-		student_list = Applcation.objects.all()
+		courses = course_record.objects.filter(Instructor_email=request.user.email,grade=None)
+		students = Student.objects.all()
+		for course in courses:
+			students = students.union(Student.objects.filter(email=course.student_email))
 		instructor = Instructor.objects.get(user=request.user)
+		period = Period.objects.last()
+		p = ''
+		if period.is_class_setup:
+			p = 'class setup period'
+		elif period.is_course_registration:
+			p = 'course registration period'
+		elif period.is_class_running_period:
+			p = 'class running period'
+		elif period.is_grading_period:
+			p = 'grading period'
+		elif period.is_break_period:
+			p ='break period'
 		if instructor.warning >= 3:
 			instructor.is_suspanded = True
 			instructor.save()
-		return render(request, "instructor/instructorView.html", {'student_list': student_list, 'i':instructor})
+		return render(request, "instructor/instructorView.html", {'student_list': students, 'i':instructor, 'p':p})
 	else:
 		return render(request, "main/forbidden.html",{})
 
@@ -87,13 +102,13 @@ def grade(request,pk=None):
 						student.GPA=(student.GPA+4)/len(GPA)
 						student.save()
 				elif c.grade=="B":
-						student.GPA=(student.GPA+3.5)/len(GPA)
+						student.GPA=(student.GPA+Decimal(3.5))/len(GPA)
 						student.save()
 				elif c.grade=='C':
 						student.GPA=(student.GPA+3)/len(GPA)
 						student.save()
 				elif c.grade=='D':
-						student.GPA=(student.GPA+2.5)/len(GPA)
+						student.GPA=(student.GPA+Decimal(2.5))/len(GPA)
 						student.save()
 				elif c.grade=='F' or c.grade=="W":
 						student.GPA=(student.GPA+0)/len(GPA)
@@ -104,7 +119,7 @@ def grade(request,pk=None):
 					student.is_suspanded=True
 				student.save()
 
-				if student.GPA<=2.5 and len(course_record.objects.get(grade="",student_email=student.email))==0:
+				if student.GPA<=2.5:
 					try:
 						subject="Warning"
 						message="You need to make an appointment with registrar about your gpa" 

@@ -8,6 +8,7 @@ urlpatterns = [
     path('dropClass/', views.dropClass, name='dropClass'),
     path('processDropClass/<int:pk>', views.processDropClass, name='processDropClass'),
     path('fileComplaint/', views.fileComplaint, name='fileComplaint'),
+    path('applyGrad/', views.applyGrad, name='applyGrad'),
     path('admission/', views.Application, name='admission'),
     path('tutorial/', views.tutorial, name='tutorial'),
     path('enrollment/', views.avalibleclasses, name='enrollment'),
