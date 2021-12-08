@@ -113,9 +113,10 @@ class course_record(models.Model):
     def __str__(self):
         return f"{self.course_name}, {self.student_email}, {self.Instructor_email}"
     
+id=User.objects.last().id+1
 
 class Student(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,default=123456789)
+    user=models.OneToOneField(User,on_delete=models.SET_NULL,blank=True,null=True,default=id)
     cr=models.OneToOneField(course_record,on_delete=models.SET_NULL,blank=True,null=True)
     first_name=models.CharField(max_length=150,blank="True")
     last_name=models.CharField(max_length=150,blank="True")

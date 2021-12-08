@@ -235,7 +235,7 @@ def rejectapplications(request,pk=None):
 
 def acceptapplications(request,pk=None):
 	if request.user.is_admin:
-		try:
+		
 			if  float(Applcation.objects.get(id=pk).Gpa)>3:
 				user=User.objects.last()
 				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
@@ -260,7 +260,7 @@ def acceptapplications(request,pk=None):
 			else:
 				Applcation.objects.get(id=pk).delete()
 				return render(request,"registrar/reasonform.html")
-		except:
+		
 			return redirect("viewNewUser")
 	else:
 		return render(request, "main/forbidden.html",{})
