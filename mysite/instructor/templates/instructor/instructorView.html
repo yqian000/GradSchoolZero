@@ -20,21 +20,17 @@
 <h4>Student information in your current class(es)</h4>
 <br/>
 
-{% for student in student_list %}
+{% for c in courses %}
 
 <div class="card">
-
-  <div class="card-header">
-  <h4>{{ student.first_name }} {{ student.last_name }}</h4>
-  </div>
-
+	
   <div class="card-body">
   
   <p class="card-text">	
 		<ul>
-			<li><strong>Studenr ID:</strong> {{ student.id }}</li>
-			<li><strong>Email:</strong> {{ student.email }}</li>
-			<li><strong>GPA:</strong> {{ student.Gpa }}</li>
+			<li><strong>Course name:</strong> {{ c.course_name }}</li>
+			<li><strong>Student Email:</strong> {{ c.student_email }}</li>
+			<li><strong>Grade:</strong> {{ c.grade }}</li>
 		</ul>
   </p>
 
