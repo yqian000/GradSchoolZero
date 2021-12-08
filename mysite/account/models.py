@@ -115,7 +115,6 @@ class course_record(models.Model):
     
 
 class Student(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,default=123456789)
     cr=models.OneToOneField(course_record,on_delete=models.SET_NULL,blank=True,null=True)
     first_name=models.CharField(max_length=150,blank="True")
     last_name=models.CharField(max_length=150,blank="True")
