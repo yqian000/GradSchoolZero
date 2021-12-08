@@ -5,9 +5,8 @@
   <h1 class="display-4">Welcome!</h1>
   <p class="lead">
 
-  GradSchoolZero is a student management system which allows users to stay connected and 
-  support students for graduation. To earn a graduate degree from this program, students must complete a minimum of 8 classes (24 credits). GradSchoolZero provide capabilities for registering 
-  students, applying to be a student or an instructor of the school! 
+  GradSchoolZero is a graduate management system which allows users to stay connected and 
+  support students for graduation. To earn a graduate degree from this program, students must complete a minimum of 8 classes (24 credits). Login now to use the program, or apply now to be a student or an instructor of the school! 
 
   </p>
   <hr class="my-4">
@@ -23,9 +22,16 @@
     {% endfor %}
   </ul>
   <hr class="my-4">
-  <h4>Top Rated Classes: </h4>
+  <h4>Highest Rated Classes: </h4>
   <ul>
     {% for i in tc %}
+      <li>{{i.name}}  (rate: {{i.rate}})</li>
+    {% endfor %}
+  </ul>
+  <hr class="my-4">
+  <h4>Lowest Rated Classes: </h4>
+  <ul>
+    {% for i in lc %}
       <li>{{i.name}}  (rate: {{i.rate}})</li>
     {% endfor %}
   </ul>

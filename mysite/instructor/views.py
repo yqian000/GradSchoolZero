@@ -7,13 +7,14 @@ from .forms import *
 from .models import *
 from account.models import *
 from student.models import Applcation
+from registrar.models import Period
 from django.core.mail import send_mail
 from django.conf import settings
 
 # Create your views here.
 def instructorView(request):
 	if request.user.is_instructor:
-		courses = course_record.objects.filter(Instructor_email=request.user.email,grade=None)
+		courses = course_record.objects.filter(Instructor_email=request.user,semester=Period.objects.last().term_info+ str(Period.objects.last().year))
 		instructor = Instructor.objects.get(user=request.user)
 		period = Period.objects.last()
 		p = ''
@@ -30,7 +31,7 @@ def instructorView(request):
 		if instructor.warning >= 3:
 			instructor.is_suspanded = True
 			instructor.save()
-		return render(request, "instructor/instructorView.html", {'c': courses, 'i':instructor, 'p':p})
+		return render(request, "instructor/instructorView.html", {'courses': courses, 'i':instructor, 'p':p})
 	else:
 		return render(request, "main/forbidden.html",{})
 
@@ -94,21 +95,21 @@ def grade(request,pk=None):
 				except:
 					pass
 				GPA=course_record.objects.filter(student_email=student.email).all().exclude(grade="")
-					
+				n = len(GPA)-1
 				if c.grade=="A":
-						student.GPA=(student.GPA+4)/len(GPA)
+						student.GPA=(student.GPA*n+4)/len(GPA)
 						student.save()
 				elif c.grade=="B":
-						student.GPA=(student.GPA+Decimal(3.5))/len(GPA)
+						student.GPA=(student.GPA*n+Decimal(3.5))/len(GPA)
 						student.save()
 				elif c.grade=='C':
-						student.GPA=(student.GPA+3)/len(GPA)
+						student.GPA=(student.GPA*n+3)/len(GPA)
 						student.save()
 				elif c.grade=='D':
-						student.GPA=(student.GPA+Decimal(2.5))/len(GPA)
+						student.GPA=(student.GPA*n+Decimal(2.5))/len(GPA)
 						student.save()
 				elif c.grade=='F' or c.grade=="W":
-						student.GPA=(student.GPA+0)/len(GPA)
+						student.GPA=(student.GPA*n+0)/len(GPA)
 						student.save()
 				
 				course=course_record.objects.filter(course_name=c.course_name,grade="F",student_email=student.email)
