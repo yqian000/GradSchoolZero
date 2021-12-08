@@ -206,6 +206,7 @@ def processSuspension(request, pk=None):
 	if request.user.is_admin:
 		s = Student.objects.get(ID=pk)
 		s.is_suspanded = False
+		s.warning = 0
 		s.save()
 		students = Student.objects.filter(is_suspanded=True)
 		return render(request, "registrar/manageSuspension.html", {'s':students})

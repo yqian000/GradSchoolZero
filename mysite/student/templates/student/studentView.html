@@ -11,8 +11,8 @@
 
 {% if s.is_suspanded%}
 <h4>You have been suspended! Contact the registrar!</h4>
+{% endif %}
 
-{% else %}
 <h4>Welcome {{s.first_name}} {{s.last_name}}!</h4>
 <p>Current Period: {{p}}</p>
 <p>ID: {{s.ID}}</p>
@@ -42,8 +42,6 @@
     You have accumulated 3 warnings and will be suspended for one semester. You need to pay a fine of one hundred dollars to the registrars. You can pay it either by mail or in person. The registrar office is at 123 NEW ROAD, NEW YORK, NY, 10019, ROOM 100. If you have any questions, please call at 212-1234-5678.
   </div>
 </div>
-{% endif %}
-
 {% endif %}
 
 <hr class="my-4">
