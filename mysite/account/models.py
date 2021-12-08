@@ -116,7 +116,10 @@ class course_record(models.Model):
 id=User.objects.last().id+1
 
 class Student(models.Model):
+<<<<<<< HEAD
     user=models.OneToOneField(User,on_delete=models.SET_NULL,blank=True,null=True,default=id)
+=======
+>>>>>>> 867727fe3e75ddc8f9cfe6c56cc1c6609c9cee26
     cr=models.OneToOneField(course_record,on_delete=models.SET_NULL,blank=True,null=True)
     first_name=models.CharField(max_length=150,blank="True")
     last_name=models.CharField(max_length=150,blank="True")
