@@ -2,6 +2,23 @@
 
 {% block usercontent %}
 
-<p>show grad application...</p>
+<h4>Pending graduation applications</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in s %}
+  	  	<tr>
+          <td>{{i.email}}</td>
+          <td><a href="/processGrad/{{i.ID}}">take actions</a></td>
+  	    </tr>
+  	{% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

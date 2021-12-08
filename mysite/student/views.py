@@ -14,13 +14,29 @@ def studentView(request):
 	try:
 		if request.user.is_student:
 			student = Student.objects.get(user=request.user)
+			period = Period.objects.last()
+			p = ''
+			if period.is_class_setup:
+				p = 'class setup period'
+			elif period.is_course_registration:
+				p = 'course registration period'
+			elif period.is_class_running_period:
+				p = 'class running period'
+			elif period.is_grading_period:
+				p = 'grading period'
+			elif period.is_break_period:
+				p ='break period'
+
 			if student.warning >= 3:
 				student.fine = 1 # set to has fine
 				student.is_suspanded = True
 				student.save()
+
+			# courses
+			cr = course_record.objects.filter(student_email=student.email)
 		if request. user. is_authenticated:
 			log=True
-			return render(request, "student/studentView.html", {"s":student})
+			return render(request, "student/studentView.html", {"s":student, "p":p, 'c':cr})
 		else:
 			return render(request, "main/forbidden.html",{})
 	except:
@@ -151,11 +167,11 @@ def dropClass(request):
 			return render(request, "student/studentView.html", {"s":s})
 
 		curr_period = Period.objects.last()
-		if curr_period.is_class_running_period:
+		if curr_period.is_class_setup:
+			return render(request, "student/wrongPeriod.html",{})
+		else:
 			cr = course_record.objects.filter(student_email=request.user.email, grade='', waiting_list=False)
 			return render(request, "student/dropClass.html", {"cr":cr})
-		else:
-			return render(request, "student/wrongPeriod.html",{})
 	else:
 		return render(request, "main/forbidden.html",{})
 
@@ -402,3 +418,31 @@ def clearall(request):
 			print("Hello")
 			messages.error(request, 'Something seems wrong, please try it one more time, refresh pages or contact CUNY technology center.')
 			return redirect("enrollmentcart")
+
+def applyGrad(request):
+	if request.user.is_student:
+		s = Student.objects.get(email=request.user.email)
+		if s.is_suspanded:
+			return render(request, "student/studentView.html", {"s":s})
+
+		# find number of courses a student completed
+		courses = course_record.objects.filter(student_email=s.email)
+		letters = ['A', 'B', 'C', 'D']
+		n = 0
+		for course in courses:
+			if course.grade in letters:
+				n += 1
+
+		if request.method == "POST":
+			form = GradForm(request.POST, instance=s)
+
+			if form.is_valid():
+				form.save()
+				
+				return render(request, "student/applyGrad.html", {"form":form, 'n':n})
+
+		form = GradForm()
+		return render(request, "student/applyGrad.html", {"form":form, 'n':n})
+	else:
+		return render(request, "main/forbidden.html",{})
+

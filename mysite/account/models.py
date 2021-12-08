@@ -69,6 +69,7 @@ class User(AbstractUser,PermissionsMixin):
 
     def __str__(self):
         return self.email
+
 class Instructor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
     first_name=models.CharField(max_length=150,blank="True")
@@ -81,6 +82,7 @@ class Instructor(models.Model):
     is_working=models.BooleanField(default=True)
     def __str__(self):
         return self.email
+
 class Course(models.Model):
     name=models.CharField(max_length=200)
     instructor=models.ForeignKey(Instructor,on_delete=models.CASCADE,blank=True,null=True)
@@ -94,22 +96,25 @@ class Course(models.Model):
     end_time=models.CharField(max_length=5,null=True,blank=True)
     rate=models.DecimalField(max_digits=3,decimal_places=2,null=True,blank=True)
     gpa=models.DecimalField(decimal_places=2,default=0,max_digits=5,blank=True)
-    #semester=models.CharField(max_length=200,blank=True,null=True,validators=[acdemic_check],default=Period.objects.last().term_info+ str(Period.objects.last().year),help_text=Period.objects.last().term_info+ str(Period.objects.last().year))
+    semester=models.CharField(max_length=200,blank=True,null=True,validators=[acdemic_check],default=Period.objects.last().term_info+ str(Period.objects.last().year),help_text=Period.objects.last().term_info+ str(Period.objects.last().year))
 
     def __str__(self):
         return self.name
+
 class course_record(models.Model):
     course_name=models.CharField(blank=True,max_length=200)
     student_email=models.EmailField(blank=True)
     Instructor_email=models.EmailField(blank=True)
-    #semester=models.CharField(blank=True,max_length=20,default=Period.objects.last().term_info+ str(Period.objects.last().year))
+    semester=models.CharField(blank=True,max_length=20,default=Period.objects.last().term_info+ str(Period.objects.last().year))
     grade=models.CharField(blank=True,max_length=3)
     waiting_list=models.BooleanField(default=False)
     is_dropped=models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.course_name}, {self.student_email}, {self.Instructor_email}"
     
 
 class Student(models.Model):
-   
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,default=123456789)
     cr=models.OneToOneField(course_record,on_delete=models.SET_NULL,blank=True,null=True)
     first_name=models.CharField(max_length=150,blank="True")
@@ -120,6 +125,7 @@ class Student(models.Model):
     is_warned=models.BooleanField(default=False)
     GPA=models.DecimalField(decimal_places=2,default=0,max_digits=5)
     is_suspanded=models.BooleanField(default=False)
+    apply_grad=models.BooleanField(default=False)
     is_graduate=models.BooleanField(default=False)
     credit=models.PositiveSmallIntegerField(default=0) #[0, 32767]
     fine=models.PositiveSmallIntegerField(default=0) # 0->no fine; 1->has fine; 2->fine received

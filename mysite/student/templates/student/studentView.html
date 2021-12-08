@@ -2,11 +2,19 @@
 
 {% block usercontent %}
 
+
+{% if s.is_graduate%}
+<h4>Congratuations on completing your Master Degree! </h4>
+<hr class="my-4">
+{% endif %}
+
+
 {% if s.is_suspanded%}
-	<h4>You have been suspended! Contact the registrar!</h4>
+<h4>You have been suspended! Contact the registrar!</h4>
 
 {% else %}
 <h4>Welcome {{s.first_name}} {{s.last_name}}!</h4>
+<p>Current Period: {{p}}</p>
 <p>ID: {{s.ID}}</p>
 <p>Email: {{s.email}}</p>
 <p>GPA: {{s.GPA}}</p>
@@ -38,5 +46,27 @@
 {% endif %}
 
 {% endif %}
+
+<hr class="my-4">
+
+<h4>My courses</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Course Name</th>
+      <th>Instructor email</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in c %}
+  	  	<tr>
+          <td>{{i.course_name}}</td>
+  	      <td>{{i.Instructor_email}}</td>
+  	      <td>{{i.grade}}</td>
+  	    </tr>
+  	{% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

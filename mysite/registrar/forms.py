@@ -2,7 +2,7 @@ from django import forms
 from django.db.models.fields import  BooleanField
 from django.forms import fields, ModelForm
 from django.forms.forms import Form
-from account.models import Course
+from account.models import Course, Student
 from student.models import StudentComplaint
 from instructor.models import InstructorComplaint
 from .models import *
@@ -32,6 +32,15 @@ class ProcessInstructorComplaintForm(ModelForm):
 			"person_id": "Person's ID: "
         }
 		fields = ['is_investigated', 'action', 'punish_id']
+
+class ProcessGradForm(ModelForm):
+
+	class Meta:
+		model = Student
+		labels = {
+			"is_graduate": "By checking this box, I confirm that this student can graduate with a Master Degree. (Submit this form with this box uncheck to warn the student for reckless graduation application!)",
+        }
+		fields = ['is_graduate']
 
 class TabooForm(ModelForm):
 

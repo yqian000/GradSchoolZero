@@ -5,6 +5,7 @@ from django.forms.fields import EmailField,DateField
 import datetime
 from django.core.exceptions import ValidationError
 from .models import *
+from account.models import Student
 
 
 
@@ -143,3 +144,12 @@ class applicationForm(forms.Form):
     class Meta:
         model=Applcation
         fields=['email',"firstname","lastname","Gpa","semester","Birthday","address","city","state","country","phone","zip","transcript","letters","personal_statement","Major"]
+
+class GradForm(ModelForm):
+
+    class Meta:
+        model = Student
+        labels = {
+            "apply_grad": "By checking this box, I confirm that I want to apply for graduation.",
+        }
+        fields = ['apply_grad']
