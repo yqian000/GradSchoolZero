@@ -61,6 +61,8 @@ COURSE_CHOICES = (
     ('Computer Systems', 'Computer Systems'),
     ('Computer Security', 'Computer Security'),
     ('Machine Learning', 'Machine Learning'),
+    ('Data Science', 'Data Science'),
+    ('English', 'English'),
 )
 
 class RateClass(models.Model):

@@ -37,7 +37,10 @@ def registrarView(request):
 		else:
 			greeting="Good Evening "
 
-		return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
+		# get all users
+		s = Student.objects.all()
+		ins = Instructor.objects.all()
+		return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar, "s":s, "ins":ins, "all_data":zip(row,text)})
 
 
 
@@ -515,7 +518,7 @@ def assignhonor(request):
 						gpa.append(studentlist[i][0]/studentlist[i][1])
 				for i in list2:
 					if i.warning>0:
-						i.wanrning-=1
+						i.warning-=1
 						i.save()
 					else:
 						i.Honors+=1

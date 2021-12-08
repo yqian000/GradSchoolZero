@@ -50,10 +50,10 @@ class TabooForm(ModelForm):
 
 class Periodsetup(ModelForm):
 	is_class_setup=forms.BooleanField(label="class set up period",required=False)
-	is_course_registration=forms.BooleanField(label="course registration",required=False)
+	is_course_registration=forms.BooleanField(label="course registration period",required=False)
 	is_class_running_period=forms.BooleanField(label="class running period",required=False)
 	is_grading_period=forms.BooleanField(label="grading class period",required=False)
-	is_break_period=forms.BooleanField(label="post gra class period",required=False)
+	is_break_period=forms.BooleanField(label="break period",required=False)
 
 	class Meta:
 		model = Period
