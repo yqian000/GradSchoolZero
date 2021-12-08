@@ -14,7 +14,7 @@ def home(request):
 	top_students = Student.objects.filter(GPA=max_gpa)
 
 	for course in courses:
-		if course.rate > max_rate:
+		if course.rate is not None and course.rate > max_rate:
 			max_rate = course.rate
 	top_classes = Course.objects.filter(rate=max_rate)
 

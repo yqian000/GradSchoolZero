@@ -69,6 +69,7 @@ class User(AbstractUser,PermissionsMixin):
 
     def __str__(self):
         return self.email
+
 class Instructor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
     first_name=models.CharField(max_length=150,blank="True")
@@ -81,6 +82,7 @@ class Instructor(models.Model):
     is_working=models.BooleanField(default=True)
     def __str__(self):
         return self.email
+
 class Course(models.Model):
     name=models.CharField(max_length=200)
     instructor=models.ForeignKey(Instructor,on_delete=models.CASCADE,blank=True,null=True)
@@ -113,7 +115,6 @@ class course_record(models.Model):
     
 
 class Student(models.Model):
-   
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,default=123456789)
     cr=models.OneToOneField(course_record,on_delete=models.SET_NULL,blank=True,null=True)
     first_name=models.CharField(max_length=150,blank="True")
