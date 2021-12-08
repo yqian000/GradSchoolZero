@@ -208,12 +208,11 @@ def avalibleclasses(request):
 		return render(request, "main/forbidden.html",{})
 
 def add_sucessfully(request,pk):
-		student=Student.objects.get(email=request.user)
+		student=Student.objects.get(email=request.user.email)
 		Enroll=Cart(CourseID=pk,Email=student.email)
 		Enroll.save()
 		student.enrollcart=Enroll
 		student.save()
-		courses=Course.objects.filter(is_open=True)
 		return redirect("enrollment")
 
 def enrollmentcart(request):
@@ -261,7 +260,7 @@ def deletefromEnrollment(request,pk=None):
 
 def enroll(request):
 
-	try:
+	
 		if Period.objects.last().is_course_registration or Student.objects.get(email=request.user).is_special_assigned:
 
 			st=Student.objects.get(email=request.user)#student
@@ -279,16 +278,18 @@ def enroll(request):
 				return redirect("enrollmentcart")
 			for	i in range(len(CD)):
 					# to check if the courses in enrollemnt cart is already in the enrolled classes
-				if  len(course_record.objects.filter(student_email=request.user,course_name=course[i].name,grade=""))>0:
-					messages.warning(request, "Enroll failed, you tried to enroll same classes")
-					return redirect("enrollmentcart")
-
 				try:
-					if  course_record.objects.filter(student_email=request.user,course_name=course[i].name).reverse()[0]!="F":
-							messages.warning(request, "Enroll Failed,according to CUNY policy, students can't retake the courses if they got a grade of  D or higer")
-							return redirect("enrollmentcart")
+					if  len(course_record.objects.filter(student_email=request.user,course_name=course[i].name,grade=""))>0:
+						messages.warning(request, "Enroll failed, you tried to enroll same classes")
+						return redirect("enrollmentcart")
+
+					
+					if   course_record.objects.filter(student_email=request.user,course_name=course[i].name).reverse()[0]!="F":
+								messages.warning(request, "Enroll Failed,according to CUNY policy, students can't retake the courses if they got a grade of  D or higer")
+								return redirect("enrollmentcart")
 				except:
 					pass
+				
 
 			Monday=[]
 			Tuseday=[]
@@ -391,21 +392,21 @@ def enroll(request):
 						CR.save()
 					st.cr=CR
 					st.save()
-					st.course.add(i)
+
 					i.curr_size+=1
 					i.save()
+					st.course.add(i)
+					
 					st.save()
 
 			for c in cd:
 				c.delete()
 			messages.success(request, "You've successfully enrolled in the classes")
 			return redirect("enrollmentcart")
-	except:
-				messages.error(request, "Oops! Something went wrong...")
-				return redirect("enrollmentcart")
-	else:
+		else:
 			messages.warning(request, "Currently not allowed to enroll any classes.")
 			return redirect("enrollmentcart")
+	
 
 def clearall(request):
 		try:
