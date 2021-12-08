@@ -13,6 +13,7 @@
       <th>Time</th>
       <th>Size</th>
       <th>Instructor</th>
+      <th>Rate</th>
       <th>Open</th>
       <th>Action</th>
     </tr>
@@ -26,8 +27,8 @@
         <td>{{i.start_time}} - {{i.end_time}}</td>
         <td>{{i.max_size}}</td>
         <td>{{i.instructor}}</td>
+        <td>{{i.rate}}</td>
         <td>{{i.is_open}}</td>
-        
         <td><a href="/processClass/{{i.id}}">set up</a></td>
       </tr>
     {% endfor %}
