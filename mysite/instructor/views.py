@@ -14,9 +14,6 @@ from django.conf import settings
 def instructorView(request):
 	if request.user.is_instructor:
 		courses = course_record.objects.filter(Instructor_email=request.user.email,grade=None)
-		students = Student.objects.all()
-		for course in courses:
-			students = students.union(Student.objects.filter(email=course.student_email))
 		instructor = Instructor.objects.get(user=request.user)
 		period = Period.objects.last()
 		p = ''
@@ -33,7 +30,7 @@ def instructorView(request):
 		if instructor.warning >= 3:
 			instructor.is_suspanded = True
 			instructor.save()
-		return render(request, "instructor/instructorView.html", {'student_list': students, 'i':instructor, 'p':p})
+		return render(request, "instructor/instructorView.html", {'c': courses, 'i':instructor, 'p':p})
 	else:
 		return render(request, "main/forbidden.html",{})
 
