@@ -4,9 +4,61 @@
 
 <h1>{{g}} <bold>{{r.first_name}} {{r.last_name}}</bold>!</h1>
 
-<br>
-<br>
-<br>
+<h4>All students</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>GPA</th>
+      <th>Warning</th>
+      <th>Suspended</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in s %}
+  	  	<tr>
+          <td>{{i.ID}}</td>
+  	      <td>{{i.first_name}} {{i.last_name}}</td>
+  	      <td>{{i.email}}</td>
+  	      <td>{{i.GPA}}</td>
+          <td>{{i.warning}}</td>
+          <td>{{i.is_suspanded}}</td>
+  	    </tr>
+  	{% endfor %}
+  </tbody>
+</table>
+
+</br>
+
+<h4>All instructors</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Warning</th>
+      <th>Suspended</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in ins %}
+  	  	<tr>
+          <td>{{i.ID}}</td>
+  	      <td>{{i.first_name}} {{i.last_name}}</td>
+  	      <td>{{i.email}}</td>
+          <td>{{i.warning}}</td>
+          <td>{{i.is_suspanded}}</td>
+  	    </tr>
+  	{% endfor %}
+  </tbody>
+</table>
+
+</br>
 <h4><strong>News & Events </strong></h4>
 <div>
 {% for r,t in all_data %}

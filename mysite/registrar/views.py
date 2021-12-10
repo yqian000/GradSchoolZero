@@ -37,7 +37,10 @@ def registrarView(request):
 		else:
 			greeting="Good Evening "
 
-		return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar,"all_data":zip(row,text)})
+		# get all users
+		s = Student.objects.all()
+		ins = Instructor.objects.all()
+		return render(request, "registrar/registrarView.html", {"g":greeting,"r":registrar, "s":s, "ins":ins, "all_data":zip(row,text)})
 
 
 
@@ -46,10 +49,10 @@ def registrarView(request):
 
 def viewNewUser(request):
 	try:
-		user=User.objects.filter(email=request.user)
+		user=User.objects.get(email=request.user)
 	except:
 		return render(request, "main/forbidden.html",{})
-	if  user[0].is_admin==True:
+	if  user.is_admin==True:
 		application=Applcation.objects.all()
 		jobs=career.objects.all()
 		context={'application':application,'jobs':jobs}
@@ -235,24 +238,27 @@ def rejectapplications(request,pk=None):
 
 def acceptapplications(request,pk=None):
 	if request.user.is_admin:
-		try:
+		
 			if  float(Applcation.objects.get(id=pk).Gpa)>3:
 				user=User.objects.last()
 				StudentEmail=Applcation.objects.get(id=pk).firstname[0]+Applcation.objects.get(id=pk).lastname+"00"+str(int(user.id)+1)+"@citymail.cuny.edu"
 				user=User(email=StudentEmail,username=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,is_student=True,First_login=True)
 				user.set_password(StudentEmail)
 				user.save()
+				id=User.objects.last().id
 				ID=20000000+int(user.id)+1
-				student=Student(email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,ID=ID)
+				student=Student(user=User.object.get(id=id),email=StudentEmail,first_name=Applcation.objects.get(id=pk).firstname,last_name=Applcation.objects.get(id=pk).lastname,ID=ID)
 				student.save()
 				try:
+			
 					subject="Congratulations"
-					message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be .., and login password will be same."
+					message="Thank you for applying CUNY.After deep consideration, we decide to give you the offer, your CUNY email will be"+"StudentEmail"+" and login password will be same."
 					email_from=settings.EMAIL_HOST_USER
 					recipent_list=[Applcation.objects.get(id=pk).email]
 					send_mail(subject,message,email_from,recipent_list)
 				except:
 					pass
+					
 
 				Applcation.objects.get(id=pk).delete()
 				return redirect("viewNewUser")
@@ -260,8 +266,7 @@ def acceptapplications(request,pk=None):
 			else:
 				Applcation.objects.get(id=pk).delete()
 				return render(request,"registrar/reasonform.html")
-		except:
-			return redirect("viewNewUser")
+	
 	else:
 		return render(request, "main/forbidden.html",{})
 
@@ -369,17 +374,21 @@ def PeriodSetup(request):
 						student.save()
 
 				# cancel courses with < 5 students & mark those students as special & warn instructor
+				
 				courses = Course.objects.filter(is_open=True)
 				for course in courses:
-					cancelled_courses = course_record.objects.filter(course_name=course.name, grade='', waiting_list=False)
-					if len(cancelled_courses) < 5:
-						for cancelled_course in cancelled_courses:
-							# mark those students as special
-							special_student = Student.objects.get(email=cancelled_course.student_email)
-							special_student.is_special_assigned = True
-							special_student.save()
-							# delete this course record
-							cancelled_course.delete()
+					try:
+						cancelled_courses = course_record.objects.filter(course_name=course.name, grade='', waiting_list=False)
+						if len(cancelled_courses) < 5:
+							for cancelled_course in cancelled_courses:
+								# mark those students as special
+								special_student = Student.objects.get(email=cancelled_course.student_email)
+								special_student.is_special_assigned = True
+								special_student.save()
+								# delete this course record
+								cancelled_course.delete()
+					except:
+						pass
 						# set course to closed
 						course.is_open = False
 						course.save()
@@ -387,6 +396,7 @@ def PeriodSetup(request):
 						instructor_warned = course.instructor
 						instructor_warned.warning += 1
 						instructor_warned.save()
+					
 
 				# suspend instructor whose course are all cancelled
 				open_courses = Course.objects.filter(is_open=True)
@@ -515,7 +525,7 @@ def assignhonor(request):
 						gpa.append(studentlist[i][0]/studentlist[i][1])
 				for i in list2:
 					if i.warning>0:
-						i.wanrning-=1
+						i.warning-=1
 						i.save()
 					else:
 						i.Honors+=1

@@ -280,12 +280,12 @@ def enroll(request):
 					# to check if the courses in enrollemnt cart is already in the enrolled classes
 				try:
 					if  len(course_record.objects.filter(student_email=request.user,course_name=course[i].name,grade=""))>0:
-						messages.warning(request, "Enroll failed, you tried to enroll same classes")
+						messages.warning(request, "Enroll failed, you tried to enroll classe "+course[i].name+" agian")
 						return redirect("enrollmentcart")
 
 					
 					if   course_record.objects.filter(student_email=request.user,course_name=course[i].name).reverse()[0]!="F":
-								messages.warning(request, "Enroll Failed,according to CUNY policy, students can't retake the courses if they got a grade of  D or higer")
+								messages.warning(request, "Enroll Failed,according to CUNY policy, students can't retake"+ course[i].name+ " if they got a grade of  D or higer")
 								return redirect("enrollmentcart")
 				except:
 					pass
@@ -316,7 +316,7 @@ def enroll(request):
 
 			try:
 				# course has enrolled
-				C=st.course.all()
+				C=st.course.filter(Period.objects.last().term_info+ str(Period.objects.last().year))
 				for i in range (len(C)):
 					if  "Monday".lower() in C[i].meeting_date.lower():
 						Monday.append([float(C[i].start_time),float(C[i].end_time)])

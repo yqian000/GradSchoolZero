@@ -18,7 +18,6 @@
 <p>ID: {{s.ID}}</p>
 <p>Email: {{s.email}}</p>
 <p>GPA: {{s.GPA}}</p>
-<p>Credit: {{s.credit}}</p>
 <p>Warning Total: {{s.warning}}</p>
 
 <p>
@@ -55,6 +54,7 @@
     <tr>
       <th>Course Name</th>
       <th>Instructor email</th>
+      <th>Semester</th>
       <th>Grade</th>
     </tr>
   </thead>
@@ -63,6 +63,7 @@
   	  	<tr>
           <td>{{i.course_name}}</td>
   	      <td>{{i.Instructor_email}}</td>
+          <td>{{i.semester}}</td>
   	      <td>{{i.grade}}</td>
   	    </tr>
   	{% endfor %}
