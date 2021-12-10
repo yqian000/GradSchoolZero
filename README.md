@@ -1,5 +1,7 @@
 # GradSchoolZero
 
+GradSchoolZero is a graduate management system which allows users to stay connected and support students for graduation.
+
 ## Setting up the system
 **Clone the repository**
 ```bash
@@ -33,7 +35,7 @@ pip install django-excel
 ```
 
 ## Running the system
-**Follow the steps in order when running the app**
+**Follow the steps in order when running the application**
 ```bash
 python3 manage.py makemigrations
 ```
