@@ -38,7 +38,7 @@ def instructorView(request):
 def accessCourse(request):
 	if request.user.is_instructor:
 		try:
-			WL=Course.objects.filter(instructor=User.objects.get(email=request.user).id).order_by('name')
+			WL=Course.objects.filter(is_open=True,instructor=User.objects.get(email=request.user).id).order_by('name')
 			return render(request, "instructor/accessCourse.html", {"WL":WL})
 		except:
 			return render(request, "instructor/accessCourse.html")
@@ -177,7 +177,7 @@ def JobApplication(request):
 
 def accept_waiting_list(request,pk=None):
 	if request.user.is_instructor:
-		try:
+		
 			c=course_record.objects.get(id=pk)
 			c.waiting_list=False
 			c.save()
@@ -197,8 +197,7 @@ def accept_waiting_list(request,pk=None):
 			except:
 					pass
 			return redirect("viewWaitlist")
-		except:
-			messages.success(request,"Something seems wrong")
+	
 			return redirect("viewWaitlist")
 	else:
 		return render(request, "main/forbidden.html",{})

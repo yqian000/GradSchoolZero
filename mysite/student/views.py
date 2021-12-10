@@ -316,7 +316,7 @@ def enroll(request):
 
 			try:
 				# course has enrolled
-				C=st.course.all()
+				C=st.course.filter(Period.objects.last().term_info+ str(Period.objects.last().year))
 				for i in range (len(C)):
 					if  "Monday".lower() in C[i].meeting_date.lower():
 						Monday.append([float(C[i].start_time),float(C[i].end_time)])
